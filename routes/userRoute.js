@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
 const utils = require('../utils/tokenUtil');
+const verifyToken = require('../middleware/verifyToken');
+const Topic = require('../models/topic');
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -9,7 +11,7 @@ router.post('/login', async (req, res) => {
 
   try {
     const user = await User.login(email, password);
-    const token = utils.generateAuthToken();
+    const token = utils.generateAuthToken(user._id);
 
     // Create a cookie with the token
     res.cookie('token', token, {
@@ -73,6 +75,27 @@ router.get('/signout', (req, res) => {
 
   // Redirect the user to the home page or any other desired page
   res.redirect('/');
+});
+
+router.get('/progress', verifyToken.verifyToken,async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming you have user authentication middleware to populate req.user
+
+    // Get the user's current topic number
+    const user = await User.findById(userId);
+    const currentTopicNo = user.currentTopic;
+
+    // Get the total number of topics
+    const totalTopics = await Topic.countDocuments();
+
+    // Calculate the user's progress percentage
+    const progress = (currentTopicNo / totalTopics) * 100;
+
+    res.json({ progress }); // Return the progress as JSON response
+  } catch (error) {
+    console.error('Error retrieving user progress:', error);
+    res.status(500).json({ error: 'An error occurred while retrieving user progress.' });
+  }
 });
 
 module.exports = router;

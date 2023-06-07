@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-
+const User = require('../models/users');
 // Middleware to verify JWT token and check expiration
-function verifyToken(req, res, next) {
+async function verifyToken(req, res, next) {
   const token = req.cookies.token || '';
 
   try {
@@ -10,8 +10,10 @@ function verifyToken(req, res, next) {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-
+  
+    req.id = decoded;
+    
+    req.user = await User.findById(decoded.id.id).select('-password');
     // Check if token has expired
     const nowInSeconds = Math.floor(Date.now() / 1000);
     if (decoded.exp < nowInSeconds) {
