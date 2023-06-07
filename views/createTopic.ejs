@@ -1,0 +1,27 @@
+<html>
+  <body>
+    <% if (typeof error !== 'undefined') { %>
+      <p><strong>Error:</strong> <%= error %></p>
+    <% } %>
+
+    <form action="/topics" method="POST">
+      <label for="topicTitle">Topic Title:</label>
+      <input type="text" id="topicTitle" name="topicTitle" required>
+
+      <label for="topicNo">Topic Number:</label>
+      <input type="number" id="topicNo" name="topicNo" required>
+
+      <label for="topicDesc">Topic Description:</label>
+      <input type="text" id="topicDesc" name="topicDesc" required>
+
+      <label for="materialContent">Material Content:</label>
+      <textarea id="materialContent" cols="50" rows="10" name="materialContent" required></textarea>
+
+      <label for="materialVideo">Material Video:</label>
+      <input type="text" id="materialVideo" name="materialVideo">
+
+      <button type="submit">Create</button>
+    </form>
+
+  </body>
+</html>

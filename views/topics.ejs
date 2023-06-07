@@ -1,0 +1,35 @@
+<!-- topics.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Topics</title>
+  <link rel="stylesheet" href="/css/style2.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <div class="navbar">
+    <div class="navbar-logo">Ai Tech</div>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Sign Out</a></li>
+    </ul>
+  </div>
+  
+  <ul class="nav">
+    <li><a href="/topics">Topics</a></li>
+   
+  </ul>
+  
+  <!-- List topics here -->
+  <h1>All Topics</h1>
+  <div>
+    <% topics.forEach(function(topic) { %>
+      <p><%= topic.title %></p>
+      <p><%= topic.topicNo %></p>
+      <p><%= topic.topicDesc %></p>
+    <% }); %>
+    </div>
+</body>
+</html>
