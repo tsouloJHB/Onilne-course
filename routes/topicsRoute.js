@@ -12,14 +12,18 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
     const topics = await Topic.find();
 
     // Get the user's progress
+   
     const progress = await userController.getUserProgress(req.user._id)
-
-    res.render('topics', { topics, progress }); // Pass the topics and progress data to the topics view for rendering
+    const currentTopic = req.user.currentTopic;
+    res.render('topics', { topics, progress,currentTopic }); // Pass the topics and progress data to the topics view for rendering
   } catch (error) {
     console.error('Error retrieving topics:', error);
     res.status(500).send('An error occurred while retrieving the topics.');
   }
 });
+
+
+
 
 router.get('/create', verifyToken.verifyToken, (req, res) => {
   // Route handling code for topics page
@@ -77,6 +81,98 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
     res.status(500).send('An error occurred while retrieving the topics.');
   }
 });
+
+
+router.get('/edit/:id', async (req, res) => {
+  try {
+    const topicId = req.params.id;
+
+    // Find the topic by ID
+    const topic = await Topic.findById(topicId);
+
+    if (!topic) {
+      // If topic is not found, render an error page or redirect to an error route
+      return res.render('error', { message: 'Topic not found' });
+    }
+
+    // Find the topic material by topicId
+    const topicMaterial = await TopicMaterial.findOne({ topicId });
+
+    if (!topicMaterial) {
+      // If topic material is not found, render an error page or redirect to an error route
+      return res.render('error', { message: 'Topic material not found' });
+    }
+
+    res.render('editTopic', { topic, topicMaterial }); // Render the edit topic page with the retrieved data
+  } catch (error) {
+    console.error('Error retrieving topic and topic material:', error);
+    res.status(500).send('An error occurred while retrieving the topic and topic material.');
+  }
+});
+
+
+router.post('/edit/:id', async (req, res) => {
+  try {
+    const topicId = req.params.id;
+
+    // Find the topic by ID
+    const topic = await Topic.findById(topicId);
+
+    if (!topic) {
+      // If topic is not found, render an error page or redirect to an error route
+      return res.render('error', { message: 'Topic not found' });
+    }
+
+    // Update the topic properties
+    topic.title = req.body.topicTitle;
+    topic.topicDesc = req.body.topicDesc;
+
+    // Save the updated topic
+    await topic.save();
+
+    // Find the topic material by topicId
+    const topicMaterial = await TopicMaterial.findOne({ topicId });
+
+    if (!topicMaterial) {
+      // If topic material is not found, render an error page or redirect to an error route
+      return res.render('error', { message: 'Topic material not found' });
+    }
+
+    // Update the topic material properties
+    topicMaterial.title = req.body.materialTitle;
+    topicMaterial.content = req.body.materialContent;
+    topicMaterial.topicVideo = req.body.materialVideo;
+
+    // Save the updated topic material
+    await topicMaterial.save();
+
+    res.redirect('/topics'); // Redirect to the topics page after successful update
+  } catch (error) {
+    console.error('Error updating topic and topic material:', error);
+    res.status(500).send('An error occurred while updating the topic and topic material.');
+  }
+});
+
+
+router.post('/delete/:id', async (req, res) => {
+  try {
+    const topicId = req.params.id;
+
+    // Find the topic by ID and delete it
+    await Topic.findByIdAndDelete(topicId);
+
+    // Delete the topic material associated with the topic
+    await TopicMaterial.deleteMany({ topicId });
+
+    res.redirect('/topics'); // Redirect to the topics page after successful deletion
+  } catch (error) {
+    console.error('Error deleting topic and topic material:', error);
+    res.status(500).send('An error occurred while deleting the topic and topic material.');
+  }
+});
+
+
+
 
   
 

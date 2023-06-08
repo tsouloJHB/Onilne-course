@@ -7,10 +7,14 @@ const userRouter = require('./routes/userRoute');
 const cookieParser = require('cookie-parser');
 const topicsRouter = require('./routes/topicsRoute');
 const topicMaterialRoute = require('./routes/topicMaterialRoute');
+const coursesRouter = require('./routes/coursesRoute');
+const Admin = require('./routes/admin');
+const cors = require('cors');
 // const User = require('./models/users');
 // const Topic = require('./models/topic');
 // const TopicMaterial = require('./models/TopicMaterial');
-
+const Courses = require('./models/coursesModel');
+app.use(cors());
 dotenv.config();
 connectDb();
 const bodyParser = require('body-parser');
@@ -36,6 +40,9 @@ app.use(cookieParser());
 app.use('/users', userRouter);
 app.use('/topics', topicsRouter);
 app.use('/topicOutline', topicMaterialRoute);
+app.use('/course',coursesRouter);
+app.use('/admin',coursesRouter);
+
 
 // Testing the models
 
@@ -44,6 +51,8 @@ app.use('/topicOutline', topicMaterialRoute);
 
 // const topic = new Topic({ title: 'Node.js Basics' });
 // topic.save();
+// const top = new Courses({ title: 'Mathematics',courseNo:1,courseDesc:"This course covers an introduction to mathematics" });
+// top.save();
 
 // const topicMaterial = new TopicMaterial({ title: 'Introduction', content: 'This is an introduction to Node.js', topic: topic._id });
 // topicMaterial.save();

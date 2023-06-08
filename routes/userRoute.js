@@ -7,22 +7,29 @@ const Topic = require('../models/topic');
 
 // Login route
 router.post('/login', async (req, res) => {
+
   const { email, password } = req.body;
 
   try {
     const user = await User.login(email, password);
-    const token = utils.generateAuthToken(user._id);
-
+    const token = utils.generateAuthToken(user._id); // Use the instance method to generate the token
+  
     // Create a cookie with the token
     res.cookie('token', token, {
       httpOnly: true,
       maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days in milliseconds
     });
 
-    // Redirect the user to the topics page
-    res.redirect('/topics');
+    if (user.isAdmin) {
+      // Redirect the admin user to the admin page
+      res.redirect('/admin');
+    } else {
+      // Redirect the non-admin user to the topics page
+      res.redirect('/topics');
+    }
   } catch (err) {
     // Return the error messages to the login page
+    console.log(err);
     res.render('login', { error: err.message });
   }
 });

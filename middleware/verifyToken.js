@@ -12,8 +12,8 @@ async function verifyToken(req, res, next) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
   
     req.id = decoded;
-    
-    req.user = await User.findById(decoded.id.id).select('-password');
+
+    req.user = await User.findById(decoded.id).select('-password');
     // Check if token has expired
     const nowInSeconds = Math.floor(Date.now() / 1000);
     if (decoded.exp < nowInSeconds) {

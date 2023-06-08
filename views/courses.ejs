@@ -1,0 +1,40 @@
+<!-- courses.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Courses</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h1>Courses</h1>
+  
+  <!-- Create Course Form -->
+  <h2>Create Course</h2>
+  <form action="/courses" method="POST">
+    <input type="text" name="title" placeholder="Title" required>
+    <input type="number" name="courseNo" placeholder="Course No" required>
+    <input type="text" name="courseDesc" placeholder="Course Description" required>
+    <input type="text" name="courseImage" placeholder="Course Image URL">
+    <input type="text" name="courseVideo" placeholder="Course URL" required>
+    <button type="submit">Create Course</button>
+  </form>
+  
+  <!-- List of Courses -->
+  <h2>All Courses</h2>
+  <% courses.forEach(function(course) { %>
+    <div class="course">
+      <h3><%= course.title %></h3>
+      <p>Course No: <%= course.courseNo %></p>
+      <p><%= course.courseDesc %></p>
+      <img src="<%= course.courseImage %>" alt="Course Image">
+      <a href="<%= course.course %>">Course Link</a>
+      <form action="/courses/<%= course._id %>?_method=DELETE" method="POST">
+        <button type="submit">Delete</button>
+      </form>
+      <a href="/courses/<%= course._id %>/edit">Edit</a>
+    </div>
+  <% }); %>
+  
+  <script src="/js/script.js"></script>
+</body>
+</html>

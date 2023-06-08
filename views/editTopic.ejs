@@ -1,0 +1,39 @@
+<!-- editTopic.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Topic</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h1>Edit Topic</h1>
+  
+  <form action="/topics/edit/<%= topic._id %>" method="POST">
+    <div>
+      <label for="topicTitle">Topic Title:</label>
+      <input type="text" id="topicTitle" name="topicTitle" value="<%= topic.title %>" required>
+    </div>
+    <div>
+      <label for="topicNo">Topic Number:</label>
+      <input type="number" id="topicNo" name="topicNo" value="<%= topic.topicNo %>" required>
+    </div>
+    <div>
+      <label for="topicDesc">Topic Description:</label>
+      <textarea id="topicDesc" name="topicDesc" rows="4" required><%= topic.topicDesc %></textarea>
+    </div>
+    <div>
+      <label for="materialTitle">Material Title:</label>
+      <input type="text" id="materialTitle" name="materialTitle" value="<%= topicMaterial.title %>" required>
+    </div>
+    <div>
+      <label for="materialContent">Material Content:</label>
+      <textarea id="materialContent" name="materialContent" rows="6" required><%= topicMaterial.content %></textarea>
+    </div>
+    <div>
+      <label for="materialVideo">Material Video:</label>
+      <input type="text" id="materialVideo" name="materialVideo" value="<%= topicMaterial.topicVideo %>">
+    </div>
+    <button type="submit">Update</button>
+  </form>
+</body>
+</html>
