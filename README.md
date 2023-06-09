@@ -1,2 +1,2 @@
-# Onilne-course
+#  Online learning platform
 Node js online course
