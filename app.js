@@ -13,7 +13,7 @@ const cors = require('cors');
 // const User = require('./models/users');
 // const Topic = require('./models/topic');
 // const TopicMaterial = require('./models/TopicMaterial');
-// const Courses = require('./models/coursesModel');
+const Courses = require('./models/coursesModel');
 app.use(cors());
 dotenv.config();
 connectDb();
@@ -97,8 +97,11 @@ app.use('/admin',coursesRouter);
 // // Call the function to create dummy data
 // createDummyData();
 
-app.get('/', (req, res) => {
-  res.render('home');
+//get the courses and 
+
+app.get('/', async(req, res) => {
+  const courses  = await Courses.find();
+  res.render('home', { courses});
 });
 
 

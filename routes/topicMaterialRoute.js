@@ -3,6 +3,7 @@ const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const TopicMaterial = require('../models/topicMaterial');
 const Topic = require('../models/topic');
+const QuizModel= require('../models/topicQuizModel');
 
 
 router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
@@ -27,6 +28,27 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
   } catch (error) {
     console.error('Error retrieving topic material:', error);
     res.status(500).send('An error occurred while retrieving the topic material.');
+  }
+});
+
+router.get('/quiz/:id', async (req, res) => {
+  try {
+    const topicId = req.params.id;
+
+    // Find the quiz by topicId
+    const quiz = await QuizModel.findOne({ topicId });
+
+    if (!quiz) {
+      // If the quiz is not found, return an error response
+      return res.status(404).json({ error: 'Quiz not found' });
+    }
+
+    // Return the quiz data
+    console.log(quiz);
+    res.render('quizTest', { quiz });
+  } catch (error) {
+    console.error('Error retrieving quiz data:', error);
+    res.status(500).send('An error occurred while retrieving quiz data.');
   }
 });
 

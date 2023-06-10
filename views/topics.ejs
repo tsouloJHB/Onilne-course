@@ -48,7 +48,7 @@
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=topic._id+topic._id %>" aria-expanded="false" aria-controls="collapseTwo">
                         <i class="flaticon-question"></i> <%= topic.title %>
                     </button>
-                    <a href="topics/edit/<%= topic._id %>">Edit topic</a>
+                
                     <% if (topic.topicNo == currentTopic) { %>
                       <i class="fa fa-unlock" aria-hidden="true"></i>
                       <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>

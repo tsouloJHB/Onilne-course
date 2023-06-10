@@ -33,13 +33,13 @@ addEntityBtn.addEventListener('click', () => {
   const incorrectAnswer1Element = document.querySelector(`textarea[name="questions[${entityIndex}][incorrectAnswer1]"]`);
   const incorrectAnswer2Element = document.querySelector(`textarea[name="questions[${entityIndex}][incorrectAnswer2]"]`);
 
-  const questionValue = questionElement.value;
-  const answerValue = answerElement.value;
-  const incorrectAnswer1Value = incorrectAnswer1Element.value;
-  const incorrectAnswer2Value = incorrectAnswer2Element.value;
+  const questionValue = "";
+  const answerValue = "";
+  const incorrectAnswer1Value = "";
+  const incorrectAnswer2Value = "";
 
   // Now you have the values as strings, which can be submitted correctly
-
+  entityIndex++;
   const questionTemplate = `
     <div class="entityRow">
       <label for="question">Question:</label>
@@ -54,7 +54,7 @@ addEntityBtn.addEventListener('click', () => {
   `;
 
   entityContainer.insertAdjacentHTML('beforeend', questionTemplate);
-  entityIndex++;
+ 
 });
 
 

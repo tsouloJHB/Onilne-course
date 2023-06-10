@@ -1,0 +1,24 @@
+<h2>Quiz Details</h2>
+
+<h3>Questions:</h3>
+<% quiz.questions.forEach(function(question, index) { %>
+  <div class="question">
+    <h4>Question <%= index + 1 %>:</h4>
+    <p>Question: <%= question.question %></p>
+    <div>
+      <input type="radio" id="incorrectAnswer1<%= index%>" name="incorrectAnswer1 <%= index%>" value="<%= question.incorrectAnswer1 %>">
+      <label for="incorrectAnswer1<%= index%>"> <%= question.incorrectAnswer1 %></label>
+    </div>
+    <div>
+      <input type="radio" id="incorrectAnswer2 <%= index%>" name="incorrectAnswer2 <%= index%>" value="<%= question.incorrectAnswer2 %>">
+      <label for="incorrectAnswer2 <%= index%>"> <%= question.incorrectAnswer2 %></label>
+    </div>
+
+    <!-- <p>Answer: <%= question.answer %></p> -->
+    <!-- <p>Incorrect Answer 1: <%= question.incorrectAnswer1 %></p>
+    <p>Incorrect Answer 2: <%= question.incorrectAnswer2 %></p> -->
+  </div>    
+<% }); %></br></br>
+<div>
+  <button type="submit">Submit</button>
+</div>

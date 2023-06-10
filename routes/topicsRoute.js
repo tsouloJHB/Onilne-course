@@ -101,14 +101,21 @@ router.get('/edit/:id', async (req, res) => {
 
     // Find the topic material by topicId
     let topicMaterial = await TopicMaterial.findOne({ topicId });
+    let quiz = await QuizModel.findOne({ topicId });
 
     if (!topicMaterial) {
       // If topic material is not found, render an error page or redirect to an error route
       // return res.render('error', { message: 'Topic material not found' });
       topicMaterial = null;
     }
+    if(!quiz){
+      quiz = false;
+    }else{
+      quiz = true;
+    }
 
-    res.render('editTopic', { topic, topicMaterial }); // Render the edit topic page with the retrieved data
+
+    res.render('editTopic', { topic, topicMaterial,quiz }); // Render the edit topic page with the retrieved data
   } catch (error) {
     console.error('Error retrieving topic and topic material:', error);
     res.status(500).send('An error occurred while retrieving the topic and topic material.');
