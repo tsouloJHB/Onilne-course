@@ -4,6 +4,7 @@ const verifyToken = require('../middleware/verifyToken');
 const Topic = require('../models/topic');
 const TopicMaterial = require('../models/topicMaterial');
 const userController = require('../controllers/usersController');
+const QuizModel = require('../models/topicQuizModel');
 
 // Protected route using verifyToken middleware
 router.get('/', verifyToken.verifyToken, async (req, res) => {
@@ -25,21 +26,23 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
 
 
 
-router.get('/create', verifyToken.verifyToken, (req, res) => {
+router.get('/create/:id', verifyToken.verifyToken, async (req, res) => {
+  const courseId = req.params.id;
   // Route handling code for topics page
-  res.render('createTopic');
+  const topicsCount = await Topic.countDocuments({ courseId }) + 1;
+  res.render('createTopic',{courseId,topicsCount});
 });  
 
 router.post('/', async (req, res) => {
   try {
     const topicNo = req.body.topicNo;
-
+    const courseId = req.body.courseId
     // Check if topic number already exists
-    const existingTopic = await Topic.findOne({ topicNo });
+    const existingTopic = await Topic.findOne({ topicNo,courseId:req.body.courseId });
 
     if (existingTopic) {
       // If topic number already exists, render the createTopics page with an error message
-      return res.render('createTopic', { error: 'Topic number already exists. Consider updating the topic instead.' });
+      return res.render('createTopic', { error: 'Topic number already exists. Consider updating the topic instead.' ,topicsCount:topicNo,courseId});
     }
 
     // Create a new topic
@@ -47,6 +50,7 @@ router.post('/', async (req, res) => {
       title: req.body.topicTitle,
       topicNo: topicNo,
       topicDesc: req.body.topicDesc,
+      courseId:req.body.courseId,
     });
 
     // Save the topic to the database
@@ -54,7 +58,7 @@ router.post('/', async (req, res) => {
 
     // Create a new topic material
     const topicMaterial = new TopicMaterial({
-      title: req.body.materialTitle,
+      title: req.body.topicTitle,
       content: req.body.materialContent,
       topicId: savedTopic._id,
       topicVideo: req.body.materialVideo,
@@ -63,7 +67,7 @@ router.post('/', async (req, res) => {
     // Save the topic material to the database
     const savedTopicMaterial = await topicMaterial.save();
 
-    res.redirect('/topics'); // Redirect to the topics page after successful creation
+    res.redirect('/course/course-topics/'+req.body.courseId); // Redirect to the topics page after successful creation
   } catch (error) {
     console.error('Error creating topic and topic material:', error);
     res.status(500).send('An error occurred while creating the topic and topic material.');
@@ -96,11 +100,12 @@ router.get('/edit/:id', async (req, res) => {
     }
 
     // Find the topic material by topicId
-    const topicMaterial = await TopicMaterial.findOne({ topicId });
+    let topicMaterial = await TopicMaterial.findOne({ topicId });
 
     if (!topicMaterial) {
       // If topic material is not found, render an error page or redirect to an error route
-      return res.render('error', { message: 'Topic material not found' });
+      // return res.render('error', { message: 'Topic material not found' });
+      topicMaterial = null;
     }
 
     res.render('editTopic', { topic, topicMaterial }); // Render the edit topic page with the retrieved data
@@ -109,6 +114,69 @@ router.get('/edit/:id', async (req, res) => {
     res.status(500).send('An error occurred while retrieving the topic and topic material.');
   }
 });
+
+router.get('/createQuiz/:id', verifyToken.verifyToken, async (req, res) => {
+  try {
+    // Retrieve all courses from the database
+
+    const topicId = req.params.id;
+    // Get the user's progress
+    res.render('createQuiz' ,{topicId}); // Pass the courses and progress data to the courses view for rendering
+  } catch (error) {
+    console.error('Error retrieving courses:', error);
+    res.status(500).send('An error occurred while retrieving the courses.');
+  }
+});
+
+router.post('/createQuiz', async (req, res) => {
+  try {
+    const { topicId, questions } = req.body;
+
+    // Assuming you're using Mongoose for database operations
+    const topicQuiz = new QuizModel({
+      topicId,
+      questions: questions.map((q) => ({
+        question: q.question.toString(), // Convert to string if necessary
+        answer: q.answer.toString(),
+        incorrectAnswer1: q.incorrectAnswer1.toString(),
+        incorrectAnswer2: q.incorrectAnswer2.toString()
+      }))
+    });
+
+    // Save the quiz data to the database
+    const savedQuiz = await topicQuiz.save();
+
+    res.status(200).json(savedQuiz);
+  } catch (error) {
+    console.error('Error saving quiz data:', error);
+    res.status(500).send('An error occurred while saving quiz data.');
+  }
+});
+
+
+
+router.get('/quiz/:id', async (req, res) => {
+  try {
+    const topicId = req.params.id;
+
+    // Find the quiz by topicId
+    const quiz = await QuizModel.findOne({ topicId });
+
+    if (!quiz) {
+      // If the quiz is not found, return an error response
+      return res.status(404).json({ error: 'Quiz not found' });
+    }
+
+    // Return the quiz data
+    console.log(quiz);
+    res.render('viewQuiz', { quiz });
+  } catch (error) {
+    console.error('Error retrieving quiz data:', error);
+    res.status(500).send('An error occurred while retrieving quiz data.');
+  }
+});
+
+
 
 
 router.post('/edit/:id', async (req, res) => {

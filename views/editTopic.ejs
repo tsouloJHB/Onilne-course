@@ -21,6 +21,7 @@
       <label for="topicDesc">Topic Description:</label>
       <textarea id="topicDesc" name="topicDesc" rows="4" required><%= topic.topicDesc %></textarea>
     </div>
+    <% if(topicMaterial != null){ %>
     <div>
       <label for="materialTitle">Material Title:</label>
       <input type="text" id="materialTitle" name="materialTitle" value="<%= topicMaterial.title %>" required>
@@ -33,6 +34,11 @@
       <label for="materialVideo">Material Video:</label>
       <input type="text" id="materialVideo" name="materialVideo" value="<%= topicMaterial.topicVideo %>">
     </div>
+    <%} %><br/>
+    <a href="/topics/quiz/<%=topic._id %>"
+    <button>View topic quiz</button></a><br/><br/>
+    <a href="/topics/createQuiz/<%=topic._id %>"
+    <button>Create topic quiz</button></a><br/><br/>
     <button type="submit">Update</button>
   </form>
 </body>

@@ -9,17 +9,17 @@
       <input type="text" id="topicTitle" name="topicTitle" required>
 
       <label for="topicNo">Topic Number:</label>
-      <input type="number" id="topicNo" name="topicNo" required>
+      <input type="number" id="topicNo" name="topicNo" required value="<%=topicsCount%>">
 
       <label for="topicDesc">Topic Description:</label>
       <input type="text" id="topicDesc" name="topicDesc" required>
 
-      <label for="materialContent">Material Content:</label>
+      <label for="materialContent">Material Content:</label>  
       <textarea id="materialContent" cols="50" rows="10" name="materialContent" required></textarea>
 
       <label for="materialVideo">Material Video:</label>
       <input type="text" id="materialVideo" name="materialVideo">
-
+      <input type="hidden" id="materialVideo" name="courseId" value="<%=courseId %>">
       <button type="submit">Create</button>
     </form>
 

@@ -1,0 +1,62 @@
+<form id="quizForm" action="/topics/createQuiz" method="POST">
+    <input type="hidden" name="topicId" value="<%=topicId%>">
+    
+    <div id="entityContainer">
+      <div class="entityRow">
+        <label for="question">Question:</label>
+        <textarea name="questions[0][question]" rows="5" cols="50" required></textarea>
+        <label for="answer">Answer:</label>
+        <textarea name="questions[0][answer]" rows="5" cols="50" required></textarea>
+        <label for="incorrectAnswer1">Incorrect Answer 1:</label>
+        <textarea name="questions[0][incorrectAnswer1]" rows="5" cols="50" required></textarea>
+        <label for="incorrectAnswer2">Incorrect Answer 2:</label>
+        <textarea name="questions[0][incorrectAnswer2]" rows="5" cols="50" required></textarea>
+      </div>
+    </div>
+  
+    <button type="button" id="addEntityBtn">Add Entity</button>
+    <button type="submit">Submit</button>
+  </form>   
+  
+  
+  <script>
+   // JavaScript
+// JavaScript
+const entityContainer = document.getElementById('entityContainer');
+const addEntityBtn = document.getElementById('addEntityBtn');
+
+let entityIndex = 0;
+
+addEntityBtn.addEventListener('click', () => {
+  const questionElement = document.querySelector(`textarea[name="questions[${entityIndex}][question]"]`);
+  const answerElement = document.querySelector(`textarea[name="questions[${entityIndex}][answer]"]`);
+  const incorrectAnswer1Element = document.querySelector(`textarea[name="questions[${entityIndex}][incorrectAnswer1]"]`);
+  const incorrectAnswer2Element = document.querySelector(`textarea[name="questions[${entityIndex}][incorrectAnswer2]"]`);
+
+  const questionValue = questionElement.value;
+  const answerValue = answerElement.value;
+  const incorrectAnswer1Value = incorrectAnswer1Element.value;
+  const incorrectAnswer2Value = incorrectAnswer2Element.value;
+
+  // Now you have the values as strings, which can be submitted correctly
+
+  const questionTemplate = `
+    <div class="entityRow">
+      <label for="question">Question:</label>
+      <textarea name="questions[${entityIndex}][question]" rows="5" cols="50" required>${questionValue}</textarea>
+      <label for="answer">Answer:</label>
+      <textarea name="questions[${entityIndex}][answer]" rows="5" cols="50" required>${answerValue}</textarea>
+      <label for="incorrectAnswer1">Incorrect Answer 1:</label>
+      <textarea name="questions[${entityIndex}][incorrectAnswer1]" rows="5" cols="50" required>${incorrectAnswer1Value}</textarea>
+      <label for="incorrectAnswer2">Incorrect Answer 2:</label>
+      <textarea name="questions[${entityIndex}][incorrectAnswer2]" rows="5" cols="50" required>${incorrectAnswer2Value}</textarea>
+    </div>
+  `;
+
+  entityContainer.insertAdjacentHTML('beforeend', questionTemplate);
+  entityIndex++;
+});
+
+
+  </script>
+  

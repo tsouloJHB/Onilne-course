@@ -13,7 +13,7 @@ const cors = require('cors');
 // const User = require('./models/users');
 // const Topic = require('./models/topic');
 // const TopicMaterial = require('./models/TopicMaterial');
-const Courses = require('./models/coursesModel');
+// const Courses = require('./models/coursesModel');
 app.use(cors());
 dotenv.config();
 connectDb();
@@ -51,11 +51,20 @@ app.use('/admin',coursesRouter);
 
 // const topic = new Topic({ title: 'Node.js Basics' });
 // topic.save();
-// const top = new Courses({ title: 'Mathematics',courseNo:1,courseDesc:"This course covers an introduction to mathematics" });
-// top.save();
+  // const top = new Courses({ title: 'Mathematics',courseNo:1,courseDesc:"This course covers an introduction to mathematics" });
+  // top.save();
+  // const topic = new Topic({title:'Algebra first year level',topicNo:1,topicDesc:"crash course Algebra for stat to finish", courseId:top._id})
+  // topic.save();
+  // const addmore = async() =>{
+  //   const topic = await Topic.findOne({topicNo:2});
+  // // const topic1 = new Topic({title:'Introduction to Trigonometry',topicNo:2,topicDesc:"crash course Trigonometry for stat to finish", courseId:top._id})
+  // // topic1.save();
 
-// const topicMaterial = new TopicMaterial({ title: 'Introduction', content: 'This is an introduction to Node.js', topic: topic._id });
-// topicMaterial.save();
+  // const topicMaterial = new TopicMaterial({ title: 'Introduction to Trigonometry', content: 'Trigonometry', topicId: topic._id, topicVideo:"https://www.youtube.com/watch?v=PUB0TaZ7bhA" });
+  // topicMaterial.save();
+  // }
+
+  
 
 // Define routes4
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz</title>
+  <!-- Add your stylesheets and scripts here -->
+</head>
+<body>
+  <h1>Quiz</h1>
+
+  <% if (quiz) { %>
+    <h2>Quiz Details</h2>
+    <p>Quiz ID: <%= quiz._id %></p>
+    <p>Topic ID: <%= quiz.topicId %></p>
+    <h3>Questions:</h3>
+    <% quiz.questions.forEach(function(question, index) { %>
+      <div class="question">
+        <h4>Question <%= index + 1 %>:</h4>
+        <p>Question: <%= question.question %></p>
+        <p>Answer: <%= question.answer %></p>
+        <p>Incorrect Answer 1: <%= question.incorrectAnswer1 %></p>
+        <p>Incorrect Answer 2: <%= question.incorrectAnswer2 %></p>
+      </div>    
+    <% }); %>
+  <% } else { %>
+    <p>No quiz data available.</p>
+  <% } %>   
+
+  <!-- Add your additional HTML code here -->
+
+  <!-- Add your scripts here -->
+</body>
+</html>

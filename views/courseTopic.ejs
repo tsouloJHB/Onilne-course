@@ -1,0 +1,58 @@
+<!-- topics.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Topics</title>
+  <link rel="stylesheet" href="/css/style2.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <div class="navbar">
+    <div class="navbar-logo">Ai Tech</div>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Current course</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Sign Out</a></li>
+    </ul>
+  </div>
+  <!-- List topics here -->
+  <h1>All Topics</h1>
+  <div>
+    </div>
+    <div class="outline_courses_info">
+      <div id="accordion">
+        <% topic.forEach(function(top) { %>
+          <div class="card">
+            <div class="card-header" id="<%=topic._id %>">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=top._id+top._id %>" aria-expanded="false" aria-controls="collapseTwo">
+                        <i class="flaticon-question"></i> <%= top.title %>
+                    </button>
+                    <a href="/topics/edit/<%= top._id %>">Edit topic and topic material</a>  
+                    <a href=""><span>Delete</span></a>                        
+                </h5>
+            </div>
+            <div id="<%=top._id+top._id %>" class="collapse" aria-labelledby="<%=topic._id %>" data-parent="#accordion">
+                <div class="card-body">
+                  <%= top.topicDesc %>
+                </div>
+            </div>
+          </div>
+      <% }); %>
+      <% if (topic.length === 0) { %>
+        <!-- Code to handle when topics array is empty -->
+        <p>No topics found.</p>
+      <% }%>
+      </div>
+    </div> </br>
+    <a href="/topics/create/<%= courseId%>">
+    <button>Create topic</button> </a>   
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</body>
+</html>

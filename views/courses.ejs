@@ -10,12 +10,12 @@
   
   <!-- Create Course Form -->
   <h2>Create Course</h2>
-  <form action="/courses" method="POST">
+  <form action="/course" method="POST">
     <input type="text" name="title" placeholder="Title" required>
-    <input type="number" name="courseNo" placeholder="Course No" required>
+    <input type="number" name="courseNo" placeholder="Course No" required value="<%=coursesCount %>">
     <input type="text" name="courseDesc" placeholder="Course Description" required>
     <input type="text" name="courseImage" placeholder="Course Image URL">
-    <input type="text" name="courseVideo" placeholder="Course URL" required>
+    <input type="text" name="courseVideo" placeholder="Course Video URL" required>
     <button type="submit">Create Course</button>
   </form>
   
@@ -26,11 +26,11 @@
       <h3><%= course.title %></h3>
       <p>Course No: <%= course.courseNo %></p>
       <p><%= course.courseDesc %></p>
-      <img src="<%= course.courseImage %>" alt="Course Image">
-      <a href="<%= course.course %>">Course Link</a>
+      <!-- <img src="<%= course.courseImage %>" alt="Course Image"> -->
+      <a href="/course/course-topics/<%= course._id %>">View course</a>
       <form action="/courses/<%= course._id %>?_method=DELETE" method="POST">
         <button type="submit">Delete</button>
-      </form>
+      </form> 
       <a href="/courses/<%= course._id %>/edit">Edit</a>
     </div>
   <% }); %>
