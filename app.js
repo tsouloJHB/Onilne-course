@@ -3,21 +3,20 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 const connectDb = require('./db')
-const userRouter = require('./routes/userRoute');
 const cookieParser = require('cookie-parser');
-const topicsRouter = require('./routes/topicsRoute');
-const topicMaterialRoute = require('./routes/topicMaterialRoute');
-const coursesRouter = require('./routes/coursesRoute');
-const Admin = require('./routes/admin');
 const cors = require('cors');
-// const User = require('./models/users');
-// const Topic = require('./models/topic');
+const { AdminRoute,CourseRoute,TopicMaterialRoute,TopicsRoute,UserRoute} = require('./routes');
+const User = require('./models/userProgressModel');
+const UserProgress = require('./models/userProgressModel');
+const Course =  require('./models/coursesModel');
+const Topic = require('./models/topicModel');
 // const TopicMaterial = require('./models/TopicMaterial');
 const Courses = require('./models/coursesModel');
 app.use(cors());
 dotenv.config();
 connectDb();
 const bodyParser = require('body-parser');
+const { UserModel } = require('./models');
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -37,17 +36,41 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use('/users', userRouter);
-app.use('/topics', topicsRouter);
-app.use('/topicOutline', topicMaterialRoute);
-app.use('/course',coursesRouter);
-app.use('/admin',coursesRouter);
+app.use('/users', UserRoute);
+app.use('/topics', TopicsRoute);
+app.use('/topicOutline', TopicMaterialRoute);
+app.use('/course',CourseRoute);
+app.use('/admin',AdminRoute);
 
 
 // Testing the models
 
 // const user = new Topic({title:'Algebra first year level',topicNo:1,topicDesc:"crash course Algebra for stat to finish"})
 // user.save();
+// const dosome = async() =>{
+//   const user = await UserModel.findOne({ email: "0784939@gmail.com" });
+//   const course = await Course.findOne({ courseNo: 1 });
+//   const topic = await Topic.findOne({ courseId: course._id, topicNo: 1 });
+  
+//   if (user && course && topic) {
+//     const progress = new UserProgress({
+//       user: user._id,
+//       course: course._id,
+//       topic: topic._id,
+//       progress: 1, // Set the initial progress value as desired
+//     });
+  
+//     progress.save();
+//   } else {
+//     console.log('User, course, or topic not found.');
+//   }
+  
+// }
+// dosome();
+
+
+
+
 
 // const topic = new Topic({ title: 'Node.js Basics' });
 // topic.save();

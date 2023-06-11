@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const TopicMaterial = require('../models/topicMaterial');
-const Topic = require('../models/topic');
-const QuizModel= require('../models/topicQuizModel');
+const { TopicModel, TopicMaterialModel,TopicQuizModel } = require('../models');
 
 
 router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
@@ -11,14 +9,14 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
     const topicId = req.params.topicId;
 
     // Fetch the topic material data based on the topicId
-    const topicMaterial = await TopicMaterial.findOne({ topicId });
+    const topicMaterial = await TopicMaterialModel.findOne({ topicId });
     // Fetch the topic
-    const topic = await Topic.findById(topicId);
+    const topic = await TopicModel.findById(topicId);
     if (!topicMaterial) {
       // Handle case where topic material is not found
       return res.status(404).send('Topic material not found');
     }
-
+    console.log(topicMaterial);
     // Pass the topic material data to the course outline view for rendering
     const videoId = extractVideoId(topicMaterial.topicVideo);
     const embedLink = `https://www.youtube.com/embed/${videoId}`;
@@ -36,7 +34,7 @@ router.get('/quiz/:id', async (req, res) => {
     const topicId = req.params.id;
 
     // Find the quiz by topicId
-    const quiz = await QuizModel.findOne({ topicId });
+    const quiz = await TopicQuizModel.findOne({ topicId });
 
     if (!quiz) {
       // If the quiz is not found, return an error response

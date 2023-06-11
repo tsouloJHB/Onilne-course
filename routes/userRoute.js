@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/users');
 const utils = require('../utils/tokenUtil');
 const verifyToken = require('../middleware/verifyToken');
-const Topic = require('../models/topic');
+const { TopicModel,UserModel } = require('../models');
+const { CoursesController } = require('../controllers');
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -11,7 +11,7 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.login(email, password);
+    const user = await UserModel.login(email, password);
     const token = utils.generateAuthToken(user._id); // Use the instance method to generate the token
   
     // Create a cookie with the token
@@ -24,8 +24,11 @@ router.post('/login', async (req, res) => {
       // Redirect the admin user to the admin page
       res.redirect('/admin');
     } else {
+      const courses = await CoursesController.getUserCourses(user._id);
       // Redirect the non-admin user to the topics page
-      res.redirect('/topics');
+      console.log(courses);
+      res.render('courses/userCourses', { courses });
+
     }
   } catch (err) {
     // Return the error messages to the login page
@@ -45,13 +48,13 @@ router.post('/signup', async (req, res) => {
 
   try {
     // Check if the email already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email already exists' });
     }
 
     // Create a new user
-    const newUser = new User({ email, password, name, surname });
+    const newUser = new UserModel({ email, password, name, surname });
     await newUser.save();
 
     // Generate JWT token
@@ -89,11 +92,11 @@ router.get('/progress', verifyToken.verifyToken,async (req, res) => {
     const userId = req.user._id; // Assuming you have user authentication middleware to populate req.user
 
     // Get the user's current topic number
-    const user = await User.findById(userId);
+    const user = await UserModel.findById(userId);
     const currentTopicNo = user.currentTopic;
 
     // Get the total number of topics
-    const totalTopics = await Topic.countDocuments();
+    const totalTopics = await TopicModel.countDocuments();
 
     // Calculate the user's progress percentage
     const progress = (currentTopicNo / totalTopics) * 100;

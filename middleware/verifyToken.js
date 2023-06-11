@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/users');
+const User = require('../models/usersModel');
 // Middleware to verify JWT token and check expiration
 async function verifyToken(req, res, next) {
   const token = req.cookies.token || '';

@@ -1,5 +1,5 @@
-const User = require('../models/users');
-const Topic = require('../models/topic');
+const User = require('../models/usersModel');
+const Topic = require('../models/topicModel');
 
 const getUserProgress = async (userId) => {
   try {

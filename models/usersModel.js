@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
     },
+    userProgress: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'UserProgress'
+    },
     isAdmin: {
         type: Boolean,
         required: true,

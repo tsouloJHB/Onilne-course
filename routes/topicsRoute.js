@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const Topic = require('../models/topic');
-const TopicMaterial = require('../models/topicMaterial');
-const userController = require('../controllers/usersController');
-const QuizModel = require('../models/topicQuizModel');
+const { TopicModel, TopicMaterialModel,TopicQuizModel } = require('../models');
+const {UsersController,TopicsController ,UserProgressController} = require('../controllers');
 
 // Protected route using verifyToken middleware
-router.get('/', verifyToken.verifyToken, async (req, res) => {
+router.get('/:id', verifyToken.verifyToken, async (req, res) => {
   try {
     // Retrieve all topics from the database
-    const topics = await Topic.find();
-
+    // const topics = await TopicModel.find();
+    const courseId = req.params.id
+    const topics = await TopicsController.getUserTopics(courseId);
     // Get the user's progress
    
-    const progress = await userController.getUserProgress(req.user._id)
-    const currentTopic = req.user.currentTopic;
-    res.render('topics', { topics, progress,currentTopic }); // Pass the topics and progress data to the topics view for rendering
+   // const progress = await UsersController.getUserProgress(req.user._id);
+    const progress = await UserProgressController.getUserProgress(courseId,req.user._id);
+    const currentTopic = progress.progress;
+    res.render('topics', { topics,currentTopic }); // Pass the topics and progress data to the topics view for rendering
   } catch (error) {
     console.error('Error retrieving topics:', error);
     res.status(500).send('An error occurred while retrieving the topics.');
@@ -29,7 +29,7 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
 router.get('/create/:id', verifyToken.verifyToken, async (req, res) => {
   const courseId = req.params.id;
   // Route handling code for topics page
-  const topicsCount = await Topic.countDocuments({ courseId }) + 1;
+  const topicsCount = await TopicModel.countDocuments({ courseId }) + 1;
   res.render('createTopic',{courseId,topicsCount});
 });  
 
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
     const topicNo = req.body.topicNo;
     const courseId = req.body.courseId
     // Check if topic number already exists
-    const existingTopic = await Topic.findOne({ topicNo,courseId:req.body.courseId });
+    const existingTopic = await TopicModel.findOne({ topicNo,courseId:req.body.courseId });
 
     if (existingTopic) {
       // If topic number already exists, render the createTopics page with an error message
@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
     }
 
     // Create a new topic
-    const topic = new Topic({
+    const topic = new TopicModel({
       title: req.body.topicTitle,
       topicNo: topicNo,
       topicDesc: req.body.topicDesc,
@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
     const savedTopic = await topic.save();
 
     // Create a new topic material
-    const topicMaterial = new TopicMaterial({
+    const topicMaterial = new TopicMaterialModel({
       title: req.body.topicTitle,
       content: req.body.materialContent,
       topicId: savedTopic._id,
@@ -77,7 +77,7 @@ router.post('/', async (req, res) => {
 router.get('/', verifyToken.verifyToken, async (req, res) => {
   try {
     // Retrieve all topics from the database
-    const topics = await Topic.find();
+    const topics = await TopicModel.find();
 
     res.render('topics', { topics }); // Pass the topics data to the topics view for rendering
   } catch (error) {
@@ -92,7 +92,7 @@ router.get('/edit/:id', async (req, res) => {
     const topicId = req.params.id;
 
     // Find the topic by ID
-    const topic = await Topic.findById(topicId);
+    const topic = await TopicModel.findById(topicId);
 
     if (!topic) {
       // If topic is not found, render an error page or redirect to an error route
@@ -100,8 +100,8 @@ router.get('/edit/:id', async (req, res) => {
     }
 
     // Find the topic material by topicId
-    let topicMaterial = await TopicMaterial.findOne({ topicId });
-    let quiz = await QuizModel.findOne({ topicId });
+    let topicMaterial = await TopicMaterialModel.findOne({ topicId });
+    let quiz = await TopicQuizModel.findOne({ topicId });
 
     if (!topicMaterial) {
       // If topic material is not found, render an error page or redirect to an error route
@@ -140,7 +140,7 @@ router.post('/createQuiz', async (req, res) => {
     const { topicId, questions } = req.body;
 
     // Assuming you're using Mongoose for database operations
-    const topicQuiz = new QuizModel({
+    const topicQuiz = new TopicQuizModel({
       topicId,
       questions: questions.map((q) => ({
         question: q.question.toString(), // Convert to string if necessary
@@ -167,7 +167,7 @@ router.get('/quiz/:id', async (req, res) => {
     const topicId = req.params.id;
 
     // Find the quiz by topicId
-    const quiz = await QuizModel.findOne({ topicId });
+    const quiz = await TopicQuizModel.findOne({ topicId });
 
     if (!quiz) {
       // If the quiz is not found, return an error response
@@ -191,7 +191,7 @@ router.post('/edit/:id', async (req, res) => {
     const topicId = req.params.id;
 
     // Find the topic by ID
-    const topic = await Topic.findById(topicId);
+    const topic = await TopicModel.findById(topicId);
 
     if (!topic) {
       // If topic is not found, render an error page or redirect to an error route
@@ -206,7 +206,7 @@ router.post('/edit/:id', async (req, res) => {
     await topic.save();
 
     // Find the topic material by topicId
-    const topicMaterial = await TopicMaterial.findOne({ topicId });
+    const topicMaterial = await TopicMaterialModel.findOne({ topicId });
 
     if (!topicMaterial) {
       // If topic material is not found, render an error page or redirect to an error route
@@ -234,10 +234,10 @@ router.post('/delete/:id', async (req, res) => {
     const topicId = req.params.id;
 
     // Find the topic by ID and delete it
-    await Topic.findByIdAndDelete(topicId);
+    await TopicModel.findByIdAndDelete(topicId);
 
     // Delete the topic material associated with the topic
-    await TopicMaterial.deleteMany({ topicId });
+    await TopicMaterialModel.deleteMany({ topicId });
 
     res.redirect('/topics'); // Redirect to the topics page after successful deletion
   } catch (error) {

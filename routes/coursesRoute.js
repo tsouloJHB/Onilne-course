@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const Courses = require('../models/coursesModel');
-const Topic = require('../models/topic');
-const TopicMaterial = require('../models/topicMaterial');
+const { TopicModel, CoursesModel, TopicMaterialModel } = require('../models');
 
 
 router.get('/', verifyToken.verifyToken, async (req, res) => {
     try {
       // Retrieve all courses from the database
-      const courses = await Courses.find();
-      const coursesCount = await Courses.countDocuments() + 1;
+      const courses = await CoursesModel.find();
+      const coursesCount = await CoursesModel.countDocuments() + 1;
   
       // Get the user's progress  
       res.render('courses', { courses,coursesCount}); // Pass the courses and progress data to the courses view for rendering
@@ -20,12 +18,17 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
     }
   });
 
+  router.get('/courses/usersCourse', (req, res) => {
+    // Assuming you have the 'courses' data available
+    const courses = req.body.courses;
   
+    res.render('usersCourse', { courses });
+  });  
 
   router.get('/courses', verifyToken.verifyToken, async (req, res) => {
     try {
       // Retrieve all courses from the database
-      const courses = await courses.find();
+      const courses = await CoursesModel.find();
   
       // Get the user's progress
       res.json(courses);// Pass the courses and progress data to the courses view for rendering
@@ -39,7 +42,7 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
       const courseId = req.params.id;
 
       // Find the topic by ID
-      const topic = await Topic.find({courseId:courseId});
+      const topic = await TopicModel.find({courseId:courseId});
   
       if (!topic) {
         // If topic is not found, render an error page or redirect to an error route
@@ -47,7 +50,7 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
       }
   
       // Find the topic material by topicId
-      const topicMaterial = await TopicMaterial.findOne({ topicId:topic._id });
+      const topicMaterial = await TopicMaterialModel.findOne({ topicId:topic._id });
   
       // if (!topicMaterial) {
       //   // If topic material is not found, render an error page or redirect to an error route
@@ -66,7 +69,7 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
 // Create a course
 router.post('/', verifyToken.verifyToken, async (req, res) => {
     try {
-      const course = new Courses({
+      const course = new CoursesModel({
         title: req.body.title,
         courseNo: req.body.courseNo,
         courseDesc: req.body.courseDesc,
@@ -76,8 +79,8 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
   
       const savedCourse = await course.save();
       // res.json(savedCourse);
-      const courses = await Courses.find();
-      const coursesCount = await Courses.countDocuments() + 1;
+      const courses = await CoursesModel.find();
+      const coursesCount = await CoursesModel.countDocuments() + 1;
   
       // Get the user's progress  
       res.render('courses', { courses,coursesCount}); 
@@ -90,7 +93,7 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
   // Edit a course
   router.put('/:id', verifyToken.verifyToken, async (req, res) => {
     try {
-      const course = await Courses.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      const course = await CoursesModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
       if (!course) {
         return res.status(404).send('Course not found');
       }
@@ -110,14 +113,14 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
       //before deleting all topics  get all the topic Id's and then get the all topicMaterial
 
         // Find the topic by ID and delete it
-      await Topic.deleteMany({ courseId })
+      await TopicModel.deleteMany({ courseId })
 
     // Delete the topic material associated with the topic
-    await TopicMaterial.deleteMany({ topicId });
+    await TopicMaterialModel.deleteMany({ topicId });
       if (!course) {
         return res.status(404).send('Course not found');
       }
-      const course1 = await Courses.findByIdAndDelete(req.params.id);
+      const course1 = await CoursesModel.findByIdAndDelete(req.params.id);
       res.json(course);
     } catch (error) {
       console.error('Error deleting course:', error);
