@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel, CoursesModel, TopicMaterialModel } = require('../models');
+const { TopicModel,CourseModel, TopicMaterialModel } = require('../models');
 
 
 router.get('/', verifyToken.verifyToken, async (req, res) => {
     try {
       // Retrieve all courses from the database
-      const courses = await CoursesModel.find();
-      const coursesCount = await CoursesModel.countDocuments() + 1;
+      const courses = await CourseModel.find();
+      const coursesCount = await CourseModel.countDocuments() + 1;
   
       // Get the user's progress  
       res.render('courses', { courses,coursesCount}); // Pass the courses and progress data to the courses view for rendering
@@ -28,7 +28,7 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
   router.get('/courses', verifyToken.verifyToken, async (req, res) => {
     try {
       // Retrieve all courses from the database
-      const courses = await CoursesModel.find();
+      const courses = await CourseModel.find();
   
       // Get the user's progress
       res.json(courses);// Pass the courses and progress data to the courses view for rendering
@@ -69,21 +69,23 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
 // Create a course
 router.post('/', verifyToken.verifyToken, async (req, res) => {
     try {
-      const course = new CoursesModel({
+      const course = new CourseModel({
         title: req.body.title,
         courseNo: req.body.courseNo,
         courseDesc: req.body.courseDesc,
         courseImage: req.body.courseImage,
-        courseVideo: req.body.Video
+        courseVideo: req.body.Video,
+        user:req.user._id
       });
   
       const savedCourse = await course.save();
       // res.json(savedCourse);
-      const courses = await CoursesModel.find();
-      const coursesCount = await CoursesModel.countDocuments() + 1;
+      const courses = await CourseModel.find();
+      const coursesCount = await CourseModel.countDocuments() + 1;
   
       // Get the user's progress  
-      res.render('courses', { courses,coursesCount}); 
+      //res.render('courses', { courses,coursesCount}); 
+      res.send({ courses,coursesCount}); 
     } catch (error) {
       console.error('Error creating course:', error);
       res.status(500).send('An error occurred while creating the course.');
@@ -93,7 +95,7 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
   // Edit a course
   router.put('/:id', verifyToken.verifyToken, async (req, res) => {
     try {
-      const course = await CoursesModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      const course = await CourseModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
       if (!course) {
         return res.status(404).send('Course not found');
       }
@@ -120,7 +122,7 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
       if (!course) {
         return res.status(404).send('Course not found');
       }
-      const course1 = await CoursesModel.findByIdAndDelete(req.params.id);
+      const course1 = await CourseModel.findByIdAndDelete(req.params.id);
       res.json(course);
     } catch (error) {
       console.error('Error deleting course:', error);

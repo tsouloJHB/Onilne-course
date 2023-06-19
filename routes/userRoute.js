@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const utils = require('../utils/tokenUtil');
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel,UserModel } = require('../models');
+const { TopicModel,UserModel, CourseModel } = require('../models');
 const { CoursesController } = require('../controllers');
 
 // Login route
@@ -13,16 +13,25 @@ router.post('/login', async (req, res) => {
   try {
     const user = await UserModel.login(email, password);
     const token = utils.generateAuthToken(user._id); // Use the instance method to generate the token
-  
+    
+    req.session.user = {
+      id: user._id,
+      admin: user.isAdmin,
+      // other user properties
+    };
+    req.session.cookie.token = user._id
+    req.sessionID = token;
     // Create a cookie with the token
     res.cookie('token', token, {
       httpOnly: true,
       maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days in milliseconds
     });
-
+    console.log(req.session);
     if (user.isAdmin) {
       // Redirect the admin user to the admin page
-      res.redirect('/admin');
+     res.redirect('/admin');
+    //  const courses =  await CourseModel.find();
+    //   res.render('admin/admin',{courses});
     } else {
       const courses = await CoursesController.getUserCourses(user._id);
       // Redirect the non-admin user to the topics page

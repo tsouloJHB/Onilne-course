@@ -4,9 +4,10 @@ const app = express();
 const dotenv = require('dotenv');
 const connectDb = require('./db')
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const cors = require('cors');
 const { AdminRoute,CourseRoute,TopicMaterialRoute,TopicsRoute,UserRoute} = require('./routes');
-const User = require('./models/userProgressModel');
+const User = require('./models/usersModel');
 const UserProgress = require('./models/userProgressModel');
 const Course =  require('./models/coursesModel');
 const Topic = require('./models/topicModel');
@@ -34,6 +35,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
+// creating 24 hours from milliseconds
+const oneDay = 1000 * 60 * 60 * 24;
+//set session 
+app.use(session({
+  secret: process.env.SESSION_KEY,
+  cookie: { 
+    maxAge: oneDay,
+    token:""
+  },
+  resave: false,
+  saveUninitialized: false
+}));
 
 // Routes
 app.use('/users', UserRoute);
@@ -67,6 +80,15 @@ app.use('/admin',AdminRoute);
   
 // }
 // dosome();
+
+
+
+// const doSome = async() =>{
+//   const user = new User({email:"admin@gmail.com",password:"1234567",name:"Admin",surname:"admin-admin",isAdmin:true})
+//   user.save();
+
+// }
+// doSome();
 
 
 

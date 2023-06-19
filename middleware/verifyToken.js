@@ -17,7 +17,8 @@ async function verifyToken(req, res, next) {
     // Check if token has expired
     const nowInSeconds = Math.floor(Date.now() / 1000);
     if (decoded.exp < nowInSeconds) {
-      throw new Error('Token has expired');
+      res.redirect('/login');
+      //throw new Error('Token has expired');
     }
 
     next();
@@ -26,4 +27,14 @@ async function verifyToken(req, res, next) {
     res.redirect('users/login');
   }
 }
-module.exports = {verifyToken};
+
+const isAdmin = (req,res,next) =>{
+  const {role} = req.user;
+
+  if(req.user.isAdmin){
+    next();
+  }else{
+    return res.status(403).json({error:'Forbidden'});
+  }
+};
+module.exports = {verifyToken,isAdmin};
