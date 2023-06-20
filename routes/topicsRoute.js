@@ -15,8 +15,14 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
    
    // const progress = await UsersController.getUserProgress(req.user._id);
     const progress = await UserProgressController.getUserProgress(courseId,req.user._id);
-    const currentTopic = progress.progress;
-    res.render('topics', { topics,currentTopic }); // Pass the topics and progress data to the topics view for rendering
+    let currentTopic = "";
+    if(progress != null){
+      currentTopic = progress.progress;
+    }else{
+      currentTopic = req.user.isAdmin == true ? 100 : 0;
+    }
+    
+    res.render('topics', { topics,currentTopic,courseId }); // Pass the topics and progress data to the topics view for rendering
   } catch (error) {
     console.error('Error retrieving topics:', error);
     res.status(500).send('An error occurred while retrieving the topics.');

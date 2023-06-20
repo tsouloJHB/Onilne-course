@@ -42,7 +42,7 @@
     <p>No courses found.</p>
   <% } else { %>
     <ul>
-      <% courses.forEach((course) => { %>
+      <% coursesSearch.forEach((course) => { %>
         <li><%= course.title %></li>
       <% }) %>
     </ul>
@@ -78,7 +78,7 @@
     </form>
    <p id="response"></p> 
   <h2>Create Course</h2>
-  <form action="/course" method="POST">
+  <form action="createCourse" method="POST">
     <input type="text" name="title" placeholder="Title" required>
     <input type="number" name="courseNo" placeholder="Course No" required value="<%=coursesCount %>">
     <input type="text" name="courseDesc" placeholder="Course Description" required>
@@ -112,8 +112,9 @@
                     </button>
                 
                     <span><a href="/topics/<%=course._id %>"> course</a></span>
+                    <span><a href="/topics/<%=course._id %>">Delete course</a></span>
                        
-                </h5>
+                </h5>     
             </div>
             <div id="<%=course._id+course._id %>" class="collapse" aria-labelledby="<%=course._id %>" data-parent="#accordion">
                 <div class="card-body">

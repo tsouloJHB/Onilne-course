@@ -1,3 +1,4 @@
+const { query } = require('express');
 const {CourseModel,UserProgressModel,CategoryModel} = require('../models');
 
 
@@ -20,30 +21,78 @@ module.exports.getUserCourses = async (userId) => {
   
 
 
-module.exports.createCourse = async(req) =>{
-  const course = new CourseModel({
-    title: req.body.title,
-    courseNo: req.body.courseNo,
-    courseDesc: req.body.courseDesc,
-    courseImage: req.body.courseImage,
-    courseVideo: req.body.Video,
-    user:req.user._id
-  });
+// module.exports.createCourse = async(req) =>{
+//   const course = new CourseModel({
+//     title: req.body.title,
+//     courseNo: req.body.courseNo,
+//     courseDesc: req.body.courseDesc,
+//     courseImage: req.body.courseImage,
+//     courseVideo: req.body.Video,
+//     user:req.user._id
+//   });
 
-  const savedCourse = await course.save();
-  return savedCourse;
-}
+//   const savedCourse = await course.save();
+//   return savedCourse;
+// }
+// module.exports.courseSearch = async (req, res) => {
+//   try {
+//     const searchQuery = req.query.search;
+//     const query = {
+//       $or: [
+//         { title: { $regex: searchQuery, $options: 'i' } },
+//         {  courseDesc: { $regex: searchQuery, $options: 'i' } }
+//       ]
+//     };
+//     const courses = await CourseModel.find(query);
+    
+  
+//     return courses;
+//   } catch (err) {
+//     console.error('Error searching courses', err);
+//     res.status(500).send('Internal Server Error');
+//   }
+// };
 
-module.exports.courseSearch = async(req,res) =>{  
+
+module.exports.courseSearch = async (req, res) => {
   try {
     const searchQuery = req.query.search;
-    const courses = await CourseModel.find({ title: { $regex: searchQuery, $options: 'i' } });
-    return courses;
+
+    // Search in CourseModel by title
+    const courseQuery = {
+      title: { $regex: searchQuery, $options: 'i' }
+    };
+    const coursesByTitle = await CourseModel.find(courseQuery);
+
+    if (coursesByTitle.length > 0) {
+      // If there are matching courses by title, return them
+   
+      return coursesByTitle;
+    } else {
+      // If no matching courses by title, search in CategoryModel by name
+      const categoryQuery = {
+        name: { $regex: searchQuery, $options: 'i' }
+      };
+      const categories = await CategoryModel.find(categoryQuery);
+
+      if (categories.length > 0) {
+        // If there are matching categories by name, retrieve the courses for each category
+        const categoryIds = categories.map(category => category._id);
+        const coursesByCategory = await CourseModel.find({ category: { $in: categoryIds } });
+
+        return coursesByCategory;
+      } else {
+        // If no matching courses or categories, return an empty array
+        return [];
+      }
+    }
   } catch (err) {
     console.error('Error searching courses', err);
-    res.status(500).send('Internal Server Error');
+    return res.status(500).send('Internal Server Error');
   }
-}
+};
+
+
 
 module.exports.getCourseCategories = async() =>{
   try {
@@ -83,4 +132,31 @@ module.exports.createCategory = async (name) => {
     };
   }
 };
+
+module.exports.createCourse = async(req) =>{
+  try {
+    const course = new CourseModel({
+      title: req.body.title,
+      courseNo: req.body.courseNo,
+      courseDesc: req.body.courseDesc,
+      courseImage: req.body.courseImage,
+      courseVideo: req.body.Video,
+      user:req.user._id,
+      category:req.body.category
+    });
+    const savedCourse = await course.save();
+    return {
+        success:true,
+        course:savedCourse,
+        message:""
+    };
+  } catch (error) {
+    console.error('Error creating course:', error);
+    return {
+      success:false,
+      course: "",
+      message: 'An error occurred while creating the course.'
+    };
+  }
+}
 

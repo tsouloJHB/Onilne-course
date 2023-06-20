@@ -36,7 +36,9 @@
     </div>
 
     <div class="outline_courses_info">
+      <p><a href="create/<%=courseId%>"> Create Topic</a> </p>
       <div id="accordion">
+        <%= topics.length == 0 ? "No topics found":"" %>
         <% topics.forEach(function(topic) { %>
           <div class="card">
             <div class="card-header" id="<%=topic._id %>">
@@ -45,12 +47,13 @@
                         <i class="flaticon-question"></i> <%= topic.title %>
                     </button>
                 
-                    <% if (topic.topicNo == currentTopic) { %>
+                    <% if (topic.topicNo <= currentTopic) { %>
                       <i class="fa fa-unlock" aria-hidden="true"></i>
                       <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
                     <% } else if (currentTopic < topic.topicNo) { %>
                       <i class="fa fa-lock" aria-hidden="true"></i>
                     <% } %>
+                    <span><a href="">Delete</a></span>
                        
                 </h5>
             </div>
@@ -62,6 +65,7 @@
           </div>
       <% }); %>
       </div>
+    
     </div>    
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

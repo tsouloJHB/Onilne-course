@@ -34,6 +34,7 @@ router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
     if( searchQuery && searchQuery.search("search")){
       console.log("search");
       coursesSearch = await CoursesController.courseSearch(req,res);
+      console.log(coursesSearch);
     }
     const allQuery = req.query.allcourses;
     if( allQuery && req.query.allcourses.search("allcourses") ){
@@ -64,6 +65,16 @@ router.post('/category',verifyToken,isAdmin, async (req,res)=>{
   } catch (error) {
     
   }
+});
+
+router.post('/createCourse',verifyToken,isAdmin, async(req,res)=>{
+  try {
+    const createCourse = await CoursesController.createCourse(req);
+    res.redirect('courses');
+  } catch (error) {
+    
+  }
+
 });
 
 
