@@ -18,6 +18,11 @@ const CourseSchema = new mongoose.Schema({
     type:String,
     required:true
   },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'category',
+    required: true
+  },
   courseImage:{
     type:String,
     max:50
@@ -26,6 +31,7 @@ const CourseSchema = new mongoose.Schema({
     type:String,
     max:50
   }
+
 
   // Add more fields as needed  
 });

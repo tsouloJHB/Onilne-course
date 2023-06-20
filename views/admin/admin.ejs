@@ -18,9 +18,9 @@
     <div class="navbar-logo">Ai Tech</div>
     <ul>
       <li><a href="#">Home</a></li>
-      <li><a href="#">Courses</a></li>
+      <li><a href="/admin/courses">Courses</a></li>
       <li><a href="#">Contact</a></li>
-      <li><a href="#">Sign Out</a></li>
+      <li><a href="#">Sign Out</a></li> 
     </ul>
   </div>
   <ul class="nav">
@@ -28,18 +28,11 @@
    
     
   </ul>
-  <h2>Create Course</h2>
-  <form action="/course" method="POST">
-    <input type="text" name="title" placeholder="Title" required>
-    <input type="number" name="courseNo" placeholder="Course No" required value="<%=coursesCount %>">
-    <input type="text" name="courseDesc" placeholder="Course Description" required>
-    <input type="text" name="courseImage" placeholder="Course Image URL">
-    <input type="text" name="courseVideo" placeholder="Course Video URL">
-    <button type="submit">Create Course</button>
-  </form>
+
   <div>
     </div>
-
+    <h3>334 registers users</h3>
+    <h3>23 Courses</h3>
     <div class="outline_courses_info">
       <a href="">Create course</a>
       <% if(courses.length == 0){ %>

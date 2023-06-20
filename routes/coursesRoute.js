@@ -32,7 +32,7 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
   
       // Get the user's progress
       res.json(courses);// Pass the courses and progress data to the courses view for rendering
-    } catch (error) {
+    } catch (error) { 
       console.error('Error retrieving courses:', error);
       res.status(500).send('An error occurred while retrieving the courses.');
     }
@@ -75,17 +75,19 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
         courseDesc: req.body.courseDesc,
         courseImage: req.body.courseImage,
         courseVideo: req.body.Video,
-        user:req.user._id
+        user:req.user._id,
+        category:req.body.category
       });
+      console.log(req.headers.referer);
   
-      const savedCourse = await course.save();
-      // res.json(savedCourse);
-      const courses = await CourseModel.find();
-      const coursesCount = await CourseModel.countDocuments() + 1;
+      // const savedCourse = await course.save();
+      // // res.json(savedCourse);
+      // const courses = await CourseModel.find();
+      // const coursesCount = await CourseModel.countDocuments() + 1;
   
       // Get the user's progress  
       //res.render('courses', { courses,coursesCount}); 
-      res.send({ courses,coursesCount}); 
+      res.redirect(req.headers.referer);
     } catch (error) {
       console.error('Error creating course:', error);
       res.status(500).send('An error occurred while creating the course.');
