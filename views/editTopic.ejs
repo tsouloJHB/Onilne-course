@@ -1,21 +1,24 @@
 <!-- editTopic.ejs -->
 <!DOCTYPE html>
 <html>
-<head>
+
   <title>Edit Topic</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
+  <%- include('partials/header') %>
+
 <body>
-  <h1>Edit Topic</h1>
+  <!-- Navigation -->
+  <%- include('partials/navBar') %>
   
+  <h1>Edit Topic</h1>
+  <a href="/course/course-topics/<%= topic.courseId%>"> <button >Back</button></a>
   <form action="/topics/edit/<%= topic._id %>" method="POST">
     <div>
       <label for="topicTitle">Topic Title:</label>
       <input type="text" id="topicTitle" name="topicTitle" value="<%= topic.title %>" required>
     </div>
     <div>
-      <label for="topicNo">Topic Number:</label>
-      <input type="number" id="topicNo" name="topicNo" value="<%= topic.topicNo %>" required>
+
+      <input type="hidden" id="topicNo" name="topicNo" value="<%= topic.topicNo %>" required>
     </div>
     <div>
       <label for="topicDesc">Topic Description:</label>
@@ -38,12 +41,43 @@
     <% if(quiz){ %>
     <a href="/topics/quiz/<%=topic._id %>">
     View topic quiz</a>
+    <button><a href="#" id="deleteQuiz" data-delete-quiz-data="<%=topic._id %>">
+      delete quiz</a></button><br/><br/>
     <%} else{%>
       You haven't created a quiz for this topic 
-    <%}%>  <br/><br/>
+     <br/><br/>
     <button><a href="/topics/createQuiz/<%=topic._id %>">
     Create topic quiz</a></button><br/><br/>
+    <%}%>
     <button type="submit">Update</button>
   </form>
+
+  <script>
+    $(document).ready(function (){
+
+      $('#deleteQuiz').click(function (event){
+        event.preventDefault;
+        var deleteLink = $(this).data("delete-quiz-data");
+        var link = '../deleteQuiz/'+deleteLink;
+     
+        $.ajax({
+          url:link,
+          type:'DELETE',
+          success:function (response){
+            console.log(response);
+            location.reload();
+          },
+          error: function(response){
+            console.log(response);
+          }
+        });
+      });
+
+    });
+  </script>
+  <script src="/js/jquery-3.2.1.slim.min.js"></script>
+  <script src="/js/jquery-1.12.4.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

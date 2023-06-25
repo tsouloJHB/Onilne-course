@@ -33,10 +33,6 @@ const userSchema = new mongoose.Schema({
         type:String,
         max:50
     },
-    currentTopic:{
-      type: Number,
-      default: 1,
-    },
     cell:{
         type:String,
         max:11

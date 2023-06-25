@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel,CourseModel, TopicMaterialModel } = require('../models');
+const { UserProgressModel,TopicModel,CourseModel, TopicMaterialModel } = require('../models');
+const { CoursesController, TopicsController } = require('../controllers');
 
 
 router.get('/', verifyToken.verifyToken, async (req, res) => {
@@ -18,11 +19,11 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
     }
   });
 
-  router.get('/courses/usersCourse', (req, res) => {
+  router.get('/user',verifyToken.verifyToken, async(req, res) => {
     // Assuming you have the 'courses' data available
-    const courses = req.body.courses;
-  
-    res.render('usersCourse', { courses });
+    const courses = await CoursesController.getUserCourses(req.user._id);
+    console.log(courses.length);
+    res.render('courses/userCourses', { courses });
   });  
 
   router.get('/courses', verifyToken.verifyToken, async (req, res) => {
@@ -37,10 +38,23 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
       res.status(500).send('An error occurred while retrieving the courses.');
     }
   });
+  router.get('/created', verifyToken.verifyToken, async (req, res) => {
+    try {
+      // Retrieve all courses from the database
+      const courses = await CourseModel.find({user:req.user._id});
+      const coursesCount = await CourseModel.countDocuments();
+      res.render('courses',{courses,coursesCount});
+    } catch (error) { 
+      console.error('Error retrieving courses:', error);
+      res.status(500).send('An error occurred while retrieving the courses.');
+    }
+  });
   router.get('/course-topics/:id', verifyToken.verifyToken, async (req, res) => {
     try {
       const courseId = req.params.id;
-
+      //check if user is Authorization
+      await CoursesController.courseUserAuthorized(req.user._id,courseId,res); 
+      
       // Find the topic by ID
       const topic = await TopicModel.find({courseId:courseId});
   
@@ -78,7 +92,7 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
         user:req.user._id,
         category:req.body.category
       });
-      console.log(req.headers.referer);
+      
   
       // const savedCourse = await course.save();
       // // res.json(savedCourse);
@@ -97,6 +111,7 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
   // Edit a course
   router.put('/:id', verifyToken.verifyToken, async (req, res) => {
     try {
+      await CoursesController.courseUserAuthorized(req.user._id,req.params.id,res); 
       const course = await CourseModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
       if (!course) {
         return res.status(404).send('Course not found');
@@ -111,7 +126,9 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
   // Delete a course
   router.delete('/:id', verifyToken.verifyToken, async (req, res) => {
     try {
+     
       const courseId = req.params.id; 
+      await CoursesController.courseUserAuthorized(req.user._id,courseId,res); 
      // const course = await Courses.findById(req.params.id);
 
       //before deleting all topics  get all the topic Id's and then get the all topicMaterial
@@ -129,6 +146,28 @@ router.post('/', verifyToken.verifyToken, async (req, res) => {
     } catch (error) {
       console.error('Error deleting course:', error);
       res.status(500).send('An error occurred while deleting the course.');
+    }
+  });
+
+  router.post('/register', verifyToken.verifyToken, async (req, res) => {
+    try {
+      const { courseId } = req.body;
+      const topic  = await TopicModel.findOne({topicNo:1,courseId});
+      console.log(req.body);
+
+      const createProgress = new UserProgressModel({
+        user:req.user.id,
+        course:courseId,
+        topic:topic._id,
+        progress:1,
+        completed:false   
+      });
+      await createProgress.save();
+   
+      res.redirect('/course/user');
+    } catch (error) {
+      console.error('Error updating course:', error);
+      res.status(500).send('An error occurred while updating the course.');
     }
   });
 

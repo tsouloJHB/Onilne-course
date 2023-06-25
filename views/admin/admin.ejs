@@ -10,29 +10,13 @@
 </head>
 <body>
    
-        <!-- Admin page content here -->
-        <h1>Welcome to the Admin Page</h1>
-        <!-- Add your admin page content -->
-          <!-- Navigation -->
-  <div class="navbar">
-    <div class="navbar-logo">Ai Tech</div>
-    <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="/admin/courses">Courses</a></li>
-      <li><a href="#">Contact</a></li>
-      <li><a href="#">Sign Out</a></li> 
-    </ul>
-  </div>
-  <ul class="nav">
-    <li><a href="/courses">courses</a></li> 
-   
-    
-  </ul>
+  <%- include('../partials/navBar') %>
+
 
   <div>
     </div>
-    <h3>334 registers users</h3>
-    <h3>23 Courses</h3>
+    <h3><%= appInfo.users %> registers users</h3>
+    <h3><%= appInfo.coursesCount %> Courses</h3>
     <div class="outline_courses_info">
       <a href="">Create course</a>
       <% if(courses.length == 0){ %>

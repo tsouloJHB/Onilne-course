@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {verifyToken, isAdmin} = require('../middleware/verifyToken');
-const { CourseModel, CategoryModel } = require('../models');
+const { CourseModel, CategoryModel, UserModel } = require('../models');
 const { CoursesController } = require('../controllers');
 
 // Protected route using verifyToken middleware
@@ -10,14 +10,17 @@ router.get('/', verifyToken,isAdmin, async (req, res) => {
       // Retrieve all topics from the database
       const { user } = req.session;
       const courses = await CourseModel.find();
-      const coursesCount = await CourseModel.countDocuments() + 1;
+      const coursesCount = await CourseModel.countDocuments();
+      const users = await UserModel.countDocuments({isAdmin:false});
+      const appInfo = {
+        users:users,
+        coursesCount:coursesCount
+      }
       if(!courses){
         
       }
-      console.log("Passing bay");
-      console.log(courses);
-      console.log(req.cookies);
-      res.render('admin/admin', { courses,coursesCount}); // Pass the topics and progress data to the topics view for rendering
+
+      res.render('admin/admin', { courses,appInfo}); // Pass the topics and progress data to the topics view for rendering
     } catch (error) { 
       console.error('Error retrieving Courses:', error);
       res.status(500).send('An error occurred while retrieving the Courses.');
@@ -30,11 +33,11 @@ router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
     var coursesSearch = "";
     var allCourses = "";
     const searchQuery = req.query.search;
-    const courses = await CourseModel.find();
+    let courses = await CourseModel.find();
     if( searchQuery && searchQuery.search("search")){
       console.log("search");
       coursesSearch = await CoursesController.courseSearch(req,res);
-      console.log(coursesSearch);
+   
     }
     const allQuery = req.query.allcourses;
     if( allQuery && req.query.allcourses.search("allcourses") ){
@@ -46,6 +49,10 @@ router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
     
     const coursesCount = await CourseModel.countDocuments() + 1;
 
+    //get course data
+    const coursesWithData = await CoursesController.coursesWithData(courses);
+    console.log(coursesWithData);
+    courses = coursesWithData;
     res.render('admin/adminCourses', { courses,coursesCount,coursesSearch,allCourses,categories}); // Pass the topics and progress data to the topics view for rendering
   } catch (error) { 
     console.error('Error retrieving Courses:', error);
@@ -75,6 +82,18 @@ router.post('/createCourse',verifyToken,isAdmin, async(req,res)=>{
     
   }
 
+});
+
+router.delete('/deleteCourse/:id', verifyToken,isAdmin, async(req,res)=> {  
+  try {
+    console.log(req.params.id);
+    const deleteCourse = await CoursesController.deleteCourse(req.params.id);
+    return res.json(deleteCourse);
+    //return res.redirect('courses');
+  } catch (error) {
+    console.log(error);
+    return res.json(error);
+  }
 });
 
 

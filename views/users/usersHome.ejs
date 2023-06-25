@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html>
 
-  <title>Courses</title>
+  <title>user-dashboard</title>
   <%- include('../partials/header') %>
 
 <body>
   <!-- Navigation -->
   <%- include('../partials/clientNav') %>
+  <br/>
 <div id="accordion">
-  <% if(courses.length == 0){ %>
-    <p>You have not registered for any course </p>
-    <%} %>
+    <% if(courses.length == 0){ %>
+        <p>You have not registered for any course</p>
+     <%}%>
+     <% topCourses.forEach(function(course) { %>
+        <div class="card">
+          <div class="card-header" id="<%=course._id %>">
+              <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=course._id+course._id %>" aria-expanded="false" aria-controls="collapseTwo">
+                      <i class="flaticon-question"></i> <%= course.title %>
+                  </button>
+                  <form action="course/register" method="POST">
+                    <input type="hidden" value="<%=course._id %>" name="courseId" />
+                    <button class="btn">Register</button>
+                  </form>
+                 
+                     
+              </h5>
+          </div>
+          <div id="<%=course._id+course._id %>" class="collapse" aria-labelledby="<%=course._id %>" data-parent="#accordion">
+              <div class="card-body">
+                <%= course.courseDesc %>
+              </div>
+              <img src="<%=course.courseImage%>"/>
+          </div>
+        </div>
+    <% }); %>   
+    <p>Your Courses</p>
     <% courses.forEach(function(course) { %>
       <div class="card">
         <div class="card-header" id="<%=course._id %>">
@@ -19,7 +44,7 @@
                     <i class="flaticon-question"></i> <%= course.title %>
                 </button>
             
-                <span><a href="/topics/<%=course._id %>"> course</a></span>
+                <span><a href="/topics/<%=course._id %>"> continue</a></span>
                    
             </h5>
         </div>

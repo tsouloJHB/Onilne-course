@@ -3,7 +3,8 @@ const router = express.Router();
 const utils = require('../utils/tokenUtil');
 const verifyToken = require('../middleware/verifyToken');
 const { TopicModel,UserModel, CourseModel } = require('../models');
-const { CoursesController } = require('../controllers');
+const { CoursesController, UserProgressController } = require('../controllers');
+const { redirect } = require('react-router-dom');
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -36,8 +37,8 @@ router.post('/login', async (req, res) => {
       const courses = await CoursesController.getUserCourses(user._id);
       // Redirect the non-admin user to the topics page
       console.log(courses);
-      res.render('courses/userCourses', { courses });
-
+      //res.render('courses/userCourses', { courses });
+      res.redirect('/users');
     }
   } catch (err) {
     // Return the error messages to the login page
@@ -63,7 +64,9 @@ router.post('/signup', async (req, res) => {
     }
 
     // Create a new user
+    
     const newUser = new UserModel({ email, password, name, surname });
+    //generate user progress module 
     await newUser.save();
 
     // Generate JWT token
@@ -76,12 +79,19 @@ router.post('/signup', async (req, res) => {
     });
 
     // Redirect the user to the topics page
-    res.redirect('/topics');
+    res.redirect('/course');
   } catch (err) {
     // Return the error messages to the signup page
     console.log(err);
     res.status(400).json({ error: err.message });
   }
+});
+
+router.get('/signout',(req,res) =>{
+  res.clearCookie('connect.sid');
+  res.clearCookie('token');
+
+  res.redirect('/users/login');
 });
 router.get('/signup', (req, res) => {
   res.render('signup', { error: null }); // Pass 'error' as null initially
@@ -114,6 +124,22 @@ router.get('/progress', verifyToken.verifyToken,async (req, res) => {
   } catch (error) {
     console.error('Error retrieving user progress:', error);
     res.status(500).json({ error: 'An error occurred while retrieving user progress.' });
+  }
+});
+
+router.get('/',verifyToken.verifyToken,async (req, res) => {
+  try {
+  
+    //get trending courses  
+    const userId = req.user._id;
+    const topCourses = await CoursesController.getTopFiveCourses(userId);
+    const courses = await CoursesController.getUserCourses(userId);
+    const usersProgress = await UserProgressController.getUserProgress(userId);
+    //console.log(topCourses);
+    res.render('users/usersHome',{courses,topCourses,usersProgress});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 });
 

@@ -1,7 +1,7 @@
 const {UserProgressModel} = require('../models');
 
 
-const getUserProgress = async (course,user) => {
+module.exports.getUserCourseProgress = async (course,user) => {
     try {
         const topic  = await UserProgressModel.findOne({ course,user });
       
@@ -11,8 +11,14 @@ const getUserProgress = async (course,user) => {
         console.error('Error retrieving user progress:', error);
         throw new Error('An error occurred while retrieving user progress.');
       }
-  };
-  
-  module.exports = {
-    getUserProgress,
-  };
+};
+
+module.exports.getUserProgress = async (userId)=>{
+  try {
+    const coursesProgress = await UserProgressModel.find({userId});
+    return coursesProgress;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}

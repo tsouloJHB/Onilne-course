@@ -6,7 +6,7 @@ const connectDb = require('./db')
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const cors = require('cors');
-const { AdminRoute,CourseRoute,TopicMaterialRoute,TopicsRoute,UserRoute} = require('./routes');
+const { AdminRoute,CourseRoute,TopicMaterialRoute,TopicsRoute,UserRoute,QuizRoute} = require('./routes');
 const User = require('./models/usersModel');
 const UserProgress = require('./models/userProgressModel');
 const Course =  require('./models/coursesModel');
@@ -53,6 +53,7 @@ app.use('/users', UserRoute);
 app.use('/topics', TopicsRoute);
 app.use('/topicOutline', TopicMaterialRoute);
 app.use('/course',CourseRoute);
+app.use('/quiz',QuizRoute);
 app.use('/admin',AdminRoute);
 
 

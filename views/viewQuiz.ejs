@@ -1,32 +1,186 @@
 <!DOCTYPE html>
 <html>
-<head>
+
   <title>Quiz</title>
-  <!-- Add your stylesheets and scripts here -->
-</head>
+  <%- include('partials/header') %>
+
+<body>
+  <!-- Navigation -->
+  <%- include('partials/navBar') %>
 <body>
   <h1>Quiz</h1>
 
   <% if (quiz) { %>
     <h2>Quiz Details</h2>
-    <p>Quiz ID: <%= quiz._id %></p>
-    <p>Topic ID: <%= quiz.topicId %></p>
-    <h3>Questions:</h3>
+    
+   <a href="/topics/edit/<%=quiz.topicId %>"> <button >Back</button></a>
+    <form id="quizForm" action="/topics/quiz/<%=quiz.topicId %>" >
+      <input type="hidden" name="topicId" value="<%=quiz.topicId%>">
     <% quiz.questions.forEach(function(question, index) { %>
-      <div class="question">
+      <div class="question-div" id="question<%=index+1 %>">
         <h4>Question <%= index + 1 %>:</h4>
         <p>Question: <%= question.question %></p>
+        <textarea class="question" name="questions[<%=index %>][question]" rows="5" cols="50" required value=""><%=question.question %></textarea>
         <p>Answer: <%= question.answer %></p>
+        <textarea class="answer" name="questions[<%=index %>][answer]" rows="5" cols="50" required value=""><%= question.answer %></textarea>
         <p>Incorrect Answer 1: <%= question.incorrectAnswer1 %></p>
+        <textarea class="incorrectAnswer1" name="questions[<%=index %>][incorrectAnswer1]" rows="5" cols="50" required value=" "><%= question.incorrectAnswer1 %></textarea>
         <p>Incorrect Answer 2: <%= question.incorrectAnswer2 %></p>
-      </div>    
+        <textarea class="incorrectAnswer2" name="questions[<%=index %>][incorrectAnswer2]" rows="5" cols="50" required value=""><%= question.incorrectAnswer2 %></textarea>
+   
+        <br>
+      
+        <button type="submit" >Edit question <%=index+1 %></button>
+        <span class="btn btn deleteQuestion" data-question-index="<%=index+1%>">Delete Question<%=index+1 %> </span > 
+        <br><span class="error"></span>
+      </div>   
     <% }); %>
   <% } else { %>
     <p>No quiz data available.</p>
   <% } %>   
-
+  </form>
+  <br><button id="add-question">Add question</button>
   <!-- Add your additional HTML code here -->
 
   <!-- Add your scripts here -->
+  <script src="/js/jquery-3.2.1.slim.min.js"></script>
+  <script src="/js/jquery-1.12.4.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script>
+
+       function trimWhiteSpace(){
+        $('input[type="text"]').each(function (){
+          var inputValue = $.trim($(this).val());
+          $(this).val(inputValue);
+        }); 
+       } 
+       function updateQuiz(){
+
+        var form =  $('#quizForm');
+        var url  = form.attr('action');
+
+        //serialize the data
+        var formData  = form.serialize();
+        trimWhiteSpace();
+        //send the Put request
+        $.ajax({
+          url:url,
+          type: 'PUT',
+          data: formData,
+          success: function(response){
+            console.log("Success")
+            location.reload();
+          },
+          error: function(response){
+            console.error('Put request failed', response.error);
+          }
+        });
+  
+      }
+    $(document).ready(function (){
+      
+      $('.deleteQuestion').click(function (event){
+        event.preventDefault;
+        var childCount = $('.question-div').length;
+        console.log(childCount);
+        if(childCount > 1){
+          var dataIndex = $(this).data("question-index");
+          $('#question'+dataIndex).remove();
+          var outerCounter = 0;
+            //recalibrate 
+          $('textarea').each(function (index){
+            var textarea = $(this);
+            //rename the div tag
+            if(textarea.hasClass("question")){
+              textarea.attr('name',`questions[${outerCounter}][question]]`);
+            }else if(textarea.hasClass("answer")){
+              textarea.attr('name',`questions[${outerCounter}][answer]]`);
+            }else if(textarea.hasClass("incorrectAnswer1")){
+              textarea.attr('name',`questions[${outerCounter}][incorrectAnswer1]]`);
+            }else if(textarea.hasClass("incorrectAnswer2")){
+              textarea.attr('name',`questions[${outerCounter}][incorrectAnswer2]]`);
+              outerCounter++; 
+            }
+          });
+
+          //rename the #id of the question
+          $('.question-div').each(function(index){
+            var div = $(this);
+            div.attr('id',`question${index}`);  
+          });
+
+          updateQuiz();
+        }else{
+          var div = $(this);
+          console.log(div);
+          div.next().after('<span class="error" >You can\'t delete all your questions </span>'); 
+          // alert('You can\'t delete all your questions ');
+        }
+      
+        //send the data to the server
+
+        // const questionElement = document.querySelector(`textarea[name="questions[${dataIndex}][question]"]`);
+        // const questionArea = $(`textarea[name="questions[${dataIndex}][question]"]`);
+        // questionArea.attr('name',`questions[${dataIndex-1}][question]"]`);
+
+      
+        // console.log(questionElement);
+        //send a put request to edit the fields 
+      });
+
+      //edit data
+      $('#quizForm').submit(function (event){
+        event.preventDefault();
+     
+        var form = $(this);
+        var url  = form.attr('action');
+        trimWhiteSpace();
+        //serialize the data
+        var formData  = form.serialize();
+  
+        //send the Put request
+        $.ajax({
+          url:url,
+          type: 'PUT',
+          data: formData,
+          success: function(response){
+            console.log("Success")
+            location.reload();
+          },
+          error: function(response){
+            console.error('Put request failed', response.error);
+          }
+        });
+      });
+      
+
+      $('#add-question').click(function(event){
+        event.preventDefault();
+        var childCount = $('#question-div').length;
+        console.log(childCount);
+        const questionValue = "";
+        const answerValue = "";
+        const incorrectAnswer1Value = "";
+        const incorrectAnswer2Value = "";
+        var entityIndex = childCount+1;
+        const questionTemplate = `
+          <div class="question-div" id="question${entityIndex+1}">
+            <label for="question">Question:</label>
+            <textarea name="questions[${entityIndex}][question]" rows="5" cols="50" required>${questionValue}</textarea>
+            <label for="answer">Answer:</label>
+            <textarea name="questions[${entityIndex}][answer]" rows="5" cols="50" required>${answerValue}</textarea>
+            <label for="incorrectAnswer1">Incorrect Answer 1:</label>
+            <textarea name="questions[${entityIndex}][incorrectAnswer1]" rows="5" cols="50" required>${incorrectAnswer1Value}</textarea>
+            <label for="incorrectAnswer2">Incorrect Answer 2:</label>
+            <textarea name="questions[${entityIndex}][incorrectAnswer2]" rows="5" cols="50" required>${incorrectAnswer2Value}</textarea>
+          </div>
+          <button >Save question</button>
+        `;
+        $('#quizForm').append(questionTemplate);
+      })
+
+    });
+  </script>
 </body>
 </html>

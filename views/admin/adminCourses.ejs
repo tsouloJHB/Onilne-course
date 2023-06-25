@@ -17,20 +17,7 @@
 </style>
 <body>
    
-  <div class="navbar">
-    <div class="navbar-logo">Ai Tech</div>
-    <ul>
-      <li><a href="/admin">Home</a></li>
-      <li><a href="/admin/courses">Courses</a></li>
-      <li><a href="#">Contact</a></li>
-      <li><a href="#">Sign Out</a></li>
-    </ul>
-  </div>
-  <ul class="nav">
-    <li><a href="/courses">courses</a></li> 
-   
-    
-  </ul>
+  <%- include('../partials/navBar') %>
   <h3>Search course</h3>
   <form  method="GET">
   <input type="text" name="search" placeholder="search name, category" />
@@ -102,6 +89,7 @@
       <p>No courses found </p> 
       <%} %>
       <div id="accordion">
+        <% let counter = 1; %>
         <% courses.forEach(function(course) { %>
           <p> <%= course.title %></p>
           <div class="card">
@@ -111,18 +99,28 @@
                         <i class="flaticon-question"></i> <%= course.title %>
                     </button>
                 
-                    <span><a href="/topics/<%=course._id %>"> course</a></span>
-                    <span><a href="/topics/<%=course._id %>">Delete course</a></span>
+                    
+                    <span><a href="/course/course-topics/<%=course._id %>"> course</a></span>
+                    <span><a href="#" class="deleteCourse" data-link-data="<%=course._id %>">Delete course</a></span>
                        
                 </h5>     
             </div>
             <div id="<%=course._id+course._id %>" class="collapse" aria-labelledby="<%=course._id %>" data-parent="#accordion">
                 <div class="card-body">
                   <%= course.courseDesc %>
+                  <p><%= course.usersCount%> registered users</p>
+                  <p><%=course.completed%> users have completed the course</p>
+                  <% if (course.usersCount > 0){%>
+                    <% const completedPercentage = (course.completed/course.usersCount) * 100; %>
+                    <p><%=completedPercentage.toFixed(2)%> % course completion</p>
+                
+                   
+                  <%}%>  
                 </div>
                 <img src="<%=course.courseImage%>"/>
             </div>
           </div>
+          <% counter++; %>
       <% }); %>
       </div>
     </div>
@@ -139,6 +137,25 @@
       $(document).ready(function() {
         
       // Handle form submission for creating a category
+      $('.deleteCourse').click(function(event){
+        event.preventDefault;
+        
+        var linkData = $(this).data('link-data');
+   
+        var link = 'deleteCourse/'+linkData;
+        $.ajax({
+          url: link,
+          type:'DELETE',
+          success: function(response){
+            console.log(response);
+            location.reload();
+          },
+          error: function(response){
+            console.log(response);
+          } 
+        });
+
+      });
       $('#createCategoryForm').submit(function(event) {
         event.preventDefault();
         $('#response').empty();

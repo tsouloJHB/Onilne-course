@@ -24,9 +24,10 @@ async function verifyToken(req, res, next) {
     next();
   } catch (err) {
     console.log(err);
-    res.redirect('users/login');
+    res.redirect('/users/login');
   }
 }
+
 
 const isAdmin = (req,res,next) =>{
   const {role} = req.user;

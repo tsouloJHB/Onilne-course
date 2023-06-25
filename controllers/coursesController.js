@@ -1,5 +1,7 @@
 const { query } = require('express');
-const {CourseModel,UserProgressModel,CategoryModel} = require('../models');
+const {CourseModel,UserProgressModel,CategoryModel,TopicModel, TopicQuizModel} = require('../models');
+const TopicMaterial = require('../models/topicMaterialModel');
+const CoursesModel = require('../models/coursesModel');
 
 
 module.exports.getUserCourses = async (userId) => {
@@ -11,8 +13,9 @@ module.exports.getUserCourses = async (userId) => {
           const course = await CourseModel.findById(progress.course);
           return course;
         }));
-        
-        return courses;
+        const filteredCourses = courses.filter((course) => course !== null);
+        console.log(filteredCourses);
+        return filteredCourses;
       } catch (error) {
         console.error('Error retrieving user progress:', error);
         throw new Error('An error occurred while retrieving user progress.');
@@ -159,4 +162,170 @@ module.exports.createCourse = async(req) =>{
     };
   }
 }
+
+module.exports.deleteCourse = async(courseId) =>{
+  try { 
+    
+    const course = await CourseModel.findById(courseId);
+    //check if course exits 
+    if (!course) {
+      return res.status(404).send('Course not found');
+    }
+    // Find the topics by course ID
+    const topics  =  await TopicModel.find({courseId});
+
+    // Delete the topic material associated with the topic
+    await Promise.all(topics.map(async (topic) => {
+      console.log(topic);
+      await TopicMaterial.deleteMany({topicId:topic._id});
+      //delete quizzes 
+      await TopicQuizModel.deleteMany({topicId:topic._id});
+    }));
+    await TopicModel.deleteMany({ courseId });
+  
+    // //delete course
+    await CourseModel.findByIdAndDelete(courseId);
+    return true;
+
+  } catch (error) {
+    console.error('Error deleting course:', error);
+    // res.status(500).send('An error occurred while deleting the course.');
+    return false;
+  }
+}
+
+module.exports.courseData = async(courseId)=>{
+  try {
+    //search userProgressModule for specified course
+    const usersCount = await UserProgressModel.countDocuments({courseId});
+    const completedUsers = await UserProgressModel.countDocuments({courseId,completed:true});
+    return {
+      usersCount:usersCount,
+      completed:completedUsers,
+      message:"Success",
+      status:true
+    };
+  } catch (error) {
+    return {
+      usersCount:null,
+      message:error,
+      status:false
+    };
+  }
+}
+
+module.exports.coursesWithData = async(courses) =>{
+  const courseData = await Promise.all(courses.map(async (course) => {
+    const courseData =  await this.courseData(course);
+    // course.usersCount = courseData.usersCount;
+    // course.completed = courseData.completed;
+    const newCourse = {
+      title: course.title,
+      courseNo: course.courseNo,
+      user: course.user,
+      courseDesc: course.courseDesc,
+      category: course.category,
+      courseImage: course.courseImage,
+      _id: course._id,
+      __v: course.__v,
+      usersCount : courseData.usersCount,
+      completed:courseData.completed
+    }
+    //course.set(courseData);
+    // console.log(newCourse);
+    return newCourse;
+  }));
+
+  return courseData
+}
+
+module.exports.getTopFiveCourses = async(userId)=>{
+  try {
+    // Find the courses associated with the user
+    const userProgress = await UserProgressModel.find({ user: userId }, 'course');
+    //check if course exit
+    console.log(userProgress.length );
+    if(userProgress.length != 0){
+      const userCourseIds = userProgress.map((progress) => progress.course);
+    
+      // Find the top 5 courses based on appearance in UserProgress, excluding the user's courses
+      console.log(userCourseIds);
+      // const topCourses = await CoursesModel.aggregate([
+      //   { $match: { _id: { $nin: userCourseIds } } },
+      //   { $group: { _id: '$course', count: { $sum: 1 } } },
+      //   { $sort: { count: -1 } },
+      //   { $limit: 5 },
+      // ]);
+
+     let topCourses = await CoursesModel.find({_id:{$nin:userCourseIds}});
+     // let filteredTopCourses = topCourses.filter((course) => course._id !== null);
+     
+      if(topCourses.length < 1){
+        console.log("filter");
+        //topCourses = await getRandomFiveCourses(userId,userCourseIds);
+      }
+      console.log(topCourses);
+      return topCourses;
+    }else{
+      console.log("hi");
+      const courses = await CourseModel.find({ user: { $ne: userId } }).limit(5);
+      console.log(courses);
+      return courses;
+    }
+    // Extract the course IDs associated with the user
+ 
+
+    // Handle the top courses data
+  } catch (error) {
+    console.error(error);
+    // Handle any errors
+  }
+}
+
+//get 5 courses the user is not registered for  using ProgressModule 
+const getRandomFiveCourses = async (userId,userCourseIds) =>{
+  
+  const courses = await CourseModel.find({ user: { $ne: userId } }).limit(5);
+  return courses;
+}
+
+module.exports.courseUserAuthorized = async (userId,courseId,res) =>{
+  try {
+    
+    const courseCheck = await CourseModel.find({_id:courseId,user:userId});
+    if(courseCheck.length < 1){
+      res.redirect('/users');
+    }else{
+      return false
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+module.exports.checkIfUserIsRegisteredForCourse = async  (userId,courseId,res) =>{
+  try {
+    const userProgress  = await UserProgressModel.findOne({user:userId,course:courseId});
+    if(!userProgress){
+      res.redirect('/users');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports.checkIfUserIsRegisteredForCourseByTopic = async  (userId,topicId,res) =>{
+  try {
+    const topic = await TopicModel.findById(topicId); 
+    const userProgress  = await UserProgressModel.findOne({user:userId,course:topic.courseId});
+    if(!userProgress){
+      res.redirect('/users');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 

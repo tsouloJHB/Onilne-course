@@ -1,43 +1,23 @@
-<!-- topics.ejs -->
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Topics</title>
-  <link rel="stylesheet" href="/css/style2.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-</head>
+
+  <title>Topics </title>
+  <%- include('partials/header') %>
+
 <body>
   <!-- Navigation -->
-  <div class="navbar">
-    <div class="navbar-logo">Ai Tech</div>
-    <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Current course</a></li>
-      <li><a href="#">Contact</a></li>
-      <li><a href="#">Sign Out</a></li>
-    </ul>
-  </div>
+  <%- include('partials/clientNav') %>
   
-  <ul class="nav">
-    <li><a href="/topics">Topics</a></li> 
-    <li>Current Topic
- 
-    </li><br/>
- 
-  </ul>
+
   
   <!-- List topics here -->
-  <h1>All Topics</h1>
-  <div>
 
 
-    
-    </div>
 
     <div class="outline_courses_info">
-      <p><a href="create/<%=courseId%>"> Create Topic</a> </p>
+    
       <div id="accordion">
+        <p>All Topics</p>
         <%= topics.length == 0 ? "No topics found":"" %>
         <% topics.forEach(function(topic) { %>
           <div class="card">
@@ -46,14 +26,14 @@
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=topic._id+topic._id %>" aria-expanded="false" aria-controls="collapseTwo">
                         <i class="flaticon-question"></i> <%= topic.title %>
                     </button>
-                
+                    <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
                     <% if (topic.topicNo <= currentTopic) { %>
                       <i class="fa fa-unlock" aria-hidden="true"></i>
                       <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
                     <% } else if (currentTopic < topic.topicNo) { %>
                       <i class="fa fa-lock" aria-hidden="true"></i>
                     <% } %>
-                    <span><a href="">Delete</a></span>
+          
                        
                 </h5>
             </div>
