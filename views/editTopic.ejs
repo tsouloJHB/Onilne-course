@@ -7,7 +7,11 @@
 
 <body>
   <!-- Navigation -->
-  <%- include('partials/navBar') %>
+  <% if(admin){ %>
+    <%- include('partials/navBar') %>
+    <%}else {%>
+      <%- include('partials/clientNav') %>    
+    <%}%> 
   
   <h1>Edit Topic</h1>
   <a href="/course/course-topics/<%= topic.courseId%>"> <button >Back</button></a>

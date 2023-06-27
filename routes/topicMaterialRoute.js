@@ -18,7 +18,7 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
       // Handle case where topic material is not found
       return res.status(404).send('Topic material not found');
     }
-    console.log(topicMaterial);
+   
     // Pass the topic material data to the course outline view for rendering
     if(topicMaterial.topicVideo){
       const videoId = extractVideoId(topicMaterial.topicVideo);
@@ -27,25 +27,37 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
     }
     //get users progress to further check if the user has completed the topic
     const progress  = await UserProgressModel.findOne({user:req.user._id,topic:topicId});
-    let currentTopic = false
-    if(!progress){
+    const courseComplete = await CoursesController.checkIfUserCompletedCourse(topicId,req.user._id);
+    const topicCompleted = await TopicsController.checkIfUserCompletedTopic(topicId,req.user._id);
+    let currentTopic = true;
+    console.log(progress);
+    //check if the  users progress is less the topic number 
+    if(topicCompleted || courseComplete || progress.progress < topic.topicNo){
+     
       currentTopic = false
-    }else{
-      currentTopic = true;
     }
     const topics = await TopicsController.getCourseTopicsByTopic(topic._id);
-    console.log(topics);
+   
     res.render('courseOutline', { topicMaterial ,topic,currentTopic,topics});
   } catch (error) {
     console.error('Error retrieving topic material:', error);
-    res.status(500).send('An error occurred while retrieving the topic material.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 
-router.get('/quiz/:id', async (req, res) => {
+router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
   try {
     const topicId = req.params.id;
-
+    //check if user has completed the course
+    const course = await CoursesController.checkIfUserCompletedCourse(topicId,req.user._id);
+    if(course){
+      return res.redirect("/topicOutline/material/" + topicId);
+    }
+    //check if user has completed the topic
+    const topicCompleted = await TopicsController.checkIfUserCompletedTopic(topicId,req.user._id);
+    if(topicCompleted){
+      return res.redirect("/topicOutline/material/" + topicId);
+    }
     // Find the quiz by topicId
     const quiz = await TopicQuizModel.findOne({ topicId });
 
@@ -81,7 +93,7 @@ router.get('/quiz/:id', async (req, res) => {
     res.render('quizTest', { quiz, topicId });
   } catch (error) {
     console.error('Error retrieving quiz data:', error);
-    res.status(500).send('An error occurred while retrieving quiz data.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 

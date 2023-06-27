@@ -1,3 +1,4 @@
+<!-- editTopic.ejs -->
 <!DOCTYPE html>
 <html>
 
@@ -6,8 +7,12 @@
 
 <body>
   <!-- Navigation -->
-  <%- include('partials/navBar') %>
-<body>
+  <% if(admin){ %>
+    <%- include('partials/navBar') %>
+    <%}else {%>
+      <%- include('partials/clientNav') %>    
+    <%}%> 
+
   <h1>Quiz</h1>
 
   <% if (quiz) { %>

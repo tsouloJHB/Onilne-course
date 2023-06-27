@@ -65,10 +65,10 @@
     </form>
    <p id="response"></p> 
   <h2>Create Course</h2>
-  <form action="createCourse" method="POST">
+  <form action="/admin/createCourse" method="POST">
     <input type="text" name="title" placeholder="Title" required>
-    <input type="number" name="courseNo" placeholder="Course No" required value="<%=coursesCount %>">
-    <input type="text" name="courseDesc" placeholder="Course Description" required>
+    <textarea name="courseDesc" placeholder="Course Description" required cols="30" rows="5"></textarea>
+   
     <input type="text" name="courseImage" placeholder="Course Image URL">
     <label for="category">Category:</label> 
     <!-- <select id="category" name="category"></select> -->
@@ -85,6 +85,7 @@
 
     <div class="outline_courses_info">
       <a href="">Create course</a>
+    
       <% if(courses.length == 0){ %>
       <p>No courses found </p> 
       <%} %>
@@ -101,7 +102,9 @@
                 
                     
                     <span><a href="/course/course-topics/<%=course._id %>"> course</a></span>
-                    <span><a href="#" class="deleteCourse" data-link-data="<%=course._id %>">Delete course</a></span>
+                    <span><a href="/course/edit/<%=course._id %>"> Edit Course</a></span>
+                    <span><p class="deleteCourse" data-link-data="<%=course._id %>">Delete course</p></span>
+                    <span><p>Course status: <%= course.active ?"Active":"inactive" %></p></span>
                        
                 </h5>     
             </div>
@@ -141,8 +144,9 @@
         event.preventDefault;
         
         var linkData = $(this).data('link-data');
-   
-        var link = 'deleteCourse/'+linkData;
+        
+        var link = '/admin/deleteCourse/'+linkData;
+        console.log
         $.ajax({
           url: link,
           type:'DELETE',

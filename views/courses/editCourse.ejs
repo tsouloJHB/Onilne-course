@@ -1,0 +1,104 @@
+<!-- editTopic.ejs -->
+<!DOCTYPE html>
+<html>
+
+  <title>Edit Course</title>
+  <%- include('../partials/header') %>
+   <style>
+    #message {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hidden {
+  opacity: 0;
+}
+   </style> 
+<body>
+  <!-- Navigation -->
+  <% if(admin){ %>
+    <%- include('../partials/navBar') %>
+    <%}else {%>
+      <%- include('../partials/clientNav') %>    
+    <%}%> 
+  
+  <h1>Edit course</h1>
+  <% if(admin){%>
+    <a href="/admin/courses/"> <button >Back</button></a>
+  <%} else{%> 
+    <a href="../../course/created"> <button >Back</button></a>
+  <% }%>  
+  <form id="courseForm" action="/course/<%=course._id %>" >
+    <input type="text" name="title" placeholder="Title" value="<%=course.title%>" required>
+    <textarea name="courseDesc" placeholder="Course Description"  required cols="30" rows="5"><%=course.courseDesc%></textarea>
+   
+    <input type="text" name="courseImage" placeholder="Course Image URL" value="<%=course.courseImage%>">
+    <label for="category">Category:</label> 
+    <!-- <select id="category" name="category"></select> -->
+   
+    <select id="category" name="category" selected="<%=course.category%>">
+      <% categories.forEach((category) => { %>
+       
+        <% if(category._id.toString() == course.category.toString()){%>
+            <option selected value="<%= category._id %>" ><%= category.name %></option>
+        <%}else{%>    
+            
+        <option  value="<%= category._id %>" ><%= category.name%></option>
+        <%}%>
+      <% }) %>
+    </select>
+    <input type="text" name="courseVideo" placeholder="Course Video URL" value="<%=course.video%>">
+    <button type="submit">Update course</button>  
+  </form>
+  <br>
+  <div id="message" class="hidden"></div>  
+  <script>
+
+function trimWhiteSpace(){
+        $('input[type="text"]').each(function (){
+          var inputValue = $.trim($(this).val());
+          $(this).val(inputValue);
+        }); 
+       } 
+    $(document).ready(function (){
+
+        $('#courseForm').submit(function (event){
+        event.preventDefault();
+            
+        var form = $(this);
+        var url  = form.attr('action');
+        trimWhiteSpace();
+        //serialize the data
+        var formData  = form.serialize();
+  
+        //send the Put request
+        $.ajax({
+          url:url,
+          type: 'PUT',
+          data: formData,
+          success: function(response){
+            console.log(response);
+    
+              // Display error message in red
+         // Display error message in red
+            const $message = $('#message');
+            $message.text('Course data saved').css('color', 'red').removeClass('hidden');
+
+            // Hide the message after a few seconds with fade-out effect
+            setTimeout(() => {
+            $message.addClass('hidden');
+            }, 5000);
+            //location.reload();
+          },
+          error: function(response){
+            console.error('Put request failed', response.error);
+          }
+        });
+      });
+    });
+  </script>
+  <script src="/js/jquery-3.2.1.slim.min.js"></script>
+  <script src="/js/jquery-1.12.4.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

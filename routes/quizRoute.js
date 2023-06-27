@@ -8,7 +8,7 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
         const { topicId, answer } = req.body;
         
         //check if user has already completed the quiz
-        console.log(topicId)
+        //console.log(topicId)
         const userProgress = await UserProgressModel.findOne({user:req.user._id,topic:topicId});
         //for, validation
         if(topicId == null || answer == null){
@@ -26,7 +26,7 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
         const quizzers = await TopicQuizModel.findOne({topicId});
         let mark = 0;
         if (quizzers) {
-            console.log(quizzers.questions.length);
+            //console.log(quizzers.questions.length);
             quizzers.questions.forEach((question, index) => {
               if(question.answer == answer[index]){
                 mark++
@@ -42,14 +42,32 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
                 //get the next topic
                 
                 const newTopicNumber = currentTopic.topicNo+1;
-                
-                const nextTopic = await TopicModel.findOne({topicNo:newTopicNumber,courseId:currentTopic.courseId});
-                await UserProgressModel.findOneAndUpdate({user:req.user._id,course:currentTopic.courseId,progress:newTopicNumber,topic:nextTopic._id});
-                response = {
+                const topicCount = await TopicModel.countDocuments({courseId:currentTopic.courseId});
+                console.log(newTopicNumber);
+                console.log(topicCount);
+                if(newTopicNumber <= topicCount){
+                  const nextTopic = await TopicModel.findOne({topicNo:newTopicNumber,courseId:currentTopic.courseId});
+                  await UserProgressModel.findOneAndUpdate({user:req.user._id,course:currentTopic.courseId,progress:newTopicNumber,topic:nextTopic._id});
+                  response = {
                     mark:markPercentage+"%",
                     message:"You have successfully completed the quiz",
                     nextTopic:nextTopic._id
                 }
+                }else{
+                //set the course as complete 
+                
+                if(userProgress.progress == topicCount ){
+                  await UserProgressModel.findOneAndUpdate({user:req.user._id,completed:true});    
+                }
+            
+                response = {
+                  mark:markPercentage+"%",
+                  message:"You have successfully completed the quiz",
+                  nextTopic:currentTopic._id
+              }
+                }
+               
+             
             }else{
                 //set course as incomplete 
                  response = {

@@ -13,9 +13,14 @@ const CourseSchema = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true
-  },
+  },    
   courseDesc:{
     type:String,
+    required:true
+  },
+  active:{
+    type:Boolean,
+    default:false,
     required:true
   },
   category: {

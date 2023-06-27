@@ -1,3 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <title>Topics</title>
+
+  <%- include('partials/header') %>
+ 
+<body>
+  <!-- Navigation -->
+ 
+  <% if(admin){ %>
+    <%- include('partials/navBar') %>
+    <%}else {%>
+      <%- include('partials/clientNav') %>    
+    <%}%> 
+    <br><br>
+<a href="/topics/edit/<%=topicId%>"><button>Back</button></a>    
 <form id="quizForm" action="/topics/createQuiz" method="POST">
     <input type="hidden" name="topicId" value="<%=topicId%>">
     
@@ -15,9 +31,10 @@
     </div>
   
     <button type="button" id="addEntityBtn">Add Entity</button>
-    <button type="submit">Submit</button>
+    <button type="submit" >Submit</button>
   </form>   
-  
+</body>
+
   
   <script>
    // JavaScript
@@ -60,3 +77,4 @@ addEntityBtn.addEventListener('click', () => {
 
   </script>
   
+  </html> 

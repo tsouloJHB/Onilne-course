@@ -1,5 +1,15 @@
+<!-- courses.ejs -->
+<!DOCTYPE html>
 <html>
-  <body>
+
+  <title>Create topic</title>
+  <%- include('partials/header') %>
+
+<body>
+  <!-- Navigation -->
+  <%- include('partials/clientNav') %>
+  <h1>Courses</h1>
+   <a href="/course/course-topics/<%=courseId %>"><button>Back</button></a>
     <% if (typeof error !== 'undefined') { %>
       <p><strong>Error:</strong> <%= error %></p>
     <% } %>

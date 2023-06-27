@@ -14,15 +14,22 @@
   <h2>Create Course</h2>
   <form action="/course" method="POST">
     <input type="text" name="title" placeholder="Title" required>
-    <input type="number" name="courseNo" placeholder="Course No" required value="<%=coursesCount %>">
-    <input type="text" name="courseDesc" placeholder="Course Description" required>
+    <textarea name="courseDesc" placeholder="Course Description" required cols="30" rows="5"></textarea>
+   
     <input type="text" name="courseImage" placeholder="Course Image URL">
-    <input type="text" name="courseVideo" placeholder="Course Video URL" required>
-    <button type="submit">Create Course</button>
+    <label for="category">Category:</label> 
+    <!-- <select id="category" name="category"></select> -->
+    <select id="category" name="category">
+      <% categories.forEach((category) => { %>
+        <option value="<%= category._id %>"><%= category.name %></option>
+      <% }) %>
+    </select>
+    <input type="text" name="courseVideo" placeholder="Course Video URL">
+    <button type="submit">Create Course</button>  
   </form>
   
   <!-- List of Courses -->
-  <h2>All Courses</h2>
+
   <% courses.forEach(function(course) { %>
     <div class="course">
       <h3><%= course.title %></h3>
@@ -30,13 +37,48 @@
       <p><%= course.courseDesc %></p>
       <!-- <img src="<%= course.courseImage %>" alt="Course Image"> -->
       <a href="/course/course-topics/<%= course._id %>">View course</a>
-      <form action="/courses/<%= course._id %>?_method=DELETE" method="POST">
-        <button type="submit">Delete</button>
+      <form action="/courses/<%= course._id %>" method="PUT">
+        <span><p class="deleteCourse" data-link-data="<%=course._id %>">Delete course</p></span>
       </form> 
-      <a href="/courses/<%= course._id %>/edit">Edit</a>
+      <a href="/course/edit/<%= course._id %>">Edit</a>
+      
+      <p><%= course.usersCount%> registered users</p>
+      <p><%=course.completed%> users have completed the course</p>
+      <% if (course.usersCount > 0){%>
+        <% const completedPercentage = (course.completed/course.usersCount) * 100; %>
+        <p><%=completedPercentage.toFixed(2)%> % course completion</p>
+    
+       
+      <%}%>  
+    
+      <span><p>Course status: <%= course.active ?"Active":"inactive" %></p></span>
     </div>
+    <div id="message" class="hidden"></div> 
   <% }); %>
-  
+  <script>
+    $(document).ready(function() {
+        $('.deleteCourse').click(function(event){
+        event.preventDefault;
+        
+        var linkData = $(this).data('link-data');
+         console.log(linkData); 
+        var link = '/course/'+linkData;
+
+        $.ajax({
+          url: link,
+          type:'DELETE',
+          success: function(response){
+           location.reload();
+          },
+          error: function(response){
+            console.log(response);
+            
+          } 
+        });
+
+      });
+    });
+  </script>
   <script src="/js/script.js"></script>
 </body>
 </html>

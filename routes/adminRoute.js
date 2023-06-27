@@ -3,6 +3,7 @@ const router = express.Router();
 const {verifyToken, isAdmin} = require('../middleware/verifyToken');
 const { CourseModel, CategoryModel, UserModel } = require('../models');
 const { CoursesController } = require('../controllers');
+const { render } = require('ejs');
 
 // Protected route using verifyToken middleware
 router.get('/', verifyToken,isAdmin, async (req, res) => {
@@ -27,13 +28,14 @@ router.get('/', verifyToken,isAdmin, async (req, res) => {
     }
 });
 
+
 router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
   try {
     // Retrieve all topics from the database
     var coursesSearch = "";
     var allCourses = "";
     const searchQuery = req.query.search;
-    let courses = await CourseModel.find();
+    let courses = await CourseModel.find({user:req.user._id});
     if( searchQuery && searchQuery.search("search")){
       console.log("search");
       coursesSearch = await CoursesController.courseSearch(req,res);
@@ -60,6 +62,14 @@ router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
   }
 });
 
+router.get('/settings',verifyToken,isAdmin, async (req,res)=>{
+  try {
+    res.render('admin/settings');
+  } catch (error) {
+    
+  }
+});
+
 router.post('/category',verifyToken,isAdmin, async (req,res)=>{
   try {
     console.log(req.body);
@@ -76,6 +86,7 @@ router.post('/category',verifyToken,isAdmin, async (req,res)=>{
 
 router.post('/createCourse',verifyToken,isAdmin, async(req,res)=>{
   try {
+    console.log("post");
     const createCourse = await CoursesController.createCourse(req);
     res.redirect('courses');
   } catch (error) {

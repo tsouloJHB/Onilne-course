@@ -27,7 +27,8 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
     res.render('topics', { topics,currentTopic,courseId }); // Pass the topics and progress data to the topics view for rendering
   } catch (error) {
     console.error('Error retrieving topics:', error);
-    res.status(500).send('An error occurred while retrieving the topics.');
+    return res.render('404',{message:"An error occurred while retrieving"});
+
   }
 });
 
@@ -35,18 +36,24 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
 
 
 router.get('/create/:id', verifyToken.verifyToken, async (req, res) => {
-  const courseId = req.params.id;
-  await CoursesController.courseUserAuthorized(req.user._id,courseId,res); 
-  // Route handling code for topics page
-  const topicsCount = await TopicModel.countDocuments({ courseId }) + 1;
-  res.render('createTopic',{courseId,topicsCount});
+  try {
+    const courseId = req.params.id;
+    await CoursesController.courseUserAuthorized(req.user._id,courseId,res,req); 
+    // Route handling code for topics page
+    const topicsCount = await TopicModel.countDocuments({ courseId }) + 1;
+    res.render('createTopic',{courseId,topicsCount});
+  } catch (error) {
+    console.error('Error:', error);
+    return res.render('404',{message:"An error occurred while retrieving"});
+  }
+
 });  
 
 router.post('/', verifyToken.verifyToken,async (req, res) => {
   try {
     const topicNo = req.body.topicNo;
     const courseId = req.body.courseId;
-    await CoursesController.courseUserAuthorized(req.user._id,courseId,res); 
+    await CoursesController.courseUserAuthorized(req.user._id,courseId,res,req); 
     // Check if topic number already exists
     const existingTopic = await TopicModel.findOne({ topicNo,courseId:req.body.courseId });
 
@@ -80,7 +87,7 @@ router.post('/', verifyToken.verifyToken,async (req, res) => {
     res.redirect('/course/course-topics/'+req.body.courseId); // Redirect to the topics page after successful creation
   } catch (error) {
     console.error('Error creating topic and topic material:', error);
-    res.status(500).send('An error occurred while creating the topic and topic material.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 
@@ -92,7 +99,7 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
     res.render('topics', { topics }); // Pass the topics data to the topics view for rendering
   } catch (error) {
     console.error('Error retrieving topics:', error);
-    res.status(500).send('An error occurred while retrieving the topics.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 
@@ -100,9 +107,14 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
 router.get('/edit/:id',verifyToken.verifyToken ,async (req, res) => {
   try {
     const topicId = req.params.id;
-
+    if (typeof topicId === 'string') {
+        console.log("Thats true"); 
+    }
     // Find the topic by ID
-    await TopicsController.topicUserAuthorized(req.user._id,topicId,res);
+    const auth = await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
+    if(!auth){
+     // return  res.redirect('/users');
+    }
     const topic = await TopicModel.findById(topicId);
 
     if (!topic) {
@@ -125,11 +137,15 @@ router.get('/edit/:id',verifyToken.verifyToken ,async (req, res) => {
       quiz = true;
     }
 
-
-    res.render('editTopic', { topic, topicMaterial,quiz }); // Render the edit topic page with the retrieved data
+    const admin  = req.user.isAdmin;
+    res.render('editTopic', { topic, topicMaterial,quiz,admin }); // Render the edit topic page with the retrieved data
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.render('404');
+    }
+   
     console.error('Error retrieving topic and topic material:', error);
-    res.status(500).send('An error occurred while retrieving the topic and topic material.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 
@@ -138,20 +154,24 @@ router.get('/createQuiz/:id', verifyToken.verifyToken, async (req, res) => {
     // Retrieve all courses from the database
 
     const topicId = req.params.id;
-    await TopicsController.topicUserAuthorized(req.user._id,topicId,res);
+    await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     // Get the user's progress
-    res.render('createQuiz' ,{topicId});
+    const admin  = req.user.isAdmin;
+    res.render('createQuiz' ,{topicId,admin});
 // Pass the courses and progress data to the courses view for rendering
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.render('404');
+    }
     console.error('Error retrieving courses:', error);
-    res.status(500).send('An error occurred while retrieving the courses.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 
 router.post('/createQuiz', verifyToken.verifyToken ,async (req, res) => {
   try {
     const { topicId, questions } = req.body;
-    await TopicsController.topicUserAuthorized(req.user._id,topicId,res);
+    await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     // Assuming you're using Mongoose for database operations
     const topicQuiz = new TopicQuizModel({
       topicId,
@@ -168,8 +188,11 @@ router.post('/createQuiz', verifyToken.verifyToken ,async (req, res) => {
     res.redirect('/topics/edit/'+topicId);
     //res.status(200).json(savedQuiz);
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.render('404');
+    }
     console.error('Error saving quiz data:', error);
-    res.status(500).send('An error occurred while saving quiz data.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 
@@ -177,7 +200,7 @@ router.post('/createQuiz', verifyToken.verifyToken ,async (req, res) => {
 router.put('/quiz/:id',  verifyToken.verifyToken,async (req, res) => {
   try {
     const { topicId, questions } = req.body;
-    await TopicsController.topicUserAuthorized(req.user._id,topicId,res);
+    await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     console.log(questions);
     console.log(topicId);
     // Assuming you're using Mongoose for database operations
@@ -197,8 +220,9 @@ router.put('/quiz/:id',  verifyToken.verifyToken,async (req, res) => {
     //res.redirect('/topics/quiz/'+topicId);
     res.status(200).json(savedQuiz);
   } catch (error) {
+   
     console.error('Error saving quiz data:', error);
-    res.status(500).send('An error occurred while saving quiz data.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 
@@ -219,11 +243,12 @@ router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
     }
 
     // Return the quiz data
-   
-    res.render('viewQuiz', { quiz });
+    const admin  = req.user.isAdmin;
+    res.render('viewQuiz', { quiz,admin });
   } catch (error) {
+  
     console.error('Error retrieving quiz data:', error);
-    res.status(500).send('An error occurred while retrieving quiz data.');
+    return res.render('404',{message:"An error occurred while retrieving"});
   }
 });
 
@@ -233,7 +258,7 @@ router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
 router.post('/edit/:id', verifyToken.verifyToken,async (req, res) => {
   try {
     const topicId = req.params.id;
-    await TopicsController.topicUserAuthorized(req.user._id,topicId,res);
+    await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     // Find the topic by ID
     const topic = await TopicModel.findById(topicId);
 
@@ -276,7 +301,7 @@ router.post('/edit/:id', verifyToken.verifyToken,async (req, res) => {
 router.delete('/delete/:id', verifyToken.verifyToken, async (req, res) => {
   try {
     const topicId = req.params.id;
-    await TopicsController.topicUserAuthorized(req.user._id,topicId,res);
+    await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     // Find the topic by ID and delete it
     await TopicModel.findByIdAndDelete(topicId);
 
@@ -299,7 +324,7 @@ router.delete('/delete/:id', verifyToken.verifyToken, async (req, res) => {
 router.delete('/deleteQuiz/:id',verifyToken.verifyToken, async (req, res) => {
   try {
     const topicId = req.params.id;
-    await TopicsController.topicUserAuthorized(req.user._id,topicId,res);
+    await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     await TopicQuizModel.deleteMany({topicId});
     res.status(201).json("Topic deleted");
   } catch (error) {

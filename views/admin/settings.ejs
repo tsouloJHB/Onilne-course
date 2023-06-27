@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>courses</title>
+  <link rel="stylesheet" href="/css/style2.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+   
+  <%- include('../partials/navBar') %>
+
+
+<div>
+    <div>
+        <p>add new course categories</p>
+        <form  id="createCategoryForm">
+          <input type="text" id="categoryName" name="categoryName" placeholder="course category" />
+          <input type="submit"  value="Add category"/>
+          </form>
+    </div>
+    <div>
+        <p>add quiz pass percentage</p>
+        <form  id="createCategoryForm">
+          <input type="text" id="categoryName" name="categoryName" placeholder="add percentage" />
+          <input type="submit"  value="add percentage"/>
+          </form>
+    </div>
+    <div class="container mt-4">
+        <h3>Upload logo image</h3>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="imageUpload" class="form-label">Select Image</label>
+            <input type="file" class="form-control" id="imageUpload" name="image">
+          </div>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+      </div>
+</div>
+</body>
+</html>    

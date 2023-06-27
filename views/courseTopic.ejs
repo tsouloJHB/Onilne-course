@@ -2,17 +2,38 @@
 <!DOCTYPE html>
 <html>
   <title>Topics</title>
-  <%- include('partials/header') %>
 
+  <%- include('partials/header') %>
+ 
 <body>
   <!-- Navigation -->
-  <%- include('partials/navBar') %>
+ 
+  <% if(admin){ %>
+    <%- include('partials/navBar') %>
+    <%}else {%>
+      <%- include('partials/clientNav') %>    
+    <%}%> 
   <!-- List topics here -->
   <h1>All Topics</h1>
-  <div>
+    <div>
+      <% if(!courseActive.active && !courseActive.topics){ %>
+        Your course Is still inactive because you have no topics
+      <%}else if(courseActive.topics && !courseActive.active){%>
+          <form id="courseForm"  action="/course/activate" >
+            
+            <input type="hidden" name="courseId" value="<%=topic[0].courseId %>"/>
+            <button >Activate Course</button>
+          </form>
+          
+            
+        <p>If you active your course it will be available to the public</p>
+      <%}%>
     </div>
     <div class="outline_courses_info">
       <div id="accordion">
+        <% if(topic.length == 0 ){ %>
+          <p>You can't have an active course without any topics</p>
+        <%} %>  
         <% topic.forEach(function(top) { %>
           <div class="card">
             <div class="card-header" id="<%=topic._id %>">
@@ -61,7 +82,27 @@
         });
 
       });
-      });
+
+      $('#courseForm').submit(function (event){
+        event.preventDefault();
+        var form = $(this);
+        var url  = form.attr('action');
+        var formData  = form.serialize();
+      
+        $.ajax({
+          url: url,
+          type:'PUT',
+          data: formData,
+          success: function(response){
+            console.log(response);
+            location.reload();
+          },
+          error: function(response){
+            console.log(response);
+          } 
+        });
+      });  
+    });
     </script>
     <script src="/js/jquery-3.2.1.slim.min.js"></script>
     <script src="/js/jquery-1.12.4.min.js"></script>
