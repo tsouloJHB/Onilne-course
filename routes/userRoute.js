@@ -98,13 +98,13 @@ router.get('/signup', (req, res) => {
 });
 
 // Sign out route
-router.get('/signout', (req, res) => {
-  // Clear the token cookie
-  res.clearCookie('token');
+// router.get('/signout', (req, res) => {
+//   // Clear the token cookie
+//   res.clearCookie('token');
 
-  // Redirect the user to the home page or any other desired page
-  res.redirect('/');
-});
+//   // Redirect the user to the home page or any other desired page
+//   res.redirect('/');
+// });
 
 router.get('/progress', verifyToken.verifyToken,async (req, res) => {
   try {
@@ -133,7 +133,7 @@ router.get('/',verifyToken.verifyToken,async (req, res) => {
     //get trending courses  
     const userId = req.user._id;
     const topCourses = await CoursesController.getTopFiveCourses(userId);
-    const courses = await CoursesController.getUserCourses(userId);
+    const courses = await CoursesController.getUserCourses(userId,true);
     const usersProgress = await UserProgressController.getUserProgress(userId);
     //console.log(topCourses);
     res.render('users/usersHome',{courses,topCourses,usersProgress});

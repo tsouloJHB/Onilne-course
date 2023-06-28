@@ -25,8 +25,13 @@
       type:Boolean,
       required:true,
       default:false
+    },
+    certificate:{
+      type:String,
     }
-  });
+  },
+  { timestamps: true }  
+  );
 
   const UserProgressModel = mongoose.model('UserProgress', userProgressSchema);
 

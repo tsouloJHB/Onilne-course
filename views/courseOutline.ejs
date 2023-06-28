@@ -48,11 +48,14 @@
   <!-- Navigation -->
   <%- include('partials/clientNav') %>
   
-
-  
-  
   <div class="container-out">
     <div class="column" style="flex: 2 2 58%;">
+  
+      <% if(downloadCertificate.completed){%>
+        <p>Course Completed</p>
+        <a href="/<%= downloadCertificate.link%>" download><button>Download certificate</button></a>
+      <%}%> 
+       
       <h1><%=topicMaterial.title %></h1>
       <p class="sub-titile"><%= topic.topicDesc %></p>
       <iframe class="video" height="315" src="<%= topicMaterial.embedLink %>">
@@ -67,6 +70,7 @@
     </div>
     <div class="column">
       <h1>Chapter Outline</h1>
+      <p><%=percentage%> % completed</p>
       <a href="/topics/<%=topic.courseId %>">Go to topics</a>
       <div class="list">
         <ul>

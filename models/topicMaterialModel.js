@@ -19,7 +19,9 @@ const topicMaterialSchema = new mongoose.Schema({
     required:false
   },
   // Add more fields as needed
-});
+},
+{ timestamps: true }  
+);
 
 const TopicMaterial = mongoose.model('TopicMaterial', topicMaterialSchema);
 

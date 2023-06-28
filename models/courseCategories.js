@@ -5,7 +5,8 @@ const CategorySchema = new mongoose.Schema({
       required: true
     }
     // Add more fields as needed
-  });
+  },
+  { timestamps: true }  );
   
   const CategoryModel = mongoose.model('courseCategory', CategorySchema);
   

@@ -13,9 +13,9 @@ module.exports.getUserCourseProgress = async (course,user) => {
       }
 };
 
-module.exports.getUserProgress = async (userId)=>{
+module.exports.getUserProgress = async (courseId,userId)=>{
   try {
-    const coursesProgress = await UserProgressModel.find({userId});
+    const coursesProgress = await UserProgressModel.findOne({user:userId,course:courseId});
     return coursesProgress;
   } catch (error) {
     console.error(error);

@@ -12,6 +12,7 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
       const coursesCount = await CourseModel.countDocuments() + 1;
      
       // Get the user's progress  
+     
       res.render('courses', { courses,coursesCount}); // Pass the courses and progress data to the courses view for rendering
     } catch (error) {
       console.error('Error retrieving courses:', error);
@@ -22,7 +23,8 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
 router.get('/user',verifyToken.verifyToken, async(req, res) => {
     try {
       const courses = await CoursesController.getUserCourses(req.user._id);
-      console.log(courses.length);
+      // console.log(courses.length);
+      //console.log(courses);
       return res.render('courses/userCourses',{courses});
     } catch (error) {
       return res.render('404',{message:"An error occurred while retrieving"});
@@ -90,7 +92,40 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
     }
   });
 
-  
+router.get('/search', verifyToken.verifyToken, async (req, res) => {
+  try {
+      const courses = await CoursesController.courseSearch(req,res);
+      res.render('search',{courses});
+  } catch (error) {
+    console.log(error);
+  }  
+});
+
+router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
+  try {
+    const course = await CourseModel.findById(req.params.id);
+    if(!course){
+      return res.render('courses/viewCourse',{course:{}}); 
+    }
+    const userProgress = await UserProgressModel.findOne({user:req.user._id,course:course._id});
+    if(userProgress){
+      const updatedCourse = modifiedCourse = {
+        ...course.toObject(), // Spread the properties of the course object
+        registered:true,
+        completed:userProgress.completed,
+         // Add the progress field
+      };
+
+      return res.render('courses/viewCourse',{course:updatedCourse});
+    }
+    
+    res.render('courses/viewCourse',{course});
+  } catch (error) {
+    console.log(error);
+  }  
+});
+
+
   
 // Create a course
 router.post('/', verifyToken.verifyToken, async (req, res) => {

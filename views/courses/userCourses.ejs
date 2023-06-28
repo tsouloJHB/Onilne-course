@@ -19,7 +19,11 @@
                 <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=course._id+course._id %>" aria-expanded="false" aria-controls="collapseTwo">
                     <i class="flaticon-question"></i> <%= course.title %>
                 </button>
-            
+                <% if(course.completed){ %>
+                  <span>Completed</span>
+                <%}else{%>
+                <span><%=course.percentage %>% completed</span>
+                <%}%>
                 <span><a href="/topics/<%=course._id %>"> course</a></span>
                    
             </h5>

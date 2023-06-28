@@ -26,7 +26,7 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
       topicMaterial.embedLink = embedLink;
     }
     //get users progress to further check if the user has completed the topic
-    const progress  = await UserProgressModel.findOne({user:req.user._id,topic:topicId});
+    const progress  = await UserProgressModel.findOne({user:req.user._id,course:topic.courseId});
     const courseComplete = await CoursesController.checkIfUserCompletedCourse(topicId,req.user._id);
     const topicCompleted = await TopicsController.checkIfUserCompletedTopic(topicId,req.user._id);
     let currentTopic = true;
@@ -37,8 +37,11 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
       currentTopic = false
     }
     const topics = await TopicsController.getCourseTopicsByTopic(topic._id);
-   
-    res.render('courseOutline', { topicMaterial ,topic,currentTopic,topics});
+    const downloadCertificate = await CoursesController.checkCourseComplete(topic.courseId,req.user._id);
+    //get course completion percentage
+    const percentage = await CoursesController.getUserCourseCompletePercentage(topic.courseId,req.user._id);
+    console.log(percentage);
+    res.render('courseOutline', { topicMaterial ,topic,currentTopic,topics,downloadCertificate,percentage});
   } catch (error) {
     console.error('Error retrieving topic material:', error);
     return res.render('404',{message:"An error occurred while retrieving"});

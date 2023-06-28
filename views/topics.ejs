@@ -18,6 +18,10 @@
     
       <div id="accordion">
         <p>All Topics</p>
+        <a href="/course/user"><button>Back to courses</button></a><br>
+        <% if(downloadCertificate.completed){%>
+          <a href="/<%= downloadCertificate.link%>" download><button>Download certificate</button></a>
+        <%}%>  
         <%= topics.length == 0 ? "No topics found":"" %>
         <% topics.forEach(function(topic) { %>
           <div class="card">
@@ -27,12 +31,12 @@
                         <i class="flaticon-question"></i> <%= topic.title %>
                     </button>
                     <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
-                    <% if (topic.topicNo <= currentTopic) { %>
-                      <i class="fa fa-unlock" aria-hidden="true"></i>
-                      <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
-                    <% } else if (currentTopic < topic.topicNo) { %>
-                      <i class="fa fa-lock" aria-hidden="true"></i>
-                    <% } %>
+                      <!-- <% if (topic.topicNo <= currentTopic) { %>
+                        <i class="fa fa-unlock" aria-hidden="true"></i>
+                        <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
+                      <% } else if (currentTopic < topic.topicNo) { %>
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                      <% } %> -->
           
                        
                 </h5>

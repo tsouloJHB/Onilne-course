@@ -18,13 +18,15 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
    // const progress = await UsersController.getUserProgress(req.user._id);
     const progress = await UserProgressController.getUserProgress(courseId,req.user._id);
     let currentTopic = "";
+
+  
     if(progress != null){
       currentTopic = progress.progress;
     }else{
       currentTopic = req.user.isAdmin == true ? 100 : 0;
     }
-    
-    res.render('topics', { topics,currentTopic,courseId }); // Pass the topics and progress data to the topics view for rendering
+    const downloadCertificate = await CoursesController.checkCourseComplete(courseId,req.user._id);
+    res.render('topics', { topics,currentTopic,courseId,downloadCertificate }); // Pass the topics and progress data to the topics view for rendering
   } catch (error) {
     console.error('Error retrieving topics:', error);
     return res.render('404',{message:"An error occurred while retrieving"});
@@ -40,8 +42,8 @@ router.get('/create/:id', verifyToken.verifyToken, async (req, res) => {
     const courseId = req.params.id;
     await CoursesController.courseUserAuthorized(req.user._id,courseId,res,req); 
     // Route handling code for topics page
-    const topicsCount = await TopicModel.countDocuments({ courseId }) + 1;
-    res.render('createTopic',{courseId,topicsCount});
+    
+    res.render('createTopic',{courseId});
   } catch (error) {
     console.error('Error:', error);
     return res.render('404',{message:"An error occurred while retrieving"});
@@ -51,21 +53,22 @@ router.get('/create/:id', verifyToken.verifyToken, async (req, res) => {
 
 router.post('/', verifyToken.verifyToken,async (req, res) => {
   try {
-    const topicNo = req.body.topicNo;
+    // const topicNo = req.body.topicNo;
     const courseId = req.body.courseId;
     await CoursesController.courseUserAuthorized(req.user._id,courseId,res,req); 
     // Check if topic number already exists
-    const existingTopic = await TopicModel.findOne({ topicNo,courseId:req.body.courseId });
+    // const existingTopic = await TopicModel.findOne({ topicNo,courseId:req.body.courseId });
+    const countTopics = await TopicModel.countDocuments({courseId:req.body.courseId}) +1 ;
 
-    if (existingTopic) {
-      // If topic number already exists, render the createTopics page with an error message
-      return res.render('createTopic', { error: 'Topic number already exists. Consider updating the topic instead.' ,topicsCount:topicNo,courseId});
-    }
+    // if (existingTopic) {
+    //   // If topic number already exists, render the createTopics page with an error message
+    //   return res.render('createTopic', { error: 'Topic number already exists. Consider updating the topic instead.' ,topicsCount:topicNo,courseId});
+    // }
 
     // Create a new topic
     const topic = new TopicModel({
       title: req.body.topicTitle,
-      topicNo: topicNo,
+      topicNo: countTopics,
       topicDesc: req.body.topicDesc,
       courseId:req.body.courseId,
     });

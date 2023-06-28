@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+  <title>Courses</title>
+  <%- include('../partials/header') %>
+
+<body>
+  <!-- Navigation -->
+  <%- include('../partials/clientNav') %>
+  <br><br>
+  <div class="card">
+    <div class="card-header" id="<%=course._id %>">
+        <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=course._id+course._id %>" aria-expanded="false" aria-controls="collapseTwo">
+                <i class="flaticon-question"></i> <%= course.title %>
+            </button>
+            <% if(course.registered) {%>
+                <span><a href="/topics/<%=course._id %>">open</a></span> 
+            <%}else{%>
+                <form action="course/register" method="POST">
+                    <input type="hidden" value="<%=course._id %>" name="courseId" />
+                    <button class="btn">Register</button>
+                  </form>
+            <%} if(course.completed){ %>
+              <span>Completed</span>
+            <%}else{%>
+            
+            <%}%>
+            <span><a href="/topics/<%=course._id %>"> course</a></span>
+               
+        </h5>
+    </div>
+    <div id="<%=course._id+course._id %>" class="collapse" aria-labelledby="<%=course._id %>" data-parent="#accordion">
+        <div class="card-body">
+          <%= course.courseDesc %>
+        </div>
+        <img src="<%=course.courseImage%>"/>
+    </div>
+  </div>
+</body>
+</html>  

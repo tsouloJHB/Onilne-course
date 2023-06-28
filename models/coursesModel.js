@@ -32,14 +32,15 @@ const CourseSchema = new mongoose.Schema({
     type:String,
     max:50
   },
-  courseVideo:{
+  courseVideo:{ 
     type:String,
     max:50
   }
 
 
   // Add more fields as needed  
-});
+},
+{ timestamps: true }  );
 
 const CoursesModel = mongoose.model('courses', CourseSchema);
 

@@ -10,7 +10,7 @@
   <br/>
 <div id="accordion">
     <% if(courses.length == 0){ %>
-        <p>You have not registered for any course</p>
+        <p>You have not active courses</p>
      <%}%>
      <% topCourses.forEach(function(course) { %>
         <div class="card">
@@ -44,7 +44,7 @@
                 <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=course._id+course._id %>" aria-expanded="false" aria-controls="collapseTwo">
                     <i class="flaticon-question"></i> <%= course.title %>
                 </button>
-            
+                <span><%=course.percentage %>% completed</span>
                 <span><a href="/topics/<%=course._id %>"> continue</a></span>
                    
             </h5>

@@ -43,8 +43,6 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
                 
                 const newTopicNumber = currentTopic.topicNo+1;
                 const topicCount = await TopicModel.countDocuments({courseId:currentTopic.courseId});
-                console.log(newTopicNumber);
-                console.log(topicCount);
                 if(newTopicNumber <= topicCount){
                   const nextTopic = await TopicModel.findOne({topicNo:newTopicNumber,courseId:currentTopic.courseId});
                   await UserProgressModel.findOneAndUpdate({user:req.user._id,course:currentTopic.courseId,progress:newTopicNumber,topic:nextTopic._id});
@@ -54,10 +52,12 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
                     nextTopic:nextTopic._id
                 }
                 }else{
-                //set the course as complete 
-                
+                //set the course as complete        
                 if(userProgress.progress == topicCount ){
-                  await UserProgressModel.findOneAndUpdate({user:req.user._id,completed:true});    
+                  //generate certificate 
+                  //certificate link
+                  const link = "images/certificates/43244.png";
+                  await UserProgressModel.findOneAndUpdate({user:req.user._id,completed:true,certificate:link});    
                 }
             
                 response = {

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+  <title>Topics </title>
+  <%- include('partials/header') %>
+
+<body>
+  <!-- Navigation -->
+  <%- include('partials/clientNav') %>
+  <% if(courses.length == 0){%>
+    <p>No courses found</p>
+  <%}%>  
+  <% courses.forEach(function(course) { %>
+    <div class="card">
+      <div class="card-header" id="<%=course._id %>">
+          <h5 class="mb-0">
+              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=course._id+course._id %>" aria-expanded="false" aria-controls="collapseTwo">
+                  <i class="flaticon-question"></i> <%= course.title %>
+              </button>
+              <span><a href="/course/view/<%=course._id %>"> View Course</a></span>
+                 
+          </h5>
+      </div>
+      <div id="<%=course._id+course._id %>" class="collapse" aria-labelledby="<%=course._id %>" data-parent="#accordion">
+          <div class="card-body">
+            <%= course.courseDesc %>
+          </div>
+          <img src="<%=course.courseImage%>"/>
+      </div>
+    </div>
+<% }); %>
+</body>
+</html>
+  

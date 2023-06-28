@@ -2,19 +2,45 @@ const { query } = require('express');
 const {CourseModel,UserProgressModel,CategoryModel,TopicModel, TopicQuizModel} = require('../models');
 const TopicMaterial = require('../models/topicMaterialModel');
 const CoursesModel = require('../models/coursesModel');
+const UserProgressController = require('./userProgressController');
 
 
-module.exports.getUserCourses = async (userId) => {
+
+
+module.exports.getUserCourses = async (userId,completed=false) => {
     try {
-        const userProgresses = await UserProgressModel.find({ user: userId });
-
+        let userProgresses = [];
+        console.log(completed);
+        if(!completed){
+           userProgresses = await UserProgressModel.find({ user: userId });
+        }else{
+           userProgresses = await UserProgressModel.find({ user: userId ,completed:false});
+        }
+        
         const courses = await Promise.all(userProgresses.map(async (progress) => {
            
           //const course = await CourseModel.findById(progress.course);
           const course = await CourseModel.findOne({_id:progress.course,active:true});
-          return course;
+          let modifiedCourse = {};
+          if(course){
+            let countTopics = await TopicModel.countDocuments({courseId:course._id});
+            countTopics++;
+            const percentage =  (progress.progress/countTopics) * 100
+             modifiedCourse = {
+              ...course.toObject(), // Spread the properties of the course object
+              progress: progress.progress,
+              completed:progress.completed,
+              percentage:percentage.toFixed(1) // Add the progress field
+            };
+          }else{
+            modifiedCourse = course
+          }
+         
+
+        
+          return modifiedCourse;
         }));
-      
+   
         const filteredCourses = courses.filter((course) => course !== null);
        
         return filteredCourses;
@@ -24,6 +50,18 @@ module.exports.getUserCourses = async (userId) => {
       }
   };
 
+  module.exports.getUserCourseCompletePercentage = async(courseId,userId)=>{
+    try {
+      const userProgresses = await UserProgressModel.findOne({ user: userId,course:courseId});
+      let countTopics = await TopicModel.countDocuments({courseId});
+      countTopics++;
+      const percentage =  ( userProgresses.progress/countTopics) * 100;
+      return percentage.toFixed(1);
+    } catch (error) {
+      return 0;
+      console.log(error);
+    }
+  } 
   
 
   module.exports.getUserCreatedCourses = async(userId) =>{
@@ -448,4 +486,25 @@ module.exports.checkIfUserCompletedCourse = async  (topicId,userId) =>{
 
  }
 
+}
+
+module.exports.checkCourseComplete = async(courseId,userId) =>{
+  try {
+    const progress = await UserProgressController.getUserProgress(courseId,userId);
+
+    let downloadCertificate = {
+      completed:false,
+      link:""
+    };
+  
+    if(progress != null && progress.completed){
+      downloadCertificate.completed = true;
+      downloadCertificate.link = progress.certificate;
+    }
+    return downloadCertificate;
+  } catch (error) {
+    console.log(error);
+    return downloadCertificate;
+ 
+  }
 }

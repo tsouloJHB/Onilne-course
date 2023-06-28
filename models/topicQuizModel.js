@@ -24,7 +24,9 @@ const quizSchema = new mongoose.Schema({
       required: true
     }
   }]
-});
+},
+{ timestamps: true }  
+);
 
 const topicQuiz = mongoose.model('topicQuiz', quizSchema);
 
