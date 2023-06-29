@@ -5,6 +5,7 @@ const TopicQuizModel = require('./topicQuizModel');
 const UserModel = require('./usersModel');
 const UserProgressModel = require('./userProgressModel');
 const CategoryModel = require('./courseCategories');
+const SettingsModel = require('./settingsModel');
 
 module.exports = {
     CourseModel,
@@ -13,5 +14,6 @@ module.exports = {
     TopicQuizModel,
     UserModel,
     UserProgressModel,
-    CategoryModel
+    CategoryModel,
+    SettingsModel
 };

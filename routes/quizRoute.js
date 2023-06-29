@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel, TopicMaterialModel,TopicQuizModel, UserProgressModel } = require('../models');
+const { TopicModel, TopicMaterialModel,TopicQuizModel, UserProgressModel, SettingsModel } = require('../models');
 
 router.post('/submit',verifyToken.verifyToken, async (req, res) => {
     try {
@@ -36,7 +36,13 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
             //get percentage of the mark
             const markPercentage = (mark / quizzers.questions.length) * 100;
             let response = {};
-            if(markPercentage > 70){
+            //get pass percentage
+            const settings = await SettingsModel.findOne({user:"admin"});
+            let percentage = 70;
+            if(settings){
+              percentage = settings.passPercentage
+            }   
+            if(markPercentage > percentage){
                 //set course as complete
                
                 //get the next topic
@@ -49,7 +55,8 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
                   response = {
                     mark:markPercentage+"%",
                     message:"You have successfully completed the quiz",
-                    nextTopic:nextTopic._id
+                    nextTopic:nextTopic._id,
+                    success:true
                 }
                 }else{
                 //set the course as complete        
@@ -63,7 +70,8 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
                 response = {
                   mark:markPercentage+"%",
                   message:"You have successfully completed the quiz",
-                  nextTopic:currentTopic._id
+                  nextTopic:currentTopic._id,
+                  success:true
               }
                 }
                
@@ -72,8 +80,9 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
                 //set course as incomplete 
                  response = {
                     mark:markPercentage+"%",
-                    message:"You received less than 70% , you may return back to the topic",
-                    nextTopic:""
+                    message:"You received less than "+percentage+"% , you may return back to the topic",
+                    nextTopic:"",
+                    success:false
                 }
             
                 console.log("You have failed");

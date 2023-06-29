@@ -3,6 +3,7 @@ const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const { UserProgressModel,TopicModel,CourseModel, TopicMaterialModel, CategoryModel } = require('../models');
 const { CoursesController, TopicsController } = require('../controllers');
+const { upload } = require('../middleware/upload');
 
 
 router.get('/', verifyToken.verifyToken, async (req, res) => {
@@ -128,9 +129,10 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
 
   
 // Create a course
-router.post('/', verifyToken.verifyToken, async (req, res) => {
+router.post('/',verifyToken.verifyToken,upload , async (req, res) => {
     try {
-
+      console.log(req.file);
+      const { filename, path } = req.file;
       const createCourse = await CoursesController.createCourse(req);
       // if(createCourse){
       //   res.redirect

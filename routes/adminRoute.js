@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const {verifyToken, isAdmin} = require('../middleware/verifyToken');
-const { CourseModel, CategoryModel, UserModel } = require('../models');
+const { CourseModel, CategoryModel, UserModel, SettingsModel } = require('../models');
 const { CoursesController } = require('../controllers');
 const { render } = require('ejs');
+const { upload } = require('../middleware/upload');
+
 
 // Protected route using verifyToken middleware
 router.get('/', verifyToken,isAdmin, async (req, res) => {
@@ -64,9 +66,14 @@ router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
 
 router.get('/settings',verifyToken,isAdmin, async (req,res)=>{
   try {
-    res.render('admin/settings');
+    let settings = await SettingsModel.findOne({user:"admin"});
+    if(!settings){
+      settings = {};
+    }
+    res.render('admin/settings',{settings});
   } catch (error) {
-    
+    console.log(error);
+  
   }
 });
 
@@ -84,7 +91,7 @@ router.post('/category',verifyToken,isAdmin, async (req,res)=>{
   }
 });
 
-router.post('/createCourse',verifyToken,isAdmin, async(req,res)=>{
+router.post('/createCourse',upload,verifyToken,isAdmin, async(req,res)=>{
   try {
     console.log("post");
     const createCourse = await CoursesController.createCourse(req);
@@ -107,6 +114,27 @@ router.delete('/deleteCourse/:id', verifyToken,isAdmin, async(req,res)=> {
   }
 });
 
+router.post('/settings', verifyToken,isAdmin, async(req,res)=> { 
+  try {
+    //check if admin settings exits
+    const findSettings = await SettingsModel.countDocuments();
+    if(findSettings > 0){
+      //update the settings
+      await SettingsModel.findOneAndUpdate({user:"admin",passPercentage:req.body.percentage});
+      return res.redirect("/admin/settings");
+    }else{
+      const settings = new SettingsModel({
+        passPercentage:req.body.percentage,
+        user:"admin"
+      });
+      await settings.save();
+      return res.redirect("/admin/settings");
+    }
+    
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 //router 
 

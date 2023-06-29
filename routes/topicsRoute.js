@@ -234,7 +234,7 @@ router.put('/quiz/:id',  verifyToken.verifyToken,async (req, res) => {
 router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
   try {
     const topicId = req.params.id;
-
+    await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     // Find the quiz by topicId
     const quiz = await TopicQuizModel.findOne({ topicId });
   

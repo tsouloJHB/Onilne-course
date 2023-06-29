@@ -59,8 +59,7 @@ module.exports.checkIfUserCompletedTopic = async (topicId,userId) =>{
     const progress = await UserProgressModel.findOne({course:topic.courseId,user:userId});
   
     if( progress.progress > topic.topicNo ){
-      console.log(progress.progress);
-      console.log(topic.topicNo)
+      
       return true;
     } 
     return false;

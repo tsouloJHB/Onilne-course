@@ -20,7 +20,9 @@ const topicSchema = new mongoose.Schema({
   }
 
   // Add more fields as needed  
-});
+},
+{ timestamps: true }  
+);
 
 const Topic = mongoose.model('Topic', topicSchema);
 

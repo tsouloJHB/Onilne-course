@@ -111,7 +111,8 @@ module.exports.courseSearch = async (req, res) => {
 
     // Search in CourseModel by title
     const courseQuery = {
-      title: { $regex: searchQuery, $options: 'i' }
+      title: { $regex: searchQuery, $options: 'i' },
+      active:  true
     };
     const coursesByTitle = await CourseModel.find(courseQuery);
 
@@ -129,7 +130,7 @@ module.exports.courseSearch = async (req, res) => {
       if (categories.length > 0) {
         // If there are matching categories by name, retrieve the courses for each category
         const categoryIds = categories.map(category => category._id);
-        const coursesByCategory = await CourseModel.find({ category: { $in: categoryIds } });
+        const coursesByCategory = await CourseModel.find({ category: { $in: categoryIds } ,  active:  true});
 
         return coursesByCategory;
       } else {
@@ -187,15 +188,19 @@ module.exports.createCategory = async (name) => {
 //create course
 module.exports.createCourse = async(req) =>{
   try {
+        // Get the uploaded file information from the `req.file` object
+
+    const { filename, path } = req.file;
     const courseCount = await CourseModel.countDocuments()+1;
     const course = new CourseModel({
       title: req.body.title,
       courseNo: courseCount,
       courseDesc: req.body.courseDesc,
-      courseImage: req.body.courseImage,
+
       courseVideo: req.body.Video,
       user:req.user._id,
-      category:req.body.category
+      category:req.body.category,
+      courseImage:'/images/courseimages/'+req.file.filename
     });
     const savedCourse = await course.save();
     return {

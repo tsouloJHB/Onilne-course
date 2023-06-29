@@ -15,6 +15,11 @@
     <%}%> 
   <!-- List topics here -->
   <h1>All Topics</h1>
+    <% if(admin){ %>
+      <a href="/admin/courses/"><button>Back</button></a>
+    <%}else{%>
+      <a href="/course/created"><button>Back</button></a>
+    <%}%>  
     <div>
       <% if(!courseActive.active && !courseActive.topics){ %>
         Your course Is still inactive because you have no topics

@@ -65,11 +65,14 @@
     </form>
    <p id="response"></p> 
   <h2>Create Course</h2>
-  <form action="/admin/createCourse" method="POST">
+  <form action="/admin/createCourse" enctype="multipart/form-data" method="POST">
     <input type="text" name="title" placeholder="Title" required>
     <textarea name="courseDesc" placeholder="Course Description" required cols="30" rows="5"></textarea>
    
-    <input type="text" name="courseImage" placeholder="Course Image URL">
+    <div class="mb-3">
+      <label for="imageUpload" class="form-label">Select Image</label>
+      <input type="file" class="form-control" id="imageUpload" name="imageUpload">
+    </div>
     <label for="category">Category:</label> 
     <!-- <select id="category" name="category"></select> -->
     <select id="category" name="category">
@@ -100,7 +103,9 @@
                         <i class="flaticon-question"></i> <%= course.title %>
                     </button>
                 
-                    
+                    <% if(course.courseImage != ""){%>
+                      <img width="200px" src="<%=course.courseImage %>" />
+                    <%}%> 
                     <span><a href="/course/course-topics/<%=course._id %>"> course</a></span>
                     <span><a href="/course/edit/<%=course._id %>"> Edit Course</a></span>
                     <span><p class="deleteCourse" data-link-data="<%=course._id %>">Delete course</p></span>

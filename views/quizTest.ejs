@@ -14,7 +14,10 @@
 <% if(typeof response !== 'undefined' && response !== null){ %>
   <p>You received <%=response.mark%></p>
   <p><%=response.message%></p>
-   <a href="/topicOutline/material/<%=response.nextTopic%>"><button>Continue</button></a>
+  <% if(response.success){ %>
+    <a href="/topicOutline/material/<%=response.nextTopic%>"><button>Continue</button></a>
+  <%}%>
+
   <%}%>
 <form action="/quiz/submit" method="POST">
   <input type="hidden" value="<%=topicId%>" name="topicId"/>
@@ -43,8 +46,14 @@
     <p>Incorrect Answer 2: <%= question.incorrectAnswer2 %></p> -->
   </div>    
 <% }); %></br></br>
+<% if(typeof response == 'undefined' ){ %>
 <button>Submit Answers</button>
+<%}%>
+
+<% if(typeof response !== 'undefined' && response !== null){ %>
+    <% if(!response.success){ %>
+      <button>Submit Answers</button> 
+    <%}%>
+  
+<%}%>
 </form>
-<div>
-  <button type="submit">Submit</button>
-</div>

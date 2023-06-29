@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/usersModel');
+const { render } = require('ejs');
 // Middleware to verify JWT token and check expiration
 async function verifyToken(req, res, next) {
   const token = req.cookies.token || '';
@@ -35,7 +36,8 @@ const isAdmin = (req,res,next) =>{
   if(req.user.isAdmin){
     next();
   }else{
-    return res.status(403).json({error:'Forbidden'});
+    return res.render("404",{status:403});
+    //return res.status(403).json({error:'Forbidden'});
   }
 };
 module.exports = {verifyToken,isAdmin};
