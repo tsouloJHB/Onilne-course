@@ -12,7 +12,8 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
         const userProgress = await UserProgressModel.findOne({user:req.user._id,topic:topicId});
         //for, validation
         if(topicId == null || answer == null){
-            return res.redirect(req.headers.referer);
+            console.log("errors boy");
+            return res.redirect(req.headers.referer+"?error=No answer submitted");
         }
           //get current topic
         const currentTopic = await TopicModel.findById(topicId);

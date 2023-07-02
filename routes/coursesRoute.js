@@ -4,10 +4,14 @@ const verifyToken = require('../middleware/verifyToken');
 const { UserProgressModel,TopicModel,CourseModel, TopicMaterialModel, CategoryModel } = require('../models');
 const { CoursesController, TopicsController } = require('../controllers');
 const { upload } = require('../middleware/upload');
+const { courseDataValidate, courseEditDataValidate } = require('../validation/courseValidation');
+const { validationResult } = require("express-validator");
 
 
 router.get('/', verifyToken.verifyToken, async (req, res) => {
     try {
+     
+    
       // Retrieve all courses from the database
       const courses = await CourseModel.find({active:true});
       const coursesCount = await CourseModel.countDocuments() + 1;
@@ -51,7 +55,7 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
     try {
       // Retrieve all courses from the database
       const categories =  await CategoryModel.find();
-            
+                
 
       const courses = await CourseModel.find({user:req.user._id});
       const coursesCount = await CourseModel.countDocuments();
@@ -95,8 +99,24 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
 
 router.get('/search', verifyToken.verifyToken, async (req, res) => {
   try {
+      if(req.query.search == null || req.query.search == ""){
+        res.redirect(req.headers.referer);
+      }
       const courses = await CoursesController.courseSearch(req,res);
       res.render('search',{courses});
+  } catch (error) {
+    console.log(error);
+  }  
+});
+
+router.get('/search-suggest', verifyToken.verifyToken, async (req, res) => {
+  try {
+      if(req.query.search == null || req.query.search == ""){
+       // res.redirect(req.headers.referer);
+      }
+      const courses = await CoursesController.courseSuggestionSearch(req,res);
+       console.log(courses)
+      res.status(201).json({search:courses});
   } catch (error) {
     console.log(error);
   }  
@@ -129,16 +149,19 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
 
   
 // Create a course
-router.post('/',verifyToken.verifyToken,upload , async (req, res) => {
+router.post('/created',verifyToken.verifyToken,upload , courseDataValidate,async (req, res) => {
     try {
-      console.log(req.file);
-      const { filename, path } = req.file;
-      const createCourse = await CoursesController.createCourse(req);
-      // if(createCourse){
-      //   res.redirect
-      // }
-     
-      res.redirect(req.headers.referer);
+      console.log(req.body);
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        // Render the courses page with errors
+        console.log(errors.array());
+         await CoursesController.renderCourseCreatedPage(req, res, errors.array());
+      } else {
+        const createCourse = await CoursesController.createCourse(req);
+        // Handle course creation and redirection
+        res.redirect(req.headers.referer);
+      }
     } catch (error) {
       console.error('Error creating course:', error);
       return res.render('404',{message:"An error occurred while retrieving"});
@@ -164,9 +187,17 @@ router.post('/',verifyToken.verifyToken,upload , async (req, res) => {
     }
   });
   // Edit a course
-  router.put('/:id', verifyToken.verifyToken, async (req, res) => {
+  router.put('/:id', verifyToken.verifyToken,courseEditDataValidate, async (req, res) => {
     try {
       await CoursesController.courseUserAuthorized(req.user._id,req.params.id,res,req);
+      //validate data
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        console.log(errors.array());
+       
+        return res.status(400).json({errors: errors.array()});
+      }
+
       const updateCourse = await CoursesController.updateCourse(req);
       if(updateCourse.success == false){
      

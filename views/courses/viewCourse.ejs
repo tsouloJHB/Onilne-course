@@ -17,10 +17,11 @@
             <% if(course.registered) {%>
                 <span><a href="/topics/<%=course._id %>">open</a></span> 
             <%}else{%>
-                <form action="course/register" method="POST">
+                <form action="/course/register" method="POST">
                     <input type="hidden" value="<%=course._id %>" name="courseId" />
                     <button class="btn">Register</button>
                   </form>
+                  
             <%} if(course.completed){ %>
               <span>Completed</span>
             <%}else{%>
@@ -38,4 +39,5 @@
     </div>
   </div>
 </body>
+<%- include('../partials/footer') %>
 </html>  

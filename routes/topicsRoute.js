@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const { TopicModel, TopicMaterialModel,TopicQuizModel } = require('../models');
-const {CoursesController,TopicsController ,UserProgressController} = require('../controllers');
+const {CoursesController,TopicsController ,UserProgressController, QuizController} = require('../controllers');
+const { topicCreateDataValidate } = require('../validation/topicValidation');
+const { validationResult } = require('express-validator');
+const { quizCreateDataValidate } = require('../validation/quizValidation');
+const { validateCreateQuiz } = require('../validation/customValidation');
 
 // Protected route using verifyToken middleware
 router.get('/:id', verifyToken.verifyToken, async (req, res) => {
@@ -51,9 +55,21 @@ router.get('/create/:id', verifyToken.verifyToken, async (req, res) => {
 
 });  
 
-router.post('/', verifyToken.verifyToken,async (req, res) => {
+router.post('/', verifyToken.verifyToken,topicCreateDataValidate,async (req, res) => {
   try {
     // const topicNo = req.body.topicNo;
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(req.headers.referer);
+      const link = req.headers.referer.toString().split("/");
+      const courseId = link[link.length-1];
+      //console.log(link[link.length-1]);
+      //render the create topic page with error 
+     
+      return await TopicsController.renderCreateTopic(courseId,req.user.id,req,res,errors.array()  );
+      //return res.status(400).json({errors: errors.array()});
+    }
     const courseId = req.body.courseId;
     await CoursesController.courseUserAuthorized(req.user._id,courseId,res,req); 
     // Check if topic number already exists
@@ -110,16 +126,12 @@ router.get('/', verifyToken.verifyToken, async (req, res) => {
 router.get('/edit/:id',verifyToken.verifyToken ,async (req, res) => {
   try {
     const topicId = req.params.id;
-    if (typeof topicId === 'string') {
-        console.log("Thats true"); 
-    }
     // Find the topic by ID
     const auth = await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     if(!auth){
      // return  res.redirect('/users');
     }
     const topic = await TopicModel.findById(topicId);
-
     if (!topic) {
       // If topic is not found, render an error page or redirect to an error route
       return res.render('error', { message: 'Topic not found' });
@@ -127,6 +139,7 @@ router.get('/edit/:id',verifyToken.verifyToken ,async (req, res) => {
 
     // Find the topic material by topicId
     let topicMaterial = await TopicMaterialModel.findOne({ topicId });
+
     let quiz = await TopicQuizModel.findOne({ topicId });
 
     if (!topicMaterial) {
@@ -171,25 +184,43 @@ router.get('/createQuiz/:id', verifyToken.verifyToken, async (req, res) => {
   }
 });
 
-router.post('/createQuiz', verifyToken.verifyToken ,async (req, res) => {
+router.post('/createQuiz', verifyToken.verifyToken ,validateCreateQuiz,async (req, res) => {
   try {
+    
     const { topicId, questions } = req.body;
-    await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
-    // Assuming you're using Mongoose for database operations
-    const topicQuiz = new TopicQuizModel({
-      topicId,
-      questions: questions.map((q) => ({
-        question: q.question.toString(), // Convert to string if necessary
-        answer: q.answer.toString(),
-        incorrectAnswer1: q.incorrectAnswer1.toString(),
-        incorrectAnswer2: q.incorrectAnswer2.toString()
-      }))
-    });
 
-    // Save the quiz data to the database
-    const savedQuiz = await topicQuiz.save();
-    res.redirect('/topics/edit/'+topicId);
-    //res.status(200).json(savedQuiz);
+
+    if(req.body.errors){
+      const errors = [
+        {
+          type: 'field',
+          value: '',
+          msg: 'Empty fields',
+          path: 'title',
+          location: 'body'
+        }
+      ]
+     return await QuizController.renderCreateQuiz(topicId,req,res,errors); 
+    }else{
+      await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
+      // Assuming you're using Mongoose for database operations
+      const topicQuiz = new TopicQuizModel({
+        topicId,
+        questions: questions.map((q) => ({
+          question: q.question.toString(), // Convert to string if necessary
+          answer: q.answer.toString(),
+          incorrectAnswer1: q.incorrectAnswer1.toString(),
+          incorrectAnswer2: q.incorrectAnswer2.toString()
+        }))
+      });
+  
+      // Save the quiz data to the database
+      const savedQuiz = await topicQuiz.save();
+      res.redirect('/topics/edit/'+topicId);
+      //res.status(200).json(savedQuiz);
+    }
+
+   
   } catch (error) {
     if (error.name === 'CastError') {
       return res.render('404');
@@ -200,12 +231,27 @@ router.post('/createQuiz', verifyToken.verifyToken ,async (req, res) => {
 });
 
 
-router.put('/quiz/:id',  verifyToken.verifyToken,async (req, res) => {
+router.put('/quiz/:id',  verifyToken.verifyToken,validateCreateQuiz,async (req, res) => {
   try {
     const { topicId, questions } = req.body;
+    
+    if(req.body.errors){
+      console.log("errors in the house");
+      const errors = [
+        {
+          type: 'field',
+          value: '',
+          msg: 'Empty fields',
+          path: 'title',
+          location: 'body'
+        }
+      ]
+     //eturn await QuizController.renderViewQuiz(topicId,req,res,errors);
+      return res.status(400).json(errors);
+    }
+    console.log("Never");
     await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
-    console.log(questions);
-    console.log(topicId);
+
     // Assuming you're using Mongoose for database operations
     const topicQuiz = new TopicQuizModel({
       topicId,
@@ -223,7 +269,6 @@ router.put('/quiz/:id',  verifyToken.verifyToken,async (req, res) => {
     //res.redirect('/topics/quiz/'+topicId);
     res.status(200).json(savedQuiz);
   } catch (error) {
-   
     console.error('Error saving quiz data:', error);
     return res.render('404',{message:"An error occurred while retrieving"});
   }
@@ -258,9 +303,21 @@ router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
 
 
 
-router.post('/edit/:id', verifyToken.verifyToken,async (req, res) => {
+router.post('/edit/:id', verifyToken.verifyToken,topicCreateDataValidate,async (req, res) => {
   try {
     const topicId = req.params.id;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(req.headers.referer);
+      const link = req.headers.referer.toString().split("/");
+   
+      //console.log(link[link.length-1]);
+      //render the create topic page with error 
+     
+      return await TopicsController.renderEditTopic(topicId,req,res,errors.array());
+      //return res.status(400).json({errors: errors.array()});
+    }
     await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     // Find the topic by ID
     const topic = await TopicModel.findById(topicId);
@@ -293,7 +350,7 @@ router.post('/edit/:id', verifyToken.verifyToken,async (req, res) => {
     // Save the updated topic material
     await topicMaterial.save();
 
-    res.redirect('/topics/edit/'+topicId); // Redirect to the topics page after successful update
+    res.redirect('/topics/edit/'+topicId+"?response=success"); // Redirect to the topics page after successful update
   } catch (error) {
     console.error('Error updating topic and topic material:', error);
     res.status(500).send('An error occurred while updating the topic and topic material.');

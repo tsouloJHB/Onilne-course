@@ -5,13 +5,21 @@ const verifyToken = require('../middleware/verifyToken');
 const { TopicModel,UserModel, CourseModel } = require('../models');
 const { CoursesController, UserProgressController } = require('../controllers');
 const { redirect } = require('react-router-dom');
-
+const { loginDataValidate, userDataValidateSchemaBased } = require("../validation/user.validation");
+const { validationResult } = require("express-validator");
 // Login route
-router.post('/login', async (req, res) => {
+router.post('/login', loginDataValidate,async (req, res) => {
 
   const { email, password } = req.body;
 
   try {
+  
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors.array());
+      res.render('login', { errors: errors.array() });
+    }
+  
     const user = await UserModel.login(email, password);
     const token = utils.generateAuthToken(user._id); // Use the instance method to generate the token
     

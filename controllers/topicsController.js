@@ -1,6 +1,63 @@
-const {TopicModel, CourseModel, UserProgressModel} = require('../models');
 
+const {TopicModel, CourseModel, UserProgressModel,TopicMaterialModel,TopicQuizModel} = require('../models');
 
+//page renders
+
+module.exports.renderCreateTopic = async(courseId,userId,req,res,errors) =>{
+  try {
+    console.log(courseId);
+  
+    // Route handling code for topics page
+    
+    return res.render('createTopic',{courseId,errors});
+  } catch (error) {
+    console.error('Error:', error);
+    return res.render('404',{message:"An error occurred while retrieving"});
+  }
+
+}
+module.exports.renderEditTopic = async(topicId,req,res,errors) => {
+  try {
+   
+    // Find the topic by ID
+    const auth = await this.topicUserAuthorized(req.user._id,topicId,res,req);
+    if(!auth){ 
+     // return  res.redirect('/users');
+    }
+    const topic = await TopicModel.findById(topicId);
+
+    if (!topic) {
+      // If topic is not found, render an error page or redirect to an error route
+      return res.render('error', { message: 'Topic not found' });
+    }
+
+    // Find the topic material by topicId
+    let topicMaterial = await TopicMaterialModel.findOne({ topicId });
+
+    let quiz = await TopicQuizModel.findOne({ topicId });
+
+    if (!topicMaterial) {
+      // If topic material is not found, render an error page or redirect to an error route
+      // return res.render('error', { message: 'Topic material not found' });
+      topicMaterial = null;
+    }
+    if(!quiz){
+      quiz = false;
+    }else{
+      quiz = true;
+    }
+
+    const admin  = req.user.isAdmin;
+    return res.render('editTopic', { topic, topicMaterial,quiz,admin,errors }); // Render the edit topic page with the retrieved data
+  } catch (error) {
+    if (error.name === 'CastError') {
+      return res.render('404');
+    }
+   
+    console.error('Error retrieving topic and topic material:', error);
+    return res.render('404',{message:"An error occurred while retrieving"});
+  }
+}
 module.exports.getUserTopics = async (courseId) => {
     try {
         const topics  = await TopicModel.find({ courseId });
@@ -16,9 +73,9 @@ module.exports.getUserTopics = async (courseId) => {
 module.exports.topicUserAuthorized = async (userId,topicId,res,req) =>{
   try {
     const topic = await TopicModel.findById(topicId);
-   
+    
     const courseCheck = await CourseModel.find({_id:topic.courseId,user:userId});
-    console.log(courseCheck);
+   
     if(courseCheck.length < 1){
        if(req.user.isAdmin){
         return res.redirect('/admin');
@@ -27,6 +84,7 @@ module.exports.topicUserAuthorized = async (userId,topicId,res,req) =>{
    
      
     }else{
+    
       return false
     }
   } catch (error) {

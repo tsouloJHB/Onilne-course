@@ -48,6 +48,7 @@
 <% }); %></br></br>
 <% if(typeof response == 'undefined' ){ %>
 <button>Submit Answers</button>
+<p id="error"></p>
 <%}%>
 
 <% if(typeof response !== 'undefined' && response !== null){ %>
@@ -57,3 +58,17 @@
   
 <%}%>
 </form>
+
+<script>
+  $(document).ready(function (){
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    if(error !== null){
+      $('#error').text(error);
+    //remove query
+    history.replaceState([],document.title,window.location.pathname);
+    }
+
+  });  
+</script>
+<%- include('partials/footer') %>

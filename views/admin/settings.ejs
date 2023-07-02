@@ -35,7 +35,13 @@
           <input type="text" id="categoryName" name="percentage" value="<%= settings.passPercentage %>" placeholder="add percentage" />
           <input type="submit"  value="add percentage"/>
         </form>
-       
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+          <div class="errors">
+            <% errors.forEach(function (error) { %>
+              <p class="error-message"><%= error.msg %></p>
+            <% }) %>
+          </div>
+        <% } %>
     </div>
     <div class="container mt-4">
         <h3>Upload logo image</h3>

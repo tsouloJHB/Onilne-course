@@ -28,10 +28,10 @@
     <a href="../../course/created"> <button >Back</button></a>
   <% }%>  
   <form id="courseForm" action="/course/<%=course._id %>" >
-    <input type="text" name="title" placeholder="Title" value="<%=course.title%>" required>
-    <textarea name="courseDesc" placeholder="Course Description"  required cols="30" rows="5"><%=course.courseDesc%></textarea>
+    <input type="text" name="title" placeholder="Title" value="<%=course.title%>" >
+    <textarea name="courseDesc" placeholder="Course Description"   cols="30" rows="5"><%=course.courseDesc%></textarea>
    
-    <input type="text" name="courseImage" placeholder="Course Image URL" value="<%=course.courseImage%>">
+ 
     <label for="category">Category:</label> 
     <!-- <select id="category" name="category"></select> -->
    
@@ -90,15 +90,20 @@ function trimWhiteSpace(){
             //location.reload();
           },
           error: function(response){
-            console.error('Put request failed', response.error);
+            console.log(response.responseJSON);
+            if(response.responseJSON){
+              const $message = $('#message');
+              $message.css('color', 'red').removeClass('hidden');
+              response.responseJSON.errors.forEach(element => {
+                console.log(element);
+                $message.append("<br>"+element.msg);
+              });
+            }
           }
         });
       });
     });
   </script>
-  <script src="/js/jquery-3.2.1.slim.min.js"></script>
-  <script src="/js/jquery-1.12.4.min.js"></script>
-  <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
+ <%- include('../partials/footer') %>
 </body>
 </html>

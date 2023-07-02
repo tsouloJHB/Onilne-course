@@ -20,19 +20,26 @@
     <div id="entityContainer">
       <div class="entityRow">
         <label for="question">Question:</label>
-        <textarea name="questions[0][question]" rows="5" cols="50" required></textarea>
+        <textarea name="questions[0][question]" rows="5" cols="50" ></textarea>
         <label for="answer">Answer:</label>
-        <textarea name="questions[0][answer]" rows="5" cols="50" required></textarea>
+        <textarea name="questions[0][answer]" rows="5" cols="50" ></textarea>
         <label for="incorrectAnswer1">Incorrect Answer 1:</label>
-        <textarea name="questions[0][incorrectAnswer1]" rows="5" cols="50" required></textarea>
+        <textarea name="questions[0][incorrectAnswer1]" rows="5" cols="50"></textarea>
         <label for="incorrectAnswer2">Incorrect Answer 2:</label>
-        <textarea name="questions[0][incorrectAnswer2]" rows="5" cols="50" required></textarea>
+        <textarea name="questions[0][incorrectAnswer2]" rows="5" cols="50" ></textarea>
       </div>
     </div>
   
     <button type="button" id="addEntityBtn">Add Entity</button>
     <button type="submit" >Submit</button>
   </form>   
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="errors">
+      <% errors.forEach(function (error) { %>
+        <p class="error-message"><%= error.msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
 </body>
 
   
@@ -60,13 +67,13 @@ addEntityBtn.addEventListener('click', () => {
   const questionTemplate = `
     <div class="entityRow">
       <label for="question">Question:</label>
-      <textarea name="questions[${entityIndex}][question]" rows="5" cols="50" required>${questionValue}</textarea>
+      <textarea name="questions[${entityIndex}][question]" rows="5" cols="50" >${questionValue}</textarea>
       <label for="answer">Answer:</label>
-      <textarea name="questions[${entityIndex}][answer]" rows="5" cols="50" required>${answerValue}</textarea>
+      <textarea name="questions[${entityIndex}][answer]" rows="5" cols="50" >${answerValue}</textarea>
       <label for="incorrectAnswer1">Incorrect Answer 1:</label>
-      <textarea name="questions[${entityIndex}][incorrectAnswer1]" rows="5" cols="50" required>${incorrectAnswer1Value}</textarea>
+      <textarea name="questions[${entityIndex}][incorrectAnswer1]" rows="5" cols="50" >${incorrectAnswer1Value}</textarea>
       <label for="incorrectAnswer2">Incorrect Answer 2:</label>
-      <textarea name="questions[${entityIndex}][incorrectAnswer2]" rows="5" cols="50" required>${incorrectAnswer2Value}</textarea>
+      <textarea name="questions[${entityIndex}][incorrectAnswer2]" rows="5" cols="50" >${incorrectAnswer2Value}</textarea>
     </div>
   `;
 
@@ -76,5 +83,5 @@ addEntityBtn.addEventListener('click', () => {
 
 
   </script>
-  
+  <%- include('partials/footer') %>
   </html> 

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {verifyToken, isAdmin} = require('../middleware/verifyToken');
 const { CourseModel, CategoryModel, UserModel, SettingsModel } = require('../models');
-const { CoursesController } = require('../controllers');
+const { CoursesController, SettingsController } = require('../controllers');
 const { render } = require('ejs');
 const { upload } = require('../middleware/upload');
 
@@ -73,19 +73,26 @@ router.get('/settings',verifyToken,isAdmin, async (req,res)=>{
     res.render('admin/settings',{settings});
   } catch (error) {
     console.log(error);
-  
+    
   }
 });
 
 router.post('/category',verifyToken,isAdmin, async (req,res)=>{
   try {
     console.log(req.body);
-    const createCategory = await CoursesController.createCategory(req.body.name);
-    if(createCategory){
-      res.json(createCategory );
+    let createCategory = {};
+    if(req.body.name == null || req.body.name == ""){
+      createCategory = {
+        success: false,
+        message: 'Empty field'
+      };
     }else{
-      res.json(createCategory );
-    }    
+       createCategory = await CoursesController.createCategory(req.body.name);
+    }
+   
+   
+    res.json(createCategory );
+  
   } catch (error) {
     
   }
@@ -117,19 +124,35 @@ router.delete('/deleteCourse/:id', verifyToken,isAdmin, async(req,res)=> {
 router.post('/settings', verifyToken,isAdmin, async(req,res)=> { 
   try {
     //check if admin settings exits
-    const findSettings = await SettingsModel.countDocuments();
-    if(findSettings > 0){
-      //update the settings
-      await SettingsModel.findOneAndUpdate({user:"admin",passPercentage:req.body.percentage});
-      return res.redirect("/admin/settings");
+    if(req.body.percentage == null || req.body.percentage == ""){
+        //render settings page
+        const errors = [
+          {
+            type: 'field',
+            value: '',
+            msg: 'Empty fields',
+            path: 'title',
+            location: 'body'
+          }
+        ]
+        return await SettingsController.renderSettingPage(req,res,errors);
     }else{
-      const settings = new SettingsModel({
-        passPercentage:req.body.percentage,
-        user:"admin"
-      });
-      await settings.save();
-      return res.redirect("/admin/settings");
+      const findSettings = await SettingsModel.countDocuments();
+      if(findSettings > 0){
+        //update the settings
+        await SettingsModel.findOneAndUpdate({user:"admin",passPercentage:req.body.percentage});
+        return res.redirect("/admin/settings");
+      }else{
+        //create settings
+        const settings = new SettingsModel({
+          passPercentage:req.body.percentage,
+          user:"admin"
+        });
+        await settings.save();
+        return res.redirect("/admin/settings");
+      }
     }
+ 
     
   } catch (error) {
     console.log(error);

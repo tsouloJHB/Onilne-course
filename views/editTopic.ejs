@@ -18,28 +18,29 @@
   <form action="/topics/edit/<%= topic._id %>" method="POST">
     <div>
       <label for="topicTitle">Topic Title:</label>
-      <input type="text" id="topicTitle" name="topicTitle" value="<%= topic.title %>" required>
+      <input type="text" id="topicTitle" name="topicTitle" value="<%= topic.title %>" >
     </div>
     <div>
 
-      <input type="hidden" id="topicNo" name="topicNo" value="<%= topic.topicNo %>" required>
+      <input type="hidden" id="topicNo" name="topicNo" value="<%= topic.topicNo %>" >
     </div>
     <div>
       <label for="topicDesc">Topic Description:</label>
-      <textarea id="topicDesc" name="topicDesc" rows="4" required><%= topic.topicDesc %></textarea>
+      <textarea id="topicDesc" name="topicDesc" rows="4" ><%= topic.topicDesc %></textarea>
     </div>
     <% if(topicMaterial != null){ %>
     <div>
       <label for="materialTitle">Material Title:</label>
-      <input type="text" id="materialTitle" name="materialTitle" value="<%= topicMaterial.title %>" required>
+      <input type="text" id="materialTitle" name="materialTitle" value="<%= topicMaterial.title %>">
     </div>
     <div>
       <label for="materialContent">Material Content:</label>
-      <textarea id="materialContent" name="materialContent" rows="6" required><%= topicMaterial.content %></textarea>
+      <textarea id="materialContent" name="materialContent" rows="6"><%= topicMaterial.content %></textarea>
     </div>
     <div>
       <label for="materialVideo">Material Video:</label>
       <input type="text" id="materialVideo" name="materialVideo" value="<%= topicMaterial.topicVideo %>">
+      <input type="hidden" id="materialVideo" name="courseId" value="for-validation-only">
     </div>
     <%} %><br/>
     <% if(quiz){ %>
@@ -55,6 +56,13 @@
     <%}%>
     <button type="submit">Update</button>
   </form>
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="errors">
+      <% errors.forEach(function (error) { %>
+        <p class="error-message"><%= error.msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
 
   <script>
     $(document).ready(function (){
@@ -79,9 +87,6 @@
 
     });
   </script>
-  <script src="/js/jquery-3.2.1.slim.min.js"></script>
-  <script src="/js/jquery-1.12.4.min.js"></script>
-  <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
+ <%- include('partials/footer') %>
 </body>
 </html>

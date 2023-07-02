@@ -6,7 +6,36 @@ const UserProgressController = require('./userProgressController');
 
 
 
+//page renders
+module.exports.renderCoursesPage = async (req, res, errors) => {
+  try {
+    // Retrieve all courses from the database
+    const courses = await CourseModel.find({ active: true });
+    const coursesCount = await CourseModel.countDocuments() + 1;
 
+    res.render('courses', { errors, courses, coursesCount });
+  } catch (error) {
+    console.error('Error retrieving courses:', error);
+    return res.render('404', { message: "An error occurred while retrieving" });
+  }
+}
+
+module.exports.renderCourseCreatedPage = async (req, res, errors) => {
+  try {
+    // Retrieve all courses from the database
+    const categories =  await CategoryModel.find();
+          
+   
+    const courses = await CourseModel.find({user:req.user._id});
+    const coursesCount = await CourseModel.countDocuments();
+    const coursesWithData = await this.coursesWithData(courses);
+    res.render('courses',{courses:coursesWithData,coursesCount,categories,errors});
+     
+  } catch (error) { 
+    console.error('Error retrieving courses:', error);
+    return res.render('404',{message:"An error occurred while retrieving"});
+  }
+}
 module.exports.getUserCourses = async (userId,completed=false) => {
     try {
         let userProgresses = [];
@@ -144,6 +173,33 @@ module.exports.courseSearch = async (req, res) => {
   }
 };
 
+
+module.exports.courseSuggestionSearch = async (req, res) => {
+  try {
+    const query = req.query.search;
+    const courseQuery = {
+      title: { $regex: query, $options: 'i' },
+      active:  true
+    };
+    const coursesByTitle = await CourseModel.find(courseQuery);
+    let data = {
+        courses:"",
+        categories:""
+    }
+    data.courses =coursesByTitle;
+
+    const categoryQuery = {
+      name: { $regex: query, $options: 'i' }
+    };
+    const categories = await CategoryModel.find(categoryQuery);
+    // data.push(categories);
+    data.categories = categories;
+    console.log(data)
+    return data;
+  } catch (error) {
+    
+  }
+}
 
 
 module.exports.getCourseCategories = async() =>{

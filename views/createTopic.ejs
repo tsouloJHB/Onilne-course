@@ -16,19 +16,26 @@
 
     <form action="/topics" method="POST">
       <label for="topicTitle">Topic Title:</label>
-      <input type="text" id="topicTitle" name="topicTitle" required>
+      <input type="text" id="topicTitle" name="topicTitle">
       
       <label for="topicDesc">Topic Description:</label>
-      <input type="text" id="topicDesc" name="topicDesc" required>
+      <textarea  id="topicDesc" cols="50" rows="10" name="topicDesc"></textarea>
 
       <label for="materialContent">Material Content:</label>  
-      <textarea id="materialContent" cols="50" rows="10" name="materialContent" required></textarea>
+      <textarea id="materialContent" cols="50" rows="10" name="materialContent" d></textarea>
 
       <label for="materialVideo">Material Video:</label>
       <input type="text" id="materialVideo" name="materialVideo">
       <input type="hidden" id="materialVideo" name="courseId" value="<%=courseId %>">
       <button type="submit">Create</button>
     </form>
-
+      <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="errors">
+          <% errors.forEach(function (error) { %>
+            <p class="error-message"><%= error.msg %></p>
+          <% }) %>
+        </div>
+      <% } %>
+      <%- include('partials/footer') %>
   </body>
 </html>
