@@ -25,10 +25,15 @@
       </ul>
 
       <!-- Search Form -->
+      <div class="dropdown">
       <form class="form-inline ml-3" action="/course/search" method="GET">
         <input class="form-control mr-sm-2" id="search-button" name="search" type="search" placeholder="course or category" aria-label="Search">
+        <div class="dropdown-menu" id="searchResults">
+          <a class="dropdown-item" href="/course/search?search='+suggestion.name+'"> The menu</a>
+        </div>
         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
       </form>
+    </div>
  
     </div>
   </div>
@@ -36,4 +41,5 @@
 <ul style="color:black" id="suggestions-list">
 
 </ul>
+
     

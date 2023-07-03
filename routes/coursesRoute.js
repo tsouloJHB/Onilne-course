@@ -102,7 +102,10 @@ router.get('/search', verifyToken.verifyToken, async (req, res) => {
       if(req.query.search == null || req.query.search == ""){
         res.redirect(req.headers.referer);
       }
+      
       const courses = await CoursesController.courseSearch(req,res);
+  
+
       res.render('search',{courses});
   } catch (error) {
     console.log(error);
@@ -115,7 +118,7 @@ router.get('/search-suggest', verifyToken.verifyToken, async (req, res) => {
        // res.redirect(req.headers.referer);
       }
       const courses = await CoursesController.courseSuggestionSearch(req,res);
-       console.log(courses)
+      
       res.status(201).json({search:courses});
   } catch (error) {
     console.log(error);
@@ -124,11 +127,13 @@ router.get('/search-suggest', verifyToken.verifyToken, async (req, res) => {
 
 router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
   try {
+    console.log("users here");
     const course = await CourseModel.findById(req.params.id);
     if(!course){
       return res.render('courses/viewCourse',{course:{}}); 
     }
     const userProgress = await UserProgressModel.findOne({user:req.user._id,course:course._id});
+ 
     if(userProgress){
       const updatedCourse = modifiedCourse = {
         ...course.toObject(), // Spread the properties of the course object
@@ -136,12 +141,27 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
         completed:userProgress.completed,
          // Add the progress field
       };
-
+      console.log(updatedCourse);
       return res.render('courses/viewCourse',{course:updatedCourse});
     }
+
+    let owner = false;
+    console.log(course.user);
+    console.log(req.user._id);
+    if(req.user._id.toString() == course.user.toString()){
+      owner = true;
+    }
+
+    const updatedCourse = {
+      ...course.toObject(), // Spread the properties of the course object
+      owner:owner
+       // Add the progress field
+    };
+    console.log(updatedCourse);
     
-    res.render('courses/viewCourse',{course});
+    res.render('courses/viewCourse',{course:updatedCourse});
   } catch (error) {
+    res.render('404');
     console.log(error);
   }  
 });
@@ -186,6 +206,30 @@ router.post('/created',verifyToken.verifyToken,upload , courseDataValidate,async
       return res.status(500).json("An error occurred");
     }
   });
+  router.put('/image', verifyToken.verifyToken,upload, async (req, res) => {
+    // console.log('Arrived');
+    // console.log( req.body);
+    // return res.status(201).json("ARRIVED") 
+    try {
+      if(req.body.courseId == null || req.body.courseId == ""){
+        const errors = [
+          {
+            type: 'field',
+            value: '',
+            msg: 'Missing courseId',
+            path: 'title',
+            location: 'body'
+          }
+        ]
+        return res.status(401).json(errors);
+      }
+      return await CoursesController.updateCourseImage(req,res);  
+    } catch (error) {
+       console.log(error);
+       return res.status(500).json({error}) 
+    }
+
+  });
   // Edit a course
   router.put('/:id', verifyToken.verifyToken,courseEditDataValidate, async (req, res) => {
     try {
@@ -211,6 +255,7 @@ router.post('/created',verifyToken.verifyToken,upload , courseDataValidate,async
     }
   });
 
+   
 
  
   router.get('/edit/:id', verifyToken.verifyToken, async (req, res) => {

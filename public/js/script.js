@@ -8,7 +8,7 @@ function renderSearchSuggestion(suggestions){
         $('#suggestions-list').append('<li><a href="/course/search?search='+suggestion.name+'"> '+ suggestion.name + '</a></li>');
     });
     suggestions.search.courses.forEach(suggestion => {
-        $('#suggestions-list').append('<li><a href="/course/view/'+suggestion._id+'"> '+ suggestion.title + '</a></li>');
+        $('#suggestions-list').append('<li><a href="/course/view/'+suggestion._id+'"> '+ suggestion.title + 'Course <img width="10%" src="'+suggestion.image +'"/> </a> </li>');
     });
  
 }

@@ -144,11 +144,23 @@ module.exports.courseSearch = async (req, res) => {
       active:  true
     };
     const coursesByTitle = await CourseModel.find(courseQuery);
-
+    console.log("here");
     if (coursesByTitle.length > 0) {
       // If there are matching courses by title, return them
-   
-      return coursesByTitle;
+      const courses = [];
+      coursesByTitle.forEach((course) => {
+        const owner = false;
+        if (req.user._id == course.user) {
+          owner = true;
+        }
+        const modifiedCourse = {
+          ...course.toObject(), // Spread the properties of the course object
+          owner:owner// Add the progress field
+        };
+        courses.push(modifiedCourse);
+      });
+      console.log(courses);
+      return courses;
     } else {
       // If no matching courses by title, search in CategoryModel by name
       const categoryQuery = {
@@ -194,7 +206,7 @@ module.exports.courseSuggestionSearch = async (req, res) => {
     const categories = await CategoryModel.find(categoryQuery);
     // data.push(categories);
     data.categories = categories;
-    console.log(data)
+    // console.log(data)
     return data;
   } catch (error) {
     
@@ -309,6 +321,20 @@ module.exports.updateCourse = async(req) =>{
       message: 'An error occurred while creating the course.',
       code:500
     };
+  }
+}
+
+module.exports.updateCourseImage = async(req,res) =>{
+  try {
+   const courseImage = '/images/courseimages/'+req.file.filename;
+   const updateImage = await CourseModel.findByIdAndUpdate(req.body.courseId,{courseImage});
+   if(!updateImage){
+    return res.status(400).json("Error saving image");
+   }
+   return res.status(201).json("Success");
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json("Error saving image");
   }
 }
 

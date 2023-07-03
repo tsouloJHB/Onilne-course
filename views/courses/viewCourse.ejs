@@ -9,6 +9,7 @@
   <%- include('../partials/clientNav') %>
   <br><br>
   <div class="card">
+    
     <div class="card-header" id="<%=course._id %>">
         <h5 class="mb-0">
             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=course._id+course._id %>" aria-expanded="false" aria-controls="collapseTwo">
@@ -17,11 +18,15 @@
             <% if(course.registered) {%>
                 <span><a href="/topics/<%=course._id %>">open</a></span> 
             <%}else{%>
+                <% if(!course.owner){ %>
                 <form action="/course/register" method="POST">
                     <input type="hidden" value="<%=course._id %>" name="courseId" />
                     <button class="btn">Register</button>
                   </form>
-                  
+               <% }else{%>
+                <span><a href="/course/course-topics/<%=course._id %>"> View course</a></span>
+                
+                <%}%>
             <%} if(course.completed){ %>
               <span>Completed</span>
             <%}else{%>
