@@ -4,84 +4,102 @@
 
   <%- include('partials/header') %>
  
-<body>
-  <!-- Navigation -->
+  <body>
+    <!-- Navigation -->
  
-  <% if(admin){ %>
-    <%- include('partials/navBar') %>
+    <% if(admin){ %>
+      <%- include('partials/navBar') %>
     <%}else {%>
       <%- include('partials/clientNav') %>    
     <%}%> 
     <br><br>
-<a href="/topics/edit/<%=topicId%>"><button>Back</button></a>    
-<form id="quizForm" action="/topics/createQuiz" method="POST">
-    <input type="hidden" name="topicId" value="<%=topicId%>">
-    
-    <div id="entityContainer">
-      <div class="entityRow">
-        <label for="question">Question:</label>
-        <textarea name="questions[0][question]" rows="5" cols="50" ></textarea>
-        <label for="answer">Answer:</label>
-        <textarea name="questions[0][answer]" rows="5" cols="50" ></textarea>
-        <label for="incorrectAnswer1">Incorrect Answer 1:</label>
-        <textarea name="questions[0][incorrectAnswer1]" rows="5" cols="50"></textarea>
-        <label for="incorrectAnswer2">Incorrect Answer 2:</label>
-        <textarea name="questions[0][incorrectAnswer2]" rows="5" cols="50" ></textarea>
+    <a href="/topics/edit/<%=topicId%>"><button>Back</button></a>    
+    <form id="quizForm" action="/topics/createQuiz/<%=topicId%>" method="POST">
+      <input type="hidden" name="topicId" value="<%=topicId%>">
+      
+      <div id="entityContainer">
+        <div class="entityRow">
+          <label for="question">Question:</label>
+          <textarea name="questions[0][question]" rows="5" cols="50"></textarea>
+          <div class="error-message"></div>
+          <label for="answer">Answer:</label>
+          <textarea name="questions[0][answer]" rows="5" cols="50"></textarea>
+          <div class="error-message"></div>
+          <label for="incorrectAnswer1">Incorrect Answer 1:</label>
+          <textarea name="questions[0][incorrectAnswer1]" rows="5" cols="50"></textarea>
+          <div class="error-message"></div>
+          <label for="incorrectAnswer2">Incorrect Answer 2:</label>
+          <textarea name="questions[0][incorrectAnswer2]" rows="5" cols="50"></textarea>
+          <div class="error-message"></div>
+        </div>
       </div>
-    </div>
-  
-    <button type="button" id="addEntityBtn">Add Entity</button>
-    <button type="submit" >Submit</button>
-  </form>   
-  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-    <div class="errors">
-      <% errors.forEach(function (error) { %>
-        <p class="error-message"><%= error.msg %></p>
-      <% }) %>
-    </div>
-  <% } %>
-</body>
+    
+      <button type="button" id="addEntityBtn">Add Entity</button>
+      <button type="submit">Submit</button>
+    </form>
+    
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <div class="errors">
+        <% errors.forEach(function (error) { %>
+          <p class="error-message"><%= error.msg %></p>
+        <% }) %>
+      </div>
+    <% } %>
+    
+    <%- include('partials/footer') %>
 
-  
-  <script>
-   // JavaScript
-// JavaScript
-const entityContainer = document.getElementById('entityContainer');
-const addEntityBtn = document.getElementById('addEntityBtn');
+    <script>
+      const entityContainer = document.getElementById('entityContainer');
+      const addEntityBtn = document.getElementById('addEntityBtn');
+      const quizForm = document.getElementById('quizForm');
 
-let entityIndex = 0;
+      let entityIndex = 0;
 
-addEntityBtn.addEventListener('click', () => {
-  const questionElement = document.querySelector(`textarea[name="questions[${entityIndex}][question]"]`);
-  const answerElement = document.querySelector(`textarea[name="questions[${entityIndex}][answer]"]`);
-  const incorrectAnswer1Element = document.querySelector(`textarea[name="questions[${entityIndex}][incorrectAnswer1]"]`);
-  const incorrectAnswer2Element = document.querySelector(`textarea[name="questions[${entityIndex}][incorrectAnswer2]"]`);
+      addEntityBtn.addEventListener('click', () => {
+        entityIndex++;
 
-  const questionValue = "";
-  const answerValue = "";
-  const incorrectAnswer1Value = "";
-  const incorrectAnswer2Value = "";
+        const questionTemplate = `
+          <div class="entityRow">
+            <label for="question">Question:</label>
+            <textarea name="questions[${entityIndex}][question]" rows="5" cols="50"></textarea>
+            <div class="error-message"></div>
+            <label for="answer">Answer:</label>
+            <textarea name="questions[${entityIndex}][answer]" rows="5" cols="50"></textarea>
+            <div class="error-message"></div>
+            <label for="incorrectAnswer1">Incorrect Answer 1:</label>
+            <textarea name="questions[${entityIndex}][incorrectAnswer1]" rows="5" cols="50"></textarea>
+            <div class="error-message"></div>
+            <label for="incorrectAnswer2">Incorrect Answer 2:</label>
+            <textarea name="questions[${entityIndex}][incorrectAnswer2]" rows="5" cols="50"></textarea>
+            <div class="error-message"></div>
+          </div>
+        `;
 
-  // Now you have the values as strings, which can be submitted correctly
-  entityIndex++;
-  const questionTemplate = `
-    <div class="entityRow">
-      <label for="question">Question:</label>
-      <textarea name="questions[${entityIndex}][question]" rows="5" cols="50" >${questionValue}</textarea>
-      <label for="answer">Answer:</label>
-      <textarea name="questions[${entityIndex}][answer]" rows="5" cols="50" >${answerValue}</textarea>
-      <label for="incorrectAnswer1">Incorrect Answer 1:</label>
-      <textarea name="questions[${entityIndex}][incorrectAnswer1]" rows="5" cols="50" >${incorrectAnswer1Value}</textarea>
-      <label for="incorrectAnswer2">Incorrect Answer 2:</label>
-      <textarea name="questions[${entityIndex}][incorrectAnswer2]" rows="5" cols="50" >${incorrectAnswer2Value}</textarea>
-    </div>
-  `;
+        entityContainer.insertAdjacentHTML('beforeend', questionTemplate);
+      });
 
-  entityContainer.insertAdjacentHTML('beforeend', questionTemplate);
- 
-});
+      quizForm.addEventListener('submit', (event) => {
+        const questionElements = document.querySelectorAll(`textarea[name^="questions"]`);
+        let isValid = true;
 
+        questionElements.forEach((element) => {  
+          const value = element.value.trim();
+          const errorElement = element.nextElementSibling; // Get the next sibling element
 
-  </script>
-  <%- include('partials/footer') %>
-  </html> 
+          if (value === '') {
+            isValid = false;
+            element.classList.add('error');
+            errorElement.textContent = 'This field is required.';
+          } else {
+            element.classList.remove('error');
+            errorElement.textContent = '';
+          }
+        });
+
+        if (!isValid) {
+          event.preventDefault();
+        }
+      });
+    </script>
+  </body>
+</html>

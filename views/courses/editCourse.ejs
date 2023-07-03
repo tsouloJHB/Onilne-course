@@ -65,78 +65,112 @@
     </form>
   </div>
   <script>
-
-function trimWhiteSpace(){
-        $('input[type="text"]').each(function (){
-          var inputValue = $.trim($(this).val());
-          $(this).val(inputValue);
-        }); 
-       } 
-    $(document).ready(function (){
-
-        $('#courseForm').submit(function (event){
+    $(document).ready(function() {
+      $('#courseForm').submit(function(event) {
         event.preventDefault();
-            
-        var form = $(this);
-        var url  = form.attr('action');
-        trimWhiteSpace();
-        //serialize the data
-        var formData  = form.serialize();
   
-        //send the Put request
+        // Clear previous error messages
+        $('.error-message').remove();
+  
+        // Perform validation
+        var isValid = true;
+  
+        $('input[type="text"], textarea').each(function() {
+          if ($(this).val().trim() === '') {
+            $(this).after('<p class="error-message">This field is required.</p>');
+            isValid = false;
+          }
+        });
+  
+        if (isValid) {
+          var form = $(this);
+          var url = form.attr('action');
+  
+          // Serialize the data
+          var formData = form.serialize();
+  
+          // Send the PUT request
+          $.ajax({
+            url: url,
+            type: 'PUT',
+            data: formData,
+            success: function(response) {
+              console.log(response);
+  
+              // Display success message in green
+              const $message = $('#message');
+              $message.text('Course data saved').css('color', 'green').removeClass('hidden');
+  
+              // Hide the message after a few seconds with fade-out effect
+              setTimeout(function() {
+                $message.addClass('hidden');
+              }, 5000);
+            },
+            error: function(response) {
+              console.log(response.responseJSON);
+              if (response.responseJSON) {
+                const $message = $('#message');
+                $message.text('').css('color', 'red').removeClass('hidden');
+                response.responseJSON.errors.forEach(function(element) {
+                  console.log(element);
+                  $message.append("<br>" + element.msg);
+                });
+              }
+            }
+          });
+        }
+      });
+  
+      // Update image
+      $('#uploadImage').submit(function(event) {
+      event.preventDefault();
+
+      // Clear previous error messages
+      $('.error-message').remove();
+
+      // Perform validation
+      var isValid = true;
+      var fileInput = $('#image');
+
+      if (fileInput[0].files.length === 0) {
+        fileInput.after('<p class="error-message">Please select an image to upload.</p>');
+        isValid = false;
+      }
+
+      if (isValid) {
+        var formData = new FormData(this);
+
         $.ajax({
-          url:url,
+          url: '/course/image',
           type: 'PUT',
           data: formData,
-          success: function(response){
+          contentType: false,
+          processData: false,
+          success: function(response) {
             console.log(response);
-    
-              // Display error message in red
-         // Display error message in red
+
+            // Display success message in green
             const $message = $('#message');
-            $message.text('Course data saved').css('color', 'red').removeClass('hidden');
+            $message.text('Image uploaded successfully.').css('color', 'green').removeClass('hidden');
 
             // Hide the message after a few seconds with fade-out effect
-            setTimeout(() => {
-            $message.addClass('hidden');
+            setTimeout(function() {
+              $message.addClass('hidden');
             }, 5000);
-            //location.reload();
-          },
-          error: function(response){
-            console.log(response.responseJSON);
-            if(response.responseJSON){
-              const $message = $('#message');
-              $message.css('color', 'red').removeClass('hidden');
-              response.responseJSON.errors.forEach(element => {
-                console.log(element);
-                $message.append("<br>"+element.msg);
-              });
-            }
-          }
-        });
-      });
 
-      //update image 
-
-      $('#uploadImage').submit(function (event){
-        event.preventDefault();
-        var formData = new FormData(this);
-   
-        $.ajax({
-          url:'/course/image',
-          type:'PUT',
-          data:formData,
-          contentType:false,
-          processData:false,
-          success:function(response){
-            console.log(response);
+            // Refresh the page to show the updated image
             location.reload();
           },
-          error:function(response){
+          error: function(response) {
             console.log(response);
+
+            // Display error message in red
+            const $message = $('#message');
+            $message.text('Image upload failed. Please try again.').css('color', 'red').removeClass('hidden');
           }
         });
-      })
+      }
+    });
     });
   </script>
  <%- include('../partials/footer') %>

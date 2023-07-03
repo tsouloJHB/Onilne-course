@@ -8,22 +8,22 @@ const { courseDataValidate, courseEditDataValidate } = require('../validation/co
 const { validationResult } = require("express-validator");
 
 
-router.get('/', verifyToken.verifyToken, async (req, res) => {
-    try {
+// router.get('/', verifyToken.verifyToken, async (req, res) => {
+//     try {
      
     
-      // Retrieve all courses from the database
-      const courses = await CourseModel.find({active:true});
-      const coursesCount = await CourseModel.countDocuments() + 1;
+//       // Retrieve all courses from the database
+//       const courses = await CourseModel.find({active:true});
+//       const coursesCount = await CourseModel.countDocuments() + 1;
      
-      // Get the user's progress  
+//       // Get the user's progress  
      
-      res.render('courses', { courses,coursesCount}); // Pass the courses and progress data to the courses view for rendering
-    } catch (error) {
-      console.error('Error retrieving courses:', error);
-      return res.render('404',{message:"An error occurred while retrieving"});
-    }
-  });
+//       res.render('courses', { courses,coursesCount}); // Pass the courses and progress data to the courses view for rendering
+//     } catch (error) {
+//       console.error('Error retrieving courses:', error);
+//       return res.render('404',{message:"An error occurred while retrieving"});
+//     }
+//   });
 
 router.get('/user',verifyToken.verifyToken, async(req, res) => {
     try {
@@ -130,7 +130,7 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
     console.log("users here");
     const course = await CourseModel.findById(req.params.id);
     if(!course){
-      return res.render('courses/viewCourse',{course:{}}); 
+      return res.render('404'); 
     }
     const userProgress = await UserProgressModel.findOne({user:req.user._id,course:course._id});
  

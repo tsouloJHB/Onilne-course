@@ -9,7 +9,10 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
   try {
     const topicId = req.params.topicId;
   
-    await CoursesController.checkIfUserIsRegisteredForCourseByTopic(req.user._id,topicId,res);
+    const checkCourse = await CoursesController.checkIfUserIsRegisteredForCourseByTopic(req.user._id,topicId,req,res);
+    if(checkCourse == undefined){
+      return checkCourse;
+    }
     // Fetch the topic material data based on the topicId
     const topicMaterial = await TopicMaterialModel.findOne({ topicId });
     // Fetch the topic
@@ -51,6 +54,10 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
 router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
   try {
     const topicId = req.params.id;
+    console.log("here ....");
+    if(topicId == null && topicId == undefined){
+      return res.render('404');
+    }
     //check if user has completed the course
     const course = await CoursesController.checkIfUserCompletedCourse(topicId,req.user._id);
     if(course){

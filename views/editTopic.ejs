@@ -15,45 +15,40 @@
   
   <h1>Edit Topic</h1>
   <a href="/course/course-topics/<%= topic.courseId%>"> <button >Back</button></a>
-  <form action="/topics/edit/<%= topic._id %>" method="POST">
+  <form action="/topics/edit/<%= topic._id %>" method="POST" id="edit-topic-form">
     <div>
       <label for="topicTitle">Topic Title:</label>
-      <input type="text" id="topicTitle" name="topicTitle" value="<%= topic.title %>" >
+      <input type="text" id="topicTitle" name="topicTitle" value="<%= topic.title %>">
     </div>
     <div>
-
-      <input type="hidden" id="topicNo" name="topicNo" value="<%= topic.topicNo %>" >
+      <input type="hidden" id="topicNo" name="topicNo" value="<%= topic.topicNo %>">
     </div>
     <div>
       <label for="topicDesc">Topic Description:</label>
-      <textarea id="topicDesc" name="topicDesc" rows="4" ><%= topic.topicDesc %></textarea>
+      <textarea id="topicDesc" name="topicDesc" rows="4"><%= topic.topicDesc %></textarea>
     </div>
     <% if(topicMaterial != null){ %>
-    <div>
-      <label for="materialTitle">Material Title:</label>
-      <input type="text" id="materialTitle" name="materialTitle" value="<%= topicMaterial.title %>">
-    </div>
-    <div>
-      <label for="materialContent">Material Content:</label>
-      <textarea id="materialContent" name="materialContent" rows="6"><%= topicMaterial.content %></textarea>
-    </div>
-    <div>
-      <label for="materialVideo">Material Video:</label>
-      <input type="text" id="materialVideo" name="materialVideo" value="<%= topicMaterial.topicVideo %>">
-      <input type="hidden" id="materialVideo" name="courseId" value="for-validation-only">
-    </div>
-    <%} %><br/>
+      <div>
+        <label for="materialTitle">Material Title:</label>
+        <input type="text" id="materialTitle" name="materialTitle" value="<%= topicMaterial.title %>">
+      </div>
+      <div>
+        <label for="materialContent">Material Content:</label>
+        <textarea id="materialContent" name="materialContent" rows="6"><%= topicMaterial.content %></textarea>
+      </div>
+      <div>
+        <label for="materialVideo">Material Video:</label>
+        <input type="text" id="materialVideo" name="materialVideo" value="<%= topicMaterial.topicVideo %>">
+        <input type="hidden" id="materialVideo" name="courseId" value="for-validation-only">
+      </div>
+    <% } %><br/>
     <% if(quiz){ %>
-    <a href="/topics/quiz/<%=topic._id %>">
-    View topic quiz</a>
-    <button><a href="#" id="deleteQuiz" data-delete-quiz-data="<%=topic._id %>">
-      delete quiz</a></button><br/><br/>
-    <%} else{%>
-      You haven't created a quiz for this topic 
-     <br/><br/>
-    <button><a href="/topics/createQuiz/<%=topic._id %>">
-    Create topic quiz</a></button><br/><br/>
-    <%}%>
+      <a href="/topics/quiz/<%=topic._id %>">View topic quiz</a>
+      <button><a href="#" id="deleteQuiz" data-delete-quiz-data="<%=topic._id %>">Delete quiz</a></button><br/><br/>
+    <% } else { %>
+      You haven't created a quiz for this topic<br/><br/>
+      <button><a href="/topics/createQuiz/<%=topic._id %>">Create topic quiz</a></button><br/><br/>
+    <% } %>
     <button type="submit">Update</button>
   </form>
   <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
@@ -66,6 +61,44 @@
 
   <script>
     $(document).ready(function (){
+        $('#edit-topic-form').submit(function(event) {
+      event.preventDefault(); // Prevent the form from submitting
+ 
+      // Clear previous error messages
+      $('.error-message').remove();
+
+      // Perform validation
+      var isValid = true;
+
+      if ($('#topicTitle').val().trim() === '') {
+        $('#topicTitle').after('<p class="error-message">Topic Title is required.</p>');
+        isValid = false;
+      }
+
+      if ($('#topicDesc').val().trim() === '') {
+        $('#topicDesc').after('<p class="error-message">Topic Description is required.</p>');
+        isValid = false;
+      }
+      if ($('#materialTitle').val().trim() === '') {
+        $('#materialTitle').after('<p class="error-message">Content is required.</p>');
+        isValid = false;
+      }
+      if ($('#materialContent').val().trim() === '') {
+        $('#materialContent').after('<p class="error-message">Content is required.</p>');
+        isValid = false;
+      }
+      if ($('#materialVideo').val().trim() === '') {
+        $('#materialVideo').after('<p class="error-message">Content is required.</p>');
+        isValid = false;
+      }
+
+      // Add any additional validation checks for other fields if needed
+
+      if (isValid) {
+        // Form is valid, proceed with submission
+        this.submit();
+      }
+    });
 
       $('#deleteQuiz').click(function (event){
         event.preventDefault;

@@ -144,7 +144,7 @@ module.exports.courseSearch = async (req, res) => {
       active:  true
     };
     const coursesByTitle = await CourseModel.find(courseQuery);
-    console.log("here");
+   
     if (coursesByTitle.length > 0) {
       // If there are matching courses by title, return them
       const courses = [];
@@ -484,38 +484,53 @@ module.exports.courseUserAuthorized = async (userId,courseId,res,req) =>{
       return false
     }
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.render('404');
+    }
     console.log(error);
     return false;
   }
 }
 
-module.exports.checkIfUserIsRegisteredForCourse = async  (userId,courseId,res) =>{
+module.exports.checkIfUserIsRegisteredForCourse = async  (userId,courseId,req,res) =>{
   try {
     const userProgress  = await UserProgressModel.findOne({user:userId,course:courseId});
     if(!userProgress){
-      if(!res.user.isAdmin){
-        return res.redirect('/users');
+      if(!req.user.isAdmin){
+        return res.render('404');
       }else{
         return res.redirect('/admin');
       }
       
     }
+    return false;
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.render('404');
+    }
     console.log(error);
   }
 }
 
-module.exports.checkIfUserIsRegisteredForCourseByTopic = async  (userId,topicId,res) =>{
+module.exports.checkIfUserIsRegisteredForCourseByTopic = async  (userId,topicId,req,res) =>{
   try {
-    const topic = await TopicModel.findById(topicId); 
+    const topic = await TopicModel.findById(topicId);
+    if(!topic){
+      if(!req.user.isAdmin){
+        return res.render('404');
+      }else{
+        return res.redirect('/admin');
+      }
+    } 
     const userProgress  = await UserProgressModel.findOne({user:userId,course:topic.courseId});
     if(!userProgress){
-      if(!res.user.isAdmin){
+      if(!req.user.isAdmin){
         return res.redirect('/users');
       }else{
         return res.redirect('/admin');
       }
     }
+    return false
   } catch (error) {
     console.log(error);
   }

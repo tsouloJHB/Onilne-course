@@ -14,10 +14,10 @@
       <p><strong>Error:</strong> <%= error %></p>
     <% } %>
 
-    <form action="/topics" method="POST">
+    <form id="topicForm" action="/topics/create/<%=courseId%>" method="POST">
       <label for="topicTitle">Topic Title:</label>
       <input type="text" id="topicTitle" name="topicTitle">
-      
+      <input type="hidden" name="materialTitle" value="none">
       <label for="topicDesc">Topic Description:</label>
       <textarea  id="topicDesc" cols="50" rows="10" name="topicDesc"></textarea>
 
@@ -38,4 +38,40 @@
       <% } %>
       <%- include('partials/footer') %>
   </body>
+  
+  <script>
+    $(document).ready(function() {
+      $('#topicForm').submit(function(event) {
+        event.preventDefault();
+  
+        // Clear previous error messages
+        $('.error-message').remove();
+  
+        // Perform validation
+        var isValid = true;
+  
+        var fields = [
+          { name: 'topicTitle', label: 'Topic Title' },
+          { name: 'topicDesc', label: 'Topic Description' },
+          { name: 'materialContent', label: 'Material Content' },
+          { name: 'materialVideo', label: 'Material Video URL' }
+        ];
+  
+        fields.forEach(function(field) {
+          var input = $('#' + field.name);
+          var value = input.val().trim();
+  
+          if (value === '') {
+            input.after('<p class="error-message">Please enter ' + field.label + '.</p>');
+            isValid = false;
+          }
+        });
+  
+        if (isValid) {
+          this.submit();
+        }
+      });
+    });
+  </script>
+   <%- include('partials/footer') %>
 </html>

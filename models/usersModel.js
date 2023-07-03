@@ -78,6 +78,22 @@ userSchema.pre('save', async function (next) {
       next(error);
     }
   });
+
+  userSchema.pre('update', async function (next) {
+    try {
+      if (!this.isModified('password')) {
+        return next();
+      }
+  
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(this.password, salt);
+      this.password = hashedPassword;
+  
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
   
   // Generate JWT token
 

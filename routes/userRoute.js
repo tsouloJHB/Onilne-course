@@ -3,7 +3,7 @@ const router = express.Router();
 const utils = require('../utils/tokenUtil');
 const verifyToken = require('../middleware/verifyToken');
 const { TopicModel,UserModel, CourseModel } = require('../models');
-const { CoursesController, UserProgressController } = require('../controllers');
+const { CoursesController, UserProgressController, UsersController } = require('../controllers');
 const { redirect } = require('react-router-dom');
 const { loginDataValidate, userDataValidateSchemaBased } = require("../validation/user.validation");
 const { validationResult } = require("express-validator");
@@ -150,5 +150,42 @@ router.get('/',verifyToken.verifyToken,async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+
+router.get('/settings',verifyToken.verifyToken,async (req, res) => {
+  try {
+  
+    //get trending courses  
+    const errors = [];
+    return await UsersController.renderSettingsPage(req,res,errors);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
+// change password
+router.post('/changepassword',verifyToken.verifyToken, async (req, res) => {
+
+  try {
+    
+    return await UsersController.changePassword(req,res);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
+router.post('/changename',verifyToken.verifyToken, async (req, res) => {
+
+  try {
+    
+    return await UsersController.changeDisplayName(req,res);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
 
 module.exports = router;

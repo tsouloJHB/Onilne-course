@@ -9,6 +9,9 @@ const topicCreateDataValidate = {
  topicDesc: {
    notEmpty: { errorMessage: "Topic description is required" },
  },
+ materialTitle:{
+  notEmpty: { errorMessage: "material title is required" },
+ },
  materialContent: {
    notEmpty: { errorMessage: "Content is required" },
  },

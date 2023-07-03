@@ -7,16 +7,27 @@ const { topicCreateDataValidate } = require('../validation/topicValidation');
 const { validationResult } = require('express-validator');
 const { quizCreateDataValidate } = require('../validation/quizValidation');
 const { validateCreateQuiz } = require('../validation/customValidation');
+const Topic = require('../models/topicModel');
+const { compare } = require('bcrypt');
 
 // Protected route using verifyToken middleware
 router.get('/:id', verifyToken.verifyToken, async (req, res) => {
   try {
     const courseId = req.params.id
     //check if the user is registered for the course
-    await CoursesController.checkIfUserIsRegisteredForCourse(req.user._id,courseId,res);
+    if(req.params.id == null || req.params.id == undefined || req.params.id == ""){
+      return res.render('404');
+    }
+
+    const courseChecker = await CoursesController.checkIfUserIsRegisteredForCourse(req.user._id,courseId,req,res);
+
+    if(courseChecker == undefined){
+      return courseChecker;
+    }
     // Retrieve all topics from the database
     
     const topics = await TopicsController.getUserTopics(courseId);
+
     // Get the user's progress
    
    // const progress = await UsersController.getUserProgress(req.user._id);
@@ -55,7 +66,7 @@ router.get('/create/:id', verifyToken.verifyToken, async (req, res) => {
 
 });  
 
-router.post('/', verifyToken.verifyToken,topicCreateDataValidate,async (req, res) => {
+router.post('/create/:id', verifyToken.verifyToken,topicCreateDataValidate,async (req, res) => {
   try {
     // const topicNo = req.body.topicNo;
     
@@ -66,7 +77,7 @@ router.post('/', verifyToken.verifyToken,topicCreateDataValidate,async (req, res
       const courseId = link[link.length-1];
       //console.log(link[link.length-1]);
       //render the create topic page with error 
-     
+      
       return await TopicsController.renderCreateTopic(courseId,req.user.id,req,res,errors.array()  );
       //return res.status(400).json({errors: errors.array()});
     }
@@ -110,32 +121,35 @@ router.post('/', verifyToken.verifyToken,topicCreateDataValidate,async (req, res
   }
 });
 
-router.get('/', verifyToken.verifyToken, async (req, res) => {
-  try {
-    // Retrieve all topics from the database
-    const topics = await TopicModel.find();
+// router.get('/', verifyToken.verifyToken, async (req, res) => {
+//   try {
+//     // Retrieve all topics from the database
+//     const topics = await TopicModel.find();
 
-    res.render('topics', { topics }); // Pass the topics data to the topics view for rendering
-  } catch (error) {
-    console.error('Error retrieving topics:', error);
-    return res.render('404',{message:"An error occurred while retrieving"});
-  }
-});
+//     res.render('topics', { topics }); // Pass the topics data to the topics view for rendering
+//   } catch (error) {
+//     console.error('Error retrieving topics:', error);
+//     return res.render('404',{message:"An error occurred while retrieving"});
+//   }
+// });
 
 
 router.get('/edit/:id',verifyToken.verifyToken ,async (req, res) => {
   try {
     const topicId = req.params.id;
+    const topic = await TopicModel.findById(topicId);
+    if (!topic) {
+      // If topic is not found, render an error page or redirect to an error route
+      return res.render('404', { message: 'Topic not found' });
+    }
+  
     // Find the topic by ID
     const auth = await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     if(!auth){
      // return  res.redirect('/users');
     }
-    const topic = await TopicModel.findById(topicId);
-    if (!topic) {
-      // If topic is not found, render an error page or redirect to an error route
-      return res.render('error', { message: 'Topic not found' });
-    }
+   
+ 
 
     // Find the topic material by topicId
     let topicMaterial = await TopicMaterialModel.findOne({ topicId });
@@ -184,7 +198,7 @@ router.get('/createQuiz/:id', verifyToken.verifyToken, async (req, res) => {
   }
 });
 
-router.post('/createQuiz', verifyToken.verifyToken ,validateCreateQuiz,async (req, res) => {
+router.post('/createQuiz/:id', verifyToken.verifyToken ,validateCreateQuiz,async (req, res) => {
   try {
     
     const { topicId, questions } = req.body;
@@ -200,6 +214,7 @@ router.post('/createQuiz', verifyToken.verifyToken ,validateCreateQuiz,async (re
           location: 'body'
         }
       ]
+      console.log("create");
      return await QuizController.renderCreateQuiz(topicId,req,res,errors); 
     }else{
       await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
@@ -234,7 +249,7 @@ router.post('/createQuiz', verifyToken.verifyToken ,validateCreateQuiz,async (re
 router.put('/quiz/:id',  verifyToken.verifyToken,validateCreateQuiz,async (req, res) => {
   try {
     const { topicId, questions } = req.body;
-    
+    console.log(questions);
     if(req.body.errors){
       console.log("errors in the house");
       const errors = [
@@ -246,10 +261,10 @@ router.put('/quiz/:id',  verifyToken.verifyToken,validateCreateQuiz,async (req, 
           location: 'body'
         }
       ]
-     //eturn await QuizController.renderViewQuiz(topicId,req,res,errors);
+     //return await QuizController.renderViewQuiz(topicId,req,res,errors);
       return res.status(400).json(errors);
     }
-    console.log("Never");
+
     await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
 
     // Assuming you're using Mongoose for database operations
@@ -279,6 +294,9 @@ router.put('/quiz/:id',  verifyToken.verifyToken,validateCreateQuiz,async (req, 
 router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
   try {
     const topicId = req.params.id;
+    console.log("open day");
+    console.log( req.params);
+    
     await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
     // Find the quiz by topicId
     const quiz = await TopicQuizModel.findOne({ topicId });
