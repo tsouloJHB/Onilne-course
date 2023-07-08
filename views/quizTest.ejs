@@ -1,74 +1,90 @@
-<!-- courses.ejs -->
 <!DOCTYPE html>
 <html>
 
-  <title>Topic quiz</title>
-  <%- include('partials/header') %>
+<title>Topic quiz</title>
+<%- include('partials/header') %>
 
 <body>
   <!-- Navigation -->
   <%- include('partials/clientNav') %>
-<h3>Questions:</h3>
-<p>You should get 80% to advanced</p>
-<p><a href="/topicOutline/material/<%=topicId%>">Quit Test</a></p>
-<% if(typeof response !== 'undefined' && response !== null){ %>
+  <h3>Questions:</h3>
+  <p>You should get 80% to advance</p>
+  <p><a href="/topicOutline/material/<%=topicId%>">Quit Test</a></p>
+  <% if (typeof response !== 'undefined' && response !== null) { %>
   <p>You received <%=response.mark%></p>
   <p><%=response.message%></p>
-  <% if(response.success){ %>
-    <a href="/topicOutline/material/<%=response.nextTopic%>"><button>Continue</button></a>
-  <%}%>
+  <% if (response.success) { %>
+  <a href="/topicOutline/material/<%=response.nextTopic%>"><button>Continue</button></a>
+  <% } %>
 
-  <%}%>
-<form action="/quiz/submit" method="POST">
-  <input type="hidden" value="<%=topicId%>" name="topicId"/>
-<% quiz.questions.forEach(function(question, index) { %>
-  <div class="question">
-    <h4>Question <%= index + 1 %>:</h4>
-    <p>Question: <%= question.question %></p>
-  
-   
-    <div>
-      <input type="radio" id="incorrectAnswer1<%= index%>" name="answer[<%= index%>]" value="<%= question.answer %>">
-      <label for="incorrectAnswer1<%= index%>"> <%= question.answer %></label>
+  <% } %>
+  <form action="/quiz/submit" method="POST" id="quizForm">
+    <input type="hidden" value="<%=topicId%>" name="topicId" />
+    <% quiz.questions.forEach(function(question, index) { %>
+    <div class="question">
+      <h4>Question <%= index + 1 %>:</h4>
+      <p>Question: <%= question.question %></p>
+
+      <div>
+        <input type="radio" id="answer<%= index%>" name="answer[<%= index%>]" value="<%= question.answer %>">
+        <label for="answer<%= index%>"> <%= question.answer %></label>
+      </div>
+      <div>
+        <input type="radio" id="incorrectAnswer1<%= index%>" name="answer[<%= index%>]"
+          value="<%= question.incorrectAnswer1 %>">
+        <label for="incorrectAnswer1<%= index%>"> <%= question.incorrectAnswer1 %></label>
+      </div>
+      <div>
+        <input type="radio" id="incorrectAnswer2<%= index%>" name="answer[<%= index%>]"
+          value="<%= question.incorrectAnswer2 %>">
+        <label for="incorrectAnswer2<%= index%>"> <%= question.incorrectAnswer2 %></label>
+      </div>
     </div>
-    <div>
-      <input type="radio" id="incorrectAnswer1<%= index%>" name="answer[<%= index%>]" value="<%= question.incorrectAnswer1 %>">
-      <label for="incorrectAnswer1<%= index%>"> <%= question.incorrectAnswer1 %></label>
-    </div>
-    <div>
-      <input type="radio" id="incorrectAnswer2 <%= index%>" name="answer[<%= index%>]" value="<%= question.incorrectAnswer2 %>">
-      <label for="incorrectAnswer2 <%= index%>"> <%= question.incorrectAnswer2 %></label>
-    </div>
-   
+    <% }); %><br><br>
+    <% if (typeof response == 'undefined') { %>
+    <button type="submit">Submit Answers</button>
+    <p id="error"></p>
+    <% } %>
 
-    <!-- <p>Answer: <%= question.answer %></p> -->
-    <!-- <p>Incorrect Answer 1: <%= question.incorrectAnswer1 %></p>
-    <p>Incorrect Answer 2: <%= question.incorrectAnswer2 %></p> -->
-  </div>    
-<% }); %></br></br>
-<% if(typeof response == 'undefined' ){ %>
-<button>Submit Answers</button>
-<p id="error"></p>
-<%}%>
+    <% if (typeof response !== 'undefined' && response !== null) { %>
+    <% if (!response.success) { %>
+    <button type="submit">Submit Answers</button>
+    <% } %>
 
-<% if(typeof response !== 'undefined' && response !== null){ %>
-    <% if(!response.success){ %>
-      <button>Submit Answers</button> 
-    <%}%>
-  
-<%}%>
-</form>
+    <% } %>
+  </form>
 
-<script>
-  $(document).ready(function (){
-    const urlParams = new URLSearchParams(window.location.search);
-    const error = urlParams.get('error');
-    if(error !== null){
-      $('#error').text(error);
-    //remove query
-    history.replaceState([],document.title,window.location.pathname);
-    }
+  <script>
+    $(document).ready(function () {
+      $('#quizForm').submit(function (event) {
+        event.preventDefault(); // Prevent form submission
+        var hasError = false; // Flag to track error status
 
-  });  
-</script>
-<%- include('partials/footer') %>
+        // Iterate through each question
+        $('.question').each(function (index) {
+          var $question = $(this);
+          var $radioButtons = $question.find('input[type="radio"]');
+
+          // Check if none of the radio buttons are checked
+          if (!$radioButtons.is(':checked')) {
+            // Show error message
+            $('#error').text('Please answer all questions.');
+            hasError = true; // Set error flag
+            return false; // Stop further processing
+          }
+        });
+
+        // Check if an error occurred
+        if (hasError) {
+          return false; // Stop form submission
+        }
+
+        // All questions have been answered, proceed with form submission
+        this.submit();
+      });
+    });
+  </script>
+  <%- include('partials/footer') %>
+</body>
+
+</html>

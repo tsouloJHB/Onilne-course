@@ -12,7 +12,7 @@
   
   <!-- Create Course Form -->
   <h2>Create Course</h2>
-  <form action="/course/created" enctype="multipart/form-data" method="POST">
+  <form id="course-form" action="/course/created" enctype="multipart/form-data" method="POST">
     <input type="text" name="title" placeholder="Title" >
     <textarea name="courseDesc" placeholder="Course Description"  cols="30" rows="5"></textarea>
    
@@ -31,6 +31,7 @@
     <input type="text" name="courseVideo" placeholder="Course Video URL">
     <button type="submit">Create Course</button>  
   </form>
+  <p id="error"></p>
   <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
     <div class="errors">
       <% errors.forEach(function (error) { %>
@@ -89,6 +90,41 @@
           } 
         });
 
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#course-form').submit(function(event) {
+        event.preventDefault(); // Prevent form submission
+        
+        // Clear previous error messages
+        $('#error').empty();
+  
+        // Get form values
+        var fields = [
+          { name: 'title', label: 'Title' },
+          { name: 'courseDesc', label: 'Course Description' },
+          { name: 'imageUpload', label: 'Image' },
+          { name: 'category', label: 'Category' },
+          { name: 'courseVideo', label: 'Course Video URL' }
+        ];
+  
+        // Perform validation
+        var isValid = true;
+  
+        fields.forEach(function(field) {
+          var value = $('*[name="' + field.name + '"]').val().trim();
+          if (value === '') {
+            $('#error').append('<p>Please enter ' + field.label + '.</p>');
+            isValid = false;
+          }
+        });
+  
+        if (isValid) {
+          // Submit the form if valid
+          $('#course-form').unbind('submit').submit();
+        }
       });
     });
   </script>

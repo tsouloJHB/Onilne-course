@@ -8,7 +8,7 @@ module.exports.renderCreateQuiz = async(topicId,req,res,errors) =>{
      
         // await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);
         // Get the user's progress
-        console.log("create");
+        
         const admin  = req.user.isAdmin;
         
         res.render('createQuiz' ,{topicId,admin,errors});

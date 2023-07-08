@@ -143,7 +143,7 @@ module.exports.courseSearch = async (req, res) => {
       title: { $regex: searchQuery, $options: 'i' },
       active:  true
     };
-    const coursesByTitle = await CourseModel.find(courseQuery);
+    const coursesByTitle = await CourseModel.find(courseQuery).limit(10);
    
     if (coursesByTitle.length > 0) {
       // If there are matching courses by title, return them
@@ -171,7 +171,7 @@ module.exports.courseSearch = async (req, res) => {
       if (categories.length > 0) {
         // If there are matching categories by name, retrieve the courses for each category
         const categoryIds = categories.map(category => category._id);
-        const coursesByCategory = await CourseModel.find({ category: { $in: categoryIds } ,  active:  true});
+        const coursesByCategory = await CourseModel.find({ category: { $in: categoryIds } ,  active:  true}).limit(10);
 
         return coursesByCategory;
       } else {

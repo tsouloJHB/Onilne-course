@@ -20,21 +20,20 @@
 
 
 <div>
-    <div>
-        <p>add new course categories</p>
-        <form  id="createCategoryForm">
-          <input type="text" id="categoryName" name="categoryName" placeholder="course category" /> 
-          <input type="submit"  value="Add category"/>
-          </form>
-          <p id="response"></p> 
-    </div>
+  
     <div>
       <br>
         <p>add quiz pass percentage</p>
-        <form action="/admin/settings" id="createCategoryForm" method="POST">
-          <input type="text" id="categoryName" name="percentage" value="<%= settings.passPercentage %>" placeholder="add percentage" />
-          <input type="submit"  value="add percentage"/>
+        <form action="/admin/settings" id="adminSettings"   method="POST">
+          <input type="text" id="percentage"  name="percentage" value="<%= settings.passPercentage %>" placeholder="add percentage" /><br>
+          <p id="errorPercentage"></p>
+          <label>Video source optional</label><br>
+          <input type="text" name="videoSource" placeholder="Add video source" />
+          <input type="submit"  value="Update"/>
         </form>
+        <%  settings.videoSource.forEach(function(source) { %>
+          <p><%=source%></p>
+        <%}) %> 
         <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
           <div class="errors">
             <% errors.forEach(function (error) { %>
@@ -43,6 +42,18 @@
           </div>
         <% } %>
     </div>
+    <div>
+      <p>add new course categories</p>
+      <form  id="createCategoryForm" >
+        <input type="text" id="categoryName" name="categoryName" placeholder="course category" /> 
+        <P id="errorCategory"></P>
+        <input type="submit"  value="Add category"/>
+        </form>
+        <p id="response"></p> 
+        <%  categories.forEach(function(category) { %>
+          <p><%=category.name%> | <a href="/admin/category/remove/<%=category._id%>"> remove</a></p>
+        <%}) %>  
+  </div>
     <div class="container mt-4">
         <h3>Upload logo image</h3>
         <form action="/upload" method="POST" enctype="multipart/form-data">
@@ -57,24 +68,26 @@
 <script>
   $('document').ready(function () {
     $('#createCategoryForm').submit(function(event) {
+
         event.preventDefault();
         $('#response').empty();
+        //validate in
         var categoryName = $('#categoryName').val();
+        if(categoryName === ""){
+          $('#errorCategory').text('Please enter Category.');
+          return false;
+        }
 
         $.ajax({
-          url: 'category',
+          url: '/admin/category',
           type: 'POST',
           data: { name: categoryName },
           success: function(response) {
             // Clear form input
             $('#categoryName').val('');
 
-            // Add new category to dropdown options
-            $('#category').append($('<option>', {
-              value: "ere", 
-              text: response.category
-            }));
-            console.log(response);
+            location.reload();
+      
             $('#response').append(response.message);
           },
           error: function(xhr, status, error) {
@@ -82,7 +95,19 @@
           }
         });
       });
+
+      $('#adminSettings').submit(function (event){
+        event.preventDefault();
+        var percentageCheck = $('#percentage').val();
+        if(percentageCheck === ""){
+          $('#errorPercentage').text('Please enter percentage.');
+        }else{
+          this.submit();
+        }
+      });
   });
 </script>
+<%- include('../partials/footer') %>
 </body>
 </html>    
+

@@ -18,6 +18,9 @@ const topicCreateDataValidate = {
  courseId: {
     notEmpty: { errorMessage: "CourseId is required" },
   },
+  videoSource: {
+    notEmpty: { errorMessage: "Video source is required" },
+  }, 
 //  courseVideo: {
 //    notEmpty: { errorMessage: "Category is required" },
 //    isURL: { errorMessage: "Please provide a valid course video URL" },

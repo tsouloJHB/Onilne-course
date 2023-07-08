@@ -155,8 +155,21 @@
         trimWhiteSpace();
         //serialize the data
         var formData  = form.serialize();
-  
-        //send the Put request
+
+       var add = true;
+       form.find('textarea').each(function () {
+           var textarea = $(this); 
+          //check if the textarea is empty 
+          if($(this).val() === ''){
+            $('.error').val('');
+            var emptyText = $('<span class="empty-text">This field should not be empty</span>');
+            textarea.after(emptyText);
+            console.log("empty data");
+            add = false
+          }
+        });
+        if(add){
+               //send the Put request
         $.ajax({
           url:url,
           type: 'PUT',
@@ -178,6 +191,8 @@
             }
           }
         });
+        }
+   
       });
       
 

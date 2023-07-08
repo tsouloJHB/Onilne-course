@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel, TopicMaterialModel,TopicQuizModel } = require('../models');
+const { TopicModel, TopicMaterialModel,TopicQuizModel, SettingsModel } = require('../models');
 const {CoursesController,TopicsController ,UserProgressController, QuizController} = require('../controllers');
 const { topicCreateDataValidate } = require('../validation/topicValidation');
 const { validationResult } = require('express-validator');
@@ -56,9 +56,11 @@ router.get('/create/:id', verifyToken.verifyToken, async (req, res) => {
   try {
     const courseId = req.params.id;
     await CoursesController.courseUserAuthorized(req.user._id,courseId,res,req); 
+    //get the video sources
+    const videoSource = await SettingsModel.findOne();
     // Route handling code for topics page
-    
-    res.render('createTopic',{courseId});
+  
+    res.render('createTopic',{courseId,videoSource:videoSource.videoSource});
   } catch (error) {
     console.error('Error:', error);
     return res.render('404',{message:"An error occurred while retrieving"});
@@ -98,6 +100,8 @@ router.post('/create/:id', verifyToken.verifyToken,topicCreateDataValidate,async
       topicNo: countTopics,
       topicDesc: req.body.topicDesc,
       courseId:req.body.courseId,
+     
+      
     });
 
     // Save the topic to the database
@@ -109,6 +113,7 @@ router.post('/create/:id', verifyToken.verifyToken,topicCreateDataValidate,async
       content: req.body.materialContent,
       topicId: savedTopic._id,
       topicVideo: req.body.materialVideo,
+      videoSource:req.body.videoSource
     });
 
     // Save the topic material to the database
@@ -214,7 +219,7 @@ router.post('/createQuiz/:id', verifyToken.verifyToken ,validateCreateQuiz,async
           location: 'body'
         }
       ]
-      console.log("create");
+     
      return await QuizController.renderCreateQuiz(topicId,req,res,errors); 
     }else{
       await TopicsController.topicUserAuthorized(req.user._id,topicId,res,req);

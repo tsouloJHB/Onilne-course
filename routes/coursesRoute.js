@@ -60,7 +60,7 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
       const courses = await CourseModel.find({user:req.user._id});
       const coursesCount = await CourseModel.countDocuments();
       const coursesWithData = await CoursesController.coursesWithData(courses);
-      res.render('courses',{courses:coursesWithData,coursesCount,categories});
+     return res.render('courses',{courses:coursesWithData,coursesCount,categories});
     } catch (error) { 
       console.error('Error retrieving courses:', error);
       return res.render('404',{message:"An error occurred while retrieving"});

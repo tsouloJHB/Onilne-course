@@ -1,105 +1,92 @@
-<!DOCTYPE html>
+
+
+
+  <!DOCTYPE html>
 <html>
-  <title>Topics</title>
+  <title>Create Quiz</title>
 
   <%- include('partials/header') %>
  
-  <body>
-    <!-- Navigation -->
+<body>
+  <!-- Navigation -->
  
-    <% if(admin){ %>
-      <%- include('partials/navBar') %>
-    <%}else {%>
-      <%- include('partials/clientNav') %>    
-    <%}%> 
-    <br><br>
-    <a href="/topics/edit/<%=topicId%>"><button>Back</button></a>    
-    <form id="quizForm" action="/topics/createQuiz/<%=topicId%>" method="POST">
-      <input type="hidden" name="topicId" value="<%=topicId%>">
-      
-      <div id="entityContainer">
-        <div class="entityRow">
-          <label for="question">Question:</label>
-          <textarea name="questions[0][question]" rows="5" cols="50"></textarea>
-          <div class="error-message"></div>
-          <label for="answer">Answer:</label>
-          <textarea name="questions[0][answer]" rows="5" cols="50"></textarea>
-          <div class="error-message"></div>
-          <label for="incorrectAnswer1">Incorrect Answer 1:</label>
-          <textarea name="questions[0][incorrectAnswer1]" rows="5" cols="50"></textarea>
-          <div class="error-message"></div>
-          <label for="incorrectAnswer2">Incorrect Answer 2:</label>
-          <textarea name="questions[0][incorrectAnswer2]" rows="5" cols="50"></textarea>
-          <div class="error-message"></div>
-        </div>
+  <% if(admin){ %>
+    <%- include('partials/navBar') %>
+  <%}else {%>
+    <%- include('partials/clientNav') %>    
+  <%}%> 
+  <br><br>
+  <a href="/topics/edit/<%=topicId%>"><button>Back</button></a>    
+  <form id="quizForm" action="/topics/createQuiz/<%=topicId%>" method="POST">
+    <input type="hidden" name="topicId" value="<%=topicId%>">
+    
+    <div id="entityContainer">
+      <div class="entityRow">
+        <label for="question">Question:</label>
+        <textarea name="questions[0][question]" rows="5" cols="50"></textarea>
+        <label for="answer">Answer:</label>
+        <textarea name="questions[0][answer]" rows="5" cols="50"></textarea>
+        <label for="incorrectAnswer1">Incorrect Answer 1:</label>
+        <textarea name="questions[0][incorrectAnswer1]" rows="5" cols="50"></textarea>
+        <label for="incorrectAnswer2">Incorrect Answer 2:</label>
+        <textarea name="questions[0][incorrectAnswer2]" rows="5" cols="50"></textarea>
       </div>
+    </div>
+  
+    <button type="button" id="addEntityBtn">Add Entity</button>
+    <button type="submit">Submit</button>
+  </form>   
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="errors">
+      <% errors.forEach(function (error) { %>
+        <p class="error-message"><%= error.msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+</body>
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#quizForm').submit(function(event) {
+    event.preventDefault(); // Prevent form submission
     
-      <button type="button" id="addEntityBtn">Add Entity</button>
-      <button type="submit">Submit</button>
-    </form>
+    // Clear previous error messages
+    $('.error-message').remove();
     
-    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-      <div class="errors">
-        <% errors.forEach(function (error) { %>
-          <p class="error-message"><%= error.msg %></p>
-        <% }) %>
-      </div>
-    <% } %>
+    // Get form values
+    var form = this;
+    var isEmpty = false;
     
-    <%- include('partials/footer') %>
-
-    <script>
-      const entityContainer = document.getElementById('entityContainer');
-      const addEntityBtn = document.getElementById('addEntityBtn');
-      const quizForm = document.getElementById('quizForm');
-
-      let entityIndex = 0;
-
-      addEntityBtn.addEventListener('click', () => {
-        entityIndex++;
-
-        const questionTemplate = `
-          <div class="entityRow">
-            <label for="question">Question:</label>
-            <textarea name="questions[${entityIndex}][question]" rows="5" cols="50"></textarea>
-            <div class="error-message"></div>
-            <label for="answer">Answer:</label>
-            <textarea name="questions[${entityIndex}][answer]" rows="5" cols="50"></textarea>
-            <div class="error-message"></div>
-            <label for="incorrectAnswer1">Incorrect Answer 1:</label>
-            <textarea name="questions[${entityIndex}][incorrectAnswer1]" rows="5" cols="50"></textarea>
-            <div class="error-message"></div>
-            <label for="incorrectAnswer2">Incorrect Answer 2:</label>
-            <textarea name="questions[${entityIndex}][incorrectAnswer2]" rows="5" cols="50"></textarea>
-            <div class="error-message"></div>
-          </div>
-        `;
-
-        entityContainer.insertAdjacentHTML('beforeend', questionTemplate);
-      });
-
-      quizForm.addEventListener('submit', (event) => {
-        const questionElements = document.querySelectorAll(`textarea[name^="questions"]`);
-        let isValid = true;
-
-        questionElements.forEach((element) => {  
-          const value = element.value.trim();
-          const errorElement = element.nextElementSibling; // Get the next sibling element
-
-          if (value === '') {
-            isValid = false;
-            element.classList.add('error');
-            errorElement.textContent = 'This field is required.';
-          } else {
-            element.classList.remove('error');
-            errorElement.textContent = '';
-          }
-        });
-
-        if (!isValid) {
-          event.preventDefault();
-        }
-      });
-    </script>
-  </body>
+    $('textarea').each(function() {
+      var value = $(this).val().trim();
+      if (value === '') {
+        isEmpty = true;
+        $(this).after('<p class="error-message">Please enter a value.</p>');
+      }
+    });
+    
+    if (!isEmpty) {
+      // Submit the form if valid
+      form.submit();
+    }
+  });
+  
+  $('#addEntityBtn').click(function() {
+    var entityRow = $('.entityRow:last');
+    var entityIndex = $('.entityRow').length;
+    
+    var newEntityRow = entityRow.clone();
+    newEntityRow.find('textarea').val('');
+    
+    newEntityRow.find('textarea').each(function() {
+      var nameAttr = $(this).attr('name');
+      $(this).attr('name', nameAttr.replace(/\[\d+\]/g, '[' + entityIndex + ']'));
+    });
+    
+    entityRow.after(newEntityRow);
+  });
+});
+</script>
+<%- include('partials/footer') %>
 </html>

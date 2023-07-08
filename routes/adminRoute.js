@@ -67,10 +67,12 @@ router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
 router.get('/settings',verifyToken,isAdmin, async (req,res)=>{
   try {
     let settings = await SettingsModel.findOne({user:"admin"});
+    //get the categories
+    const categories  = await CategoryModel.find();
     if(!settings){
       settings = {};
     }
-    res.render('admin/settings',{settings});
+    res.render('admin/settings',{settings,categories});
   } catch (error) {
     console.log(error);
     
@@ -121,6 +123,28 @@ router.delete('/deleteCourse/:id', verifyToken,isAdmin, async(req,res)=> {
   }
 });
 
+router.get('/category/remove/:id',verifyToken,isAdmin, async (req,res)=>{
+  try {
+    let settings = await SettingsModel.findOne({user:"admin"});
+    const categories  = await CategoryModel.find();
+    if(!settings){
+      settings = {};
+    }
+    //get the categories
+    
+    if(req.params.id == null || req.params.id == ""){
+      return res.redirect('/admin/settings');
+    }
+
+   //delete the category
+    const deleteCategory = await CategoryModel.findByIdAndDelete(req.params.id);
+    res.redirect('/admin/settings');
+  } catch (error) {
+    console.log(error);
+    
+  }
+});
+
 router.post('/settings', verifyToken,isAdmin, async(req,res)=> { 
   try {
     //check if admin settings exits
@@ -139,15 +163,34 @@ router.post('/settings', verifyToken,isAdmin, async(req,res)=> {
     }else{
       const findSettings = await SettingsModel.countDocuments();
       if(findSettings > 0){
+        //get the list of video sources and append the new value
+        const newDATA = {
+          passPercentage : req.body.percentage,
+        }
+        if(req.body.videoSource !== "" || req.body.videoSource !== null){
+          //get the data 
+          console.log("here");
+          const settings = await SettingsModel.findOne({user:"admin"});
+          let newList = [];
+          newList = settings.videoSource.filter((video)=> video);
+          newList.push(req.body.videoSource);
+          newDATA.videoSource = newList;
+          console.log(newDATA);
+        }
         //update the settings
-        await SettingsModel.findOneAndUpdate({user:"admin",passPercentage:req.body.percentage});
+        await SettingsModel.findOneAndUpdate({user:"admin"},newDATA);
         return res.redirect("/admin/settings");
       }else{
         //create settings
-        const settings = new SettingsModel({
-          passPercentage:req.body.percentage,
-          user:"admin"
-        });
+        const newDATA = {
+          user:"admin",
+          passPercentage : req.body.percentage
+        }
+        if(req.body.videoSource == "" || req.body.videoSource == null){
+          let newList = ['youtube','vimeo'];
+          newDATA.videoSource = newList;
+        }
+        const settings = new SettingsModel(newDATA);
         await settings.save();
         return res.redirect("/admin/settings");
       }

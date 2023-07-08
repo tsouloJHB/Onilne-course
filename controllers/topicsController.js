@@ -1,15 +1,18 @@
 
-const {TopicModel, CourseModel, UserProgressModel,TopicMaterialModel,TopicQuizModel} = require('../models');
+const {TopicModel, CourseModel, UserProgressModel,TopicMaterialModel,TopicQuizModel, SettingsModel} = require('../models');
 
 //page renders
 
 module.exports.renderCreateTopic = async(courseId,userId,req,res,errors) =>{
   try {
-    console.log(courseId);
+  
   
     // Route handling code for topics page
     
-    return res.render('createTopic',{courseId,errors});
+    const videoSource = await SettingsModel.findOne();
+    // Route handling code for topics page
+  
+    res.render('createTopic',{courseId,errors,videoSource:videoSource.videoSource});
   } catch (error) {
     console.error('Error:', error);
     return res.render('404',{message:"An error occurred while retrieving"});

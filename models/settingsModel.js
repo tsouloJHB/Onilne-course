@@ -15,7 +15,8 @@ const settingsSchema = new mongoose.Schema({
   user:{
     type:String,
     require:true
-  }
+  },
+  videoSource:[],
 
   // Add more fields as needed  
 },

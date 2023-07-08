@@ -24,9 +24,14 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
    
     // Pass the topic material data to the course outline view for rendering
     if(topicMaterial.topicVideo){
-      const videoId = extractVideoId(topicMaterial.topicVideo);
-      const embedLink = `https://www.youtube.com/embed/${videoId}`;
-      topicMaterial.embedLink = embedLink;
+      topicMaterial.embedLink = topicMaterial.topicVideo;
+      if(topicMaterial.videoSource === "youtube"){
+        const videoId = extractVideoId(topicMaterial.topicVideo);
+        const embedLink = `https://www.youtube.com/embed/${videoId}`;
+        topicMaterial.embedLink = embedLink;
+      }
+      
+     
     }
     //get users progress to further check if the user has completed the topic
     const progress  = await UserProgressModel.findOne({user:req.user._id,course:topic.courseId});
@@ -54,7 +59,7 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
 router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
   try {
     const topicId = req.params.id;
-    console.log("here ....");
+    
     if(topicId == null && topicId == undefined){
       return res.render('404');
     }

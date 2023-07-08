@@ -1,11 +1,13 @@
 
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>courses</title>
   <link rel="stylesheet" href="/css/style2.css">
   <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 </head>
 <script src="/js/jquery-1.12.4.min.js"></script>
@@ -15,69 +17,94 @@
   }
 </style>
 <body>
-   
   <%- include('../partials/clientNav') %>
 
-
-<div>
+  <div>
     <div>
-        <p>Change display name</p>
-        <form action="/users/changename" method="POST"  id="changeName">
-          <input type="text" id="categoryName" name="name" placeholder="change name" value="<%=user.name%>" /> 
-          <input type="submit"  value="Change Name"/>
-          </form>
-          <p id="response"></p> 
+      <p>Change display name</p>
+      <form action="/users/changename" method="POST" id="changeName">
+        <input type="text" id="name" name="name" placeholder="change name" value="<%=user.name%>" /> 
+        <input type="submit" value="Change Name"/>
+      </form>
+      <p id="response"></p> 
     </div>
 
     <div>
       <br>
-        <p>Change Password</p>
-        <form action="/users/changepassword"  method="POST">
-          <label> Enter old password</label>
-          <input type="password" id="password" name="password"  placeholder="password" />
-          <input type="password" id="Newpassword" name="newPassword"  placeholder="New password" />
-          <input type="submit"  value="Change password"/>
-        </form>
-        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-          <div class="errors">
-            <% errors.forEach(function (error) { %>
-              <p class="error-message"><%= error.msg %></p>
-            <% }) %>
-          </div>
-        <% } %>
-     
+      <p>Change Password</p>
+      <form action="/users/changepassword" method="POST" id="changePassword">
+        <label> Enter old password</label>
+        <input type="password" id="password" name="password" placeholder="password" />
+        <p id="errorOld"></p>
+        <input type="password" id="newPassword" name="newPassword" placeholder="New password" />
+        <p id="errorNew"></p>
+        <input type="submit" value="Change password"/>
+      </form>
+      <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="errors">
+          <% errors.forEach(function (error) { %>
+            <p class="error-message"><%= error.msg %></p>
+          <% }) %>
+        </div>
+      <% } %>
     </div>
-  
-</div>
-<script>
-  $('document').ready(function () {
-    $('#createCategoryForm').submit(function(event) {
-        event.preventDefault();
-        $('#response').empty();
-        var categoryName = $('#categoryName').val();
+  </div>
 
+<script>
+  $(document).ready(function() {
+    $('#changeName').submit(function(event) {
+      event.preventDefault();
+      $('#response').empty();
+
+      var name = $('#name').val().trim();
+
+      if (name === '') {
+        $('#response').text('Please enter a name.');
+      } else {
         $.ajax({
-          url: 'category',
+          url: "/users/changename",
           type: 'POST',
-          data: { name: categoryName },
+          data: { name: name },
           success: function(response) {
             // Clear form input
             $('#categoryName').val('');
 
             // Add new category to dropdown options
-            $('#category').append($('<option>', {
-              value: "ere", 
-              text: response.category
-            }));
-            console.log(response);
-            $('#response').append(response.message);
+            // $('#category').append($('<option>', {
+            //   value: response.category,
+            //   text: response.category
+            // }));
+            $('#name').text(name);
+
+            $('#response').text("Name changed");
           },
           error: function(xhr, status, error) {
             console.error('Error creating category:', error);
           }
         });
-      });
+      }
+    });
+
+    $('#changePassword').submit(function(event) {
+      event.preventDefault();
+      $('#response').empty();
+      $('#errorOld').empty();
+      $('#errorNew').empty();
+
+      var password = $('#password').val().trim();
+      var newPassword = $('#newPassword').val().trim();
+
+      if (password === '') {
+        $('#errorOld').text('Please enter your old password.');
+      }
+      if (newPassword === '') {
+        $('#errorNew').text('Please enter your new password.');
+      } if(newPassword !=='' && password !=='' ) {
+        // Submit the form if valid
+        this.submit();
+      }
+    });
   });
 </script>
 </body>
-</html>    
+</html>

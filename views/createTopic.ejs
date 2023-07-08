@@ -22,9 +22,15 @@
       <textarea  id="topicDesc" cols="50" rows="10" name="topicDesc"></textarea>
 
       <label for="materialContent">Material Content:</label>  
-      <textarea id="materialContent" cols="50" rows="10" name="materialContent" d></textarea>
+      <textarea id="materialContent" cols="50" rows="10" name="materialContent" d></textarea><br>
 
-      <label for="materialVideo">Material Video:</label>
+      <label>Video Source</label>  
+      <select id="category" name="videoSource">
+        <% videoSource.forEach((source) => { %>
+          <option value="<%= source %>"><%= source %></option>
+        <% }) %>
+      </select>
+      <label for="materialVideo">Video Link:</label>
       <input type="text" id="materialVideo" name="materialVideo">
       <input type="hidden" id="materialVideo" name="courseId" value="<%=courseId %>">
       <button type="submit">Create</button>

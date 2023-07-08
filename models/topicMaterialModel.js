@@ -18,6 +18,11 @@ const topicMaterialSchema = new mongoose.Schema({
     type:String,
     required:false
   },
+  videoSource:{
+    type:String,
+    default:"Youtube",
+    required:true
+  }
   // Add more fields as needed
 },
 { timestamps: true }  
