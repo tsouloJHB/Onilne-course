@@ -156,7 +156,21 @@ router.get('/settings',verifyToken.verifyToken,async (req, res) => {
   try {
   
     //get trending courses  
-    const errors = [];
+    let errors = [];
+    const successMessage = req.flash('success');
+    const errorMessage = req.flash('error');
+    if(errorMessage !== ""){
+      errors = [
+        {
+          type: 'field',
+          value: '',
+          msg: errorMessage,
+          path: 'password',
+          location: 'body'
+        }
+      ]
+    }
+
     return await UsersController.renderSettingsPage(req,res,errors);
   } catch (error) {
     console.log(error);

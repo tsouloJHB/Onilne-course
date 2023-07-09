@@ -68,12 +68,6 @@
           success: function(response) {
             // Clear form input
             $('#categoryName').val('');
-
-            // Add new category to dropdown options
-            // $('#category').append($('<option>', {
-            //   value: response.category,
-            //   text: response.category
-            // }));
             $('#name').text(name);
 
             $('#response').text("Name changed");

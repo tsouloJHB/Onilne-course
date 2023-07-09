@@ -11,6 +11,7 @@ const User = require('./models/usersModel');
 const UserProgress = require('./models/userProgressModel');
 const Course =  require('./models/coursesModel');
 const Topic = require('./models/topicModel');
+const flash = require('connect-flash');
 // const TopicMaterial = require('./models/TopicMaterial');
 const Courses = require('./models/coursesModel');
 app.use(cors());
@@ -47,6 +48,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
+app.use(flash());
 
 // Routes
 app.use('/users', UserRoute);

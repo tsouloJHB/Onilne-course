@@ -36,22 +36,29 @@ module.exports.changePassword =  async (req, res) => {
           location: 'body'
         }
       ]
-      return await this.renderSettingsPage(req,res,errors);
+      req.flash('error', 'Missing fields');
+      res.redirect('/users/settings');
+     // return await this.renderSettingsPage(req,res,errors);
     }
     //check is password is correct 
+   
     const checkPassword = await UserModel.login(req.user.email,password);
     if(!checkPassword){
        errors = [
         {
-          type: 'field',
+          type: 'field',  
           value: '',
           msg: 'Incorrect Password',
           path: 'password',
           location: 'body'
         }
       ]
-      return await this.renderSettingsPage(req,res,errors);
+      console.log("incorrect pass");
+      req.flash('error', 'Incorrect Password');
+     return res.redirect('/users/settings');
+      //return await this.renderSettingsPage(req,res,errors);
     }
+    console.log("never");
     //set new password
     //had password
     const salt = await bcrypt.genSalt();
@@ -71,7 +78,7 @@ module.exports.changePassword =  async (req, res) => {
         }
       ]
      
-      return await this.renderSettingsPage(req,res,errors);
+      //return await this.renderSettingsPage(req,res,errors);
     }
     errors = [
       {
@@ -82,11 +89,29 @@ module.exports.changePassword =  async (req, res) => {
         location: 'body'
       }
     ]
-    return await this.renderSettingsPage(req,res,errors);
+    req.flash('error', 'Password successfully changed');
+   return  res.redirect('/users/settings');
+   // return await this.renderSettingsPage(req,res,errors);
   } catch (error) {
+    if(error.message === "Incorrect password"){
+      errors = [
+        {
+          type: 'field',  
+          value: '',
+          msg: 'Incorrect Password',
+          path: 'password',
+          location: 'body'
+        }
+      ]
+      console.log("incorrect pass");
+     req.flash('error', 'Incorrect Password');
+     return res.redirect('/users/settings');
+    }
     console.error('Error retrieving user:', error);
     return res.render('404', { message: "An error occurred while retrieving" });
   }
+
+  
 }
 
 module.exports.changeDisplayName = async(req,res) =>{
