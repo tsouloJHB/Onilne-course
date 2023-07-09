@@ -173,7 +173,14 @@ router.get('/edit/:id',verifyToken.verifyToken ,async (req, res) => {
     }
 
     const admin  = req.user.isAdmin;
-    res.render('editTopic', { topic, topicMaterial,quiz,admin }); // Render the edit topic page with the retrieved data
+    //get video sources
+    let videoSources = await SettingsModel.findOne();
+    if(!videoSources){
+      videoSources = ['youtube'];
+    }else{
+      videoSources = videoSources.videoSource;
+    }
+    res.render('editTopic', { topic, topicMaterial,quiz,admin,videoSources }); // Render the edit topic page with the retrieved data
   } catch (error) {
     if (error.name === 'CastError') {
       return res.render('404');
@@ -369,6 +376,7 @@ router.post('/edit/:id', verifyToken.verifyToken,topicCreateDataValidate,async (
     topicMaterial.title = req.body.materialTitle;
     topicMaterial.content = req.body.materialContent;
     topicMaterial.topicVideo = req.body.materialVideo;
+    topicMaterial.videoSource  = req.body.videoSource;
 
     // Save the updated topic material
     await topicMaterial.save();

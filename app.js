@@ -14,9 +14,12 @@ const Topic = require('./models/topicModel');
 const flash = require('connect-flash');
 // const TopicMaterial = require('./models/TopicMaterial');
 const Courses = require('./models/coursesModel');
+const QuizService = require('./services/quizService');
 app.use(cors());
 dotenv.config();
 connectDb();
+
+
 const bodyParser = require('body-parser');
 const { UserModel } = require('./models');
 
@@ -50,6 +53,9 @@ app.use(session({
 }));
 
 app.use(flash());
+
+
+
 
 // Routes
 app.use('/users', UserRoute);

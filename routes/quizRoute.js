@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
+const QuizService = require('../services/quizService');
 const { TopicModel, TopicMaterialModel,TopicQuizModel, UserProgressModel, SettingsModel } = require('../models');
+const { CoursesController } = require('../controllers');
 
 router.post('/submit',verifyToken.verifyToken, async (req, res) => {
     try {
@@ -63,8 +65,11 @@ router.post('/submit',verifyToken.verifyToken, async (req, res) => {
                 //set the course as complete        
                 if(userProgress.progress == topicCount ){
                   //generate certificate 
+                  //Get course info
+                  const creator = await CoursesController.getCourseCreator(currentTopic.courseId);
                   //certificate link
-                  const link = "images/certificates/43244.png";
+                  const link = await QuizService.createCertificate(req.user.name,req.user.surname,creator.user.name,creator.course.title);
+                  //const link = "images/certificates/43244.png";
                   await UserProgressModel.findOneAndUpdate({user:req.user._id,completed:true,certificate:link});    
                 }
             

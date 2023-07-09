@@ -1,5 +1,5 @@
 const { query } = require('express');
-const {CourseModel,UserProgressModel,CategoryModel,TopicModel, TopicQuizModel} = require('../models');
+const {CourseModel,UserProgressModel,CategoryModel,TopicModel, TopicQuizModel, UserModel} = require('../models');
 const TopicMaterial = require('../models/topicMaterialModel');
 const CoursesModel = require('../models/coursesModel');
 const UserProgressController = require('./userProgressController');
@@ -608,5 +608,14 @@ module.exports.checkCourseComplete = async(courseId,userId) =>{
     console.log(error);
     return downloadCertificate;
  
+  }
+}
+
+module.exports.getCourseCreator = async(courseId) => {
+  const course  = await CourseModel.findById(courseId);
+  const user = await UserModel.findById(course.user);
+  return {
+    user:user,
+    course,course
   }
 }

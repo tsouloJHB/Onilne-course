@@ -41,6 +41,15 @@
         <input type="text" id="materialVideo" name="materialVideo" value="<%= topicMaterial.topicVideo %>">
         <input type="hidden" id="materialVideo" name="courseId" value="for-validation-only">
       </div>
+      <div>
+        <label for="materialVideo">Video Source:</label>
+        <select id="category" name="videoSource">
+          <% videoSources.forEach((source) => { %>
+            <option value="<%= source %>"><%= source %></option>
+          <% }) %>
+        </select>
+      
+      </div>
     <% } %><br/>
     <% if(quiz){ %>
       <a href="/topics/quiz/<%=topic._id %>">View topic quiz</a>
