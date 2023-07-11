@@ -8,7 +8,71 @@
   <!-- Navigation -->
   <%- include('../partials/clientNav') %>
   <br><br>
-  <div class="card">
+
+  <div class="course-details-container">
+    <div class="course-details-view">
+      <p class="path"> Home / courses /<span style="color: gray;"> machine</span> </p>
+      <div class="course-image">
+        <img src="/images/courseimages/1689023673097Difference-between-UI,-UX-and-Web-Designer.jpg" alt="Course Image">
+        <div class="rating">
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>  
+        </div>
+        <br/>
+        <div class="reviews">4.8 (15 reviews)</div>
+      </div>
+      <div class="course-details-breakdown">
+      <div class="instructor">A course by<span style="color: black;">James carter</span></div>
+      <h2 class="course-title">Course Title</h2>
+      <p class="course-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+      </div>
+    </div>
+    <div class="course-breakdown">
+      <div class="course-info">
+        <div class="course-section">
+          <div class="course-icon"><i class="fa fa-users"></i></div>
+          <div class="course-detail">5000+ Students Registered</div>
+        </div>
+        <div class="course-section">
+          <div class="course-icon"><i class="fa fa-language"></i></div>
+          <div class="course-detail">Language: English</div>
+        </div>
+        <div class="course-section">
+          <div class="course-icon"><i class="fa fa-book"></i></div>
+          <div class="course-detail">50 Lessons</div>
+        </div>
+        <div class="course-section">
+          <div class="course-icon"><i class="fa fa-clock-o"></i></div>
+          <div class="course-detail">Duration: 10 hours</div>
+        </div>
+        <div class="course-section">
+          <div class="course-icon"><i class="fa fa-trophy"></i></div>
+          <div class="course-detail">Difficulty: Intermediate</div>
+        </div>
+      </div>
+      <br/>
+      <div class="course-buttons">
+        <button class="enroll-btn">Enroll Course</button>
+        
+      </div>
+      <hr>
+      <div class="course-section2">
+        <span class="small-heading">Prerequisites</span>
+        <p>Prerequisites description...</p>
+      </div>  
+      
+      <div class="course-section2">
+        <span class="small-heading">Course Material</span>
+        <p>Course material explanation...</p>
+     
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- <div class="card">
     
     <div class="card-header" id="<%=course._id %>">
         <h5 class="mb-0">
@@ -42,7 +106,7 @@
         </div>
         <img src="<%=course.courseImage%>"/>
     </div>
-  </div>
+  </div> -->
 </body>
 <%- include('../partials/footer') %>
 </html>  

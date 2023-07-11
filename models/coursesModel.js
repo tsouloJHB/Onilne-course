@@ -25,7 +25,7 @@ const CourseSchema = new mongoose.Schema({
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'category',
+    ref: 'courseCategory',
     required: true
   },
   courseImage:{

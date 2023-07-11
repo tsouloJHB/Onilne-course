@@ -54,12 +54,15 @@ module.exports.getUserCourses = async (userId,completed=false) => {
           if(course){
             let countTopics = await TopicModel.countDocuments({courseId:course._id});
             countTopics++;
-            const percentage =  (progress.progress/countTopics) * 100
+            const percentage =  (progress.progress/countTopics) * 100;
+            //get the category fo the course
+            const category = await CategoryModel.findById(course.category);
              modifiedCourse = {
               ...course.toObject(), // Spread the properties of the course object
               progress: progress.progress,
               completed:progress.completed,
-              percentage:percentage.toFixed(1) // Add the progress field
+              percentage:percentage.toFixed(1), // Add the progress field
+              categoryName:category.name
             };
           }else{
             modifiedCourse = course
@@ -440,10 +443,11 @@ module.exports.getTopFiveCourses = async(userId)=>{
       //   { $sort: { count: -1 } },
       //   { $limit: 5 },
       // ]);
-
-     let topCourses = await CoursesModel.find({_id:{$nin:userCourseIds},active:true});
+     await CategoryModel.find();
+     //let topCourses = await CoursesModel.find({_id:{$nin:userCourseIds},active:true});
+     let topCourses = await CoursesModel.find({ _id: { $nin: userCourseIds }, active: true }).populate('category', 'name');
      // let filteredTopCourses = topCourses.filter((course) => course._id !== null);
-     
+     console.log(topCourses);
       if(topCourses.length < 1){
         console.log("filter");
         //topCourses = await getRandomFiveCourses(userId,userCourseIds);
