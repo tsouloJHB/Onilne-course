@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel, TopicMaterialModel,TopicQuizModel, SettingsModel } = require('../models');
+const { TopicModel, TopicMaterialModel,TopicQuizModel, SettingsModel, CourseModel, CategoryModel } = require('../models');
 const {CoursesController,TopicsController ,UserProgressController, QuizController} = require('../controllers');
 const { topicCreateDataValidate } = require('../validation/topicValidation');
 const { validationResult } = require('express-validator');
@@ -41,7 +41,28 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
       currentTopic = req.user.isAdmin == true ? 100 : 0;
     }
     const downloadCertificate = await CoursesController.checkCourseComplete(courseId,req.user._id);
-    res.render('topics', { topics,currentTopic,courseId,downloadCertificate }); // Pass the topics and progress data to the topics view for rendering
+
+    const course = await CourseModel.findById(courseId);
+    let countTopics = await TopicModel.countDocuments({courseId:course._id});
+
+    const percentage =  (progress.progress/countTopics) * 100;
+    //get the category fo the course
+    const category = await CategoryModel.findById(course.category);
+
+    //get remaining hours 
+    const hours = course.hours ? course.hours : 0;
+    const remainingHours = (hours * (100 - percentage) / 100).toFixed(0);
+     modifiedCourse = {
+      ...course.toObject(), // Spread the properties of the course object
+      progress: progress.progress,
+      completed:progress.completed,
+      percentage:percentage.toFixed(1), // Add the progress field
+      categoryName:category.name,
+      remainingHours:remainingHours,
+      topics:countTopics
+    };
+
+    res.render('topics', { topics,currentTopic,courseId,downloadCertificate,course:modifiedCourse }); // Pass the topics and progress data to the topics view for rendering
   } catch (error) {
     console.error('Error retrieving topics:', error);
     return res.render('404',{message:"An error occurred while retrieving"});

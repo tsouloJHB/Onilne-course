@@ -35,8 +35,24 @@ const CourseSchema = new mongoose.Schema({
   courseVideo:{ 
     type:String,
     max:50
+  },
+  hours:{ 
+    type:Number,
+  },
+  language:{ 
+    type:String,
+    default:"English"
+  },
+  difficulty:{
+    type:String,
+    default:"Beginner"
+  },
+  prerequisites:{
+    type:String,
+  },
+  material:{
+    type:String,
   }
-
 
   // Add more fields as needed  
 },

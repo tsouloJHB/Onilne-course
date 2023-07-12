@@ -8,7 +8,81 @@
   <!-- Navigation -->
   <%- include('../partials/clientNav') %>
   <br><br>
-<div id="accordion">
+  <p class="path"> Home / courses /<span style="color: gray;"> machine</span> </p>
+  <div class="user-courses-container">
+    <div class="user-column">
+      <div class="user-welcome">
+        <div class="custom-jumbotron">
+          <div class="container">
+            <h2 class="display-5"><i class="fa fa-user"></i><b> Hello Josh</b> </h2>
+            <p class="lead">Good to see you</p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="course-list">
+        <% courses.forEach(function(course) { %>
+        <div class="course">
+          <div class="course-details">
+            <h3><%= course.title %></h3>
+           
+            <% if(course.completed){ %>
+              
+              <div class="course-progress">
+                <i class="fa fa-check-circle"></i>
+                <span>Completed</span>
+              </div>
+              
+            <%}else{%>
+              <div class="course-progress">
+                <i class="fa fa-check-circle"></i>
+                <span><%=course.percentage %>% completed</span>
+              </div>
+              
+           
+            <%}%>
+            <div class="course-hours">
+              <i class="fa fa-clock-o"></i>
+              <span><%=course.remainingHours%> hours</span>
+            </div>
+            <div class="course-rating">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star-half"></i>
+              <span>4.8</span>
+            </div>
+            <a href="/topics/<%=course._id %>"><button class="view-course-btn">View Course</button></a>
+          </div>
+          <p class="instructor">Instructor Name</p>
+        </div>
+     
+        <% }); %>
+      </div>
+    </div>
+    <div class="stats-column">
+     
+      <h2 class="display-9"><b>Your Stats</b> </h2>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-laptop"></i>
+          <p>Courses: 2%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Completed Courses: <%=userStats.coursesCompleted%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-hourglass-half"></i>
+          <p>In Progress: <%=userStats.inprogress%></p>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+  
+<!-- <div id="accordion">
   <% if(courses.length == 0){ %>
     <p>You have not registered for any course </p>
     <%} %>
@@ -39,7 +113,7 @@
   </div>
 </div>
  </div>
-</div>
+</div> -->
 
 <%- include('../partials/footer') %>
 </body>

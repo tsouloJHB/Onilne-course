@@ -14,13 +14,73 @@
       <%- include('partials/clientNav') %>    
     <%}%> 
   <!-- List topics here -->
-  <h1>All Topics</h1>
+  
     <% if(admin){ %>
-      <a href="/admin/courses/"><button>Back</button></a>
+      <!-- <a href="/admin/courses/"><button>Back</button></a> -->
+      <p class="path"> Home /<a href="admin/courses/"> courses</a> /<span style="color: gray;"> lessons</span> </p>
     <%}else{%>
-      <a href="/course/created"><button>Back</button></a>
+      <!-- <a href="/course/created"><button>Back</button></a> -->
+      <p class="path"> Home /<a href="/course/created"> courses</a> /<span style="color: gray;"> lessons</span> </p>
     <%}%>  
-    <div>
+
+   
+    <div class="user-courses-container">
+    
+        <% if(topic.length == 0 ){ %>
+          <p>You can't have an active course without any topics</p>
+        <%} %>  
+        <div class="course-list">
+          <% topic.forEach(function(top) { %>
+          <div class="course">
+            <div class="course-details">
+              <h3><%= top.title %></h3>
+             
+              <div class="">
+                <p>Incomplete</p>
+              </div>
+              <!-- <div class="">
+                <button class="view-course-btn"><a href="/topics/edit/<%= top._id %>">Edit</a></button>
+                <a href="#" data-delete-topic="<%=top._id%>" class="delete-topic"><button class="view-course-btn">Delete</button></a>
+              </div> -->
+              <div class="">
+              <a href="#" data-delete-topic="<%=top._id%>" class="delete-topic"><button class="trans-btn">Delete</button></a>
+              <a href="/topics/edit/<%= top._id %>"><button class="view-course-btn">Edit</button></a>
+            </div>
+            </div>
+            <p class="instructor"><%= top.topicDesc %></p>
+          </div>
+       
+          <% }); %>
+        </div>
+      </div>
+      <div class="stats-column">
+       
+        <h2 class="display-9"><b>Course Stats</b> </h2>
+        <br>
+        <div class="stats">
+          <div class="stats-item">
+            <i class="fa fa-user"></i>
+            <p>Students: 20 </p>
+          </div>
+          <div class="stats-item">
+            <i class="fa fa-check-circle"></i>
+            <p>course setup: Incomplete  </p>
+          </div>
+          <div class="stats-item">
+            <i class="fa fa-book"></i>
+            <p>Lessons: 5 </p>
+          </div>
+          <div class="stats-item">
+            <i class="fa fa-check"></i>
+            <p>Status: Inactive </p>
+          </div>
+          <button class="trans-btn">Activate</button>
+        
+        </div>
+      </div>
+    </div>  
+
+    <!-- <div>
       <% if(!courseActive.active && !courseActive.topics){ %>
         Your course Is still inactive because you have no topics
       <%}else if(courseActive.topics && !courseActive.active){%>
@@ -58,13 +118,13 @@
           </div>
       <% }); %>
       <% if (topic.length === 0) { %>
-        <!-- Code to handle when topics array is empty -->
+      
         <p>No topics found.</p>
       <% }%>
       </div>
     </div> </br>
     <a href="/topics/create/<%= courseId%>">
-    <button>Create topic</button> </a>   
+    <button>Create topic</button> </a>    -->
 
     <script>
       $(document).ready(function (){

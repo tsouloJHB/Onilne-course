@@ -222,7 +222,7 @@ body {
 
 .course-details-container .course-image img {
   width: 80%;
-  border-radius: 10px;
+  border-radius: 30px;
 }
 
 .course-details-container .rating {
@@ -246,8 +246,9 @@ body {
   
   color: #777;
 }
-.course-details-container .path{
-  margin-right: 30px;
+ .path{
+  margin-left: 150px;
+  
 }
 
 .course-details-container .course-title {
@@ -301,6 +302,15 @@ body {
   cursor: pointer;
 }
 
+
+.trans-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: black;
+  cursor: pointer;
+  background-color:transparent;
+}
+
 .course-details-container .enroll-btn {
   background-color: black;
 }
@@ -315,7 +325,201 @@ body {
 }
 
 
+/*====================user courses =================================*/
+.custom-jumbotron {
+  background-color: #e9ecef;
+  border-radius: 20px;
+  padding: 40px;
+  
+}
+.custom-jumbotron-small{
+  background-color: #e9ecef;
+  border-radius: 20px;
+  padding:  20px 40px;
+}
+.custom-jumbotron-small .lead{
+  font-weight: 500;
+}
+.custom-jumbotron .container{
+  display: flex
+}
+.custom-jumbotron .container .lead{
+  display:inline-block;
+}
+.custom-jumbotron .custom-jumbotron-image{
+  max-width: 200px;
+  margin-left:auto;
+  position: absolute;
+  left: 50%;
+  top: 230px;
+  border-radius: 10px;
+}
+.user-courses-container {
+  display: flex;
+  padding: 50px 100px;
+ 
+}
 
+.user-column {
+  flex: 3;
+ 
+  padding: 0px 50px;
+}
+
+.stats-column {
+  flex: 1;
+  padding: 0px 50px;
+}
+
+.user-welcome {
+  padding-bottom: 20px;
+}
+
+.user-welcome h2 {
+  font-size: 24px;
+}
+
+.course-list {
+  margin-bottom: 20px;
+}
+
+.course {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.course h3 {
+  margin-top: 0;
+}
+
+.course .instructor {
+  font-size: 14px;
+  color: #777;
+}
+
+.course .course-details {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.course .course-details i {
+  margin-right: 5px;
+}
+
+.course .view-course-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: #fff;
+  background-color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.stats-item i {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+
+/*============================login==================================*/
+.login-container {
+  position: relative;
+  height: 100vh;
+  background-color: #41A0F9;
+}
+.login-container img{
+  z-index: 1000;
+}
+.login-container::before,
+.login-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.login-container::before {
+  left: 0;
+  width: 30%;
+  background-color: #fff;
+}
+
+.login-container::after {
+  left: 30%;
+  width: 20%;
+  background-color: #F5C954;
+}
+
+.login-container::before + .login-container::after {
+  left: 50%;
+  width: 50%;
+  background-color: #41A0F9;
+}
+
+.login-img{
+  z-index: 1000;
+}
+   
+.login-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.login-area h2 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.login-area p {
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-btn {
+  background-color: #41A0F9;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.signup-link {
+  margin-top: 10px;
+}
 /* 
 .navbar-logo {
     margin-left: 10px;

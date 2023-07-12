@@ -12,9 +12,80 @@
   
   <!-- List topics here -->
 
+   
+  
+  <div class="user-courses-container">
+    <%= topics.length == 0 ? "No topics found":"" %>
+    <div class="user-column">
+      <div class="custom-jumbotron-small">
+        <p class="lead"><b><%=course.title%></b> </p>
+         <p  style="color: gray;"><%=course.courseDesc%></p>
+      </div>
+      <br/>
+      <div class="course-list">
+        <% topics.forEach(function(topic) { %>
+        <div class="course">
+          <div class="course-details">
+            <h3><%= topic.title %></h3>
+           
+            <div class="">
+              
+              <% if(currentTopic > topic.topicNo) {%>
+                <p>Complete</p>
+              <%}else{%>
+                <p>Incomplete</p>
+              <%}%>    
+            </div>
+        
+            <div class="">
+            
+            <a href="/topicOutline/material/<%= topic._id %>"><button class="view-course-btn">View</button></a>
+        
+          </div>
+          </div>
+          <p class="instructor"><%= topic.topicDesc %></p>
+        </div>
+     
+        <% }); %>
+      </div>
+    </div>
+    <div class="stats-column">
+     
+      <h2 class="display-9"><b>Course Stats</b> </h2>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-book"></i>
+          <p>Lessons: 5 </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-clock-o"></i>
+          <p>Course hours: <%=course.remainingHours%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-clock-o"></i>
+          <p>Remaining hours: <%=course.remainingHours%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>completed: <%=course.percentage %>% </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check"></i>
+          <p>Status: Incomplete</p>
+        </div>
+       
+        <% if(downloadCertificate.completed){%>
+     
+          <a href="/<%= downloadCertificate.link%>" download></a><button class="trans-btn">Download certificate</button></a>
+        <%}%>  
+     
+      
+      </div>
+    </div>
+  </div>  
 
-
-    <div class="outline_courses_info">
+    <!-- <div class="outline_courses_info">
     
       <div id="accordion">
         <p>All Topics</p>
@@ -36,7 +107,7 @@
                         <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
                       <% } else if (currentTopic < topic.topicNo) { %>
                         <i class="fa fa-lock" aria-hidden="true"></i>
-                      <% } %> -->
+                      <% } %> 
           
                        
                 </h5>
@@ -50,7 +121,7 @@
       <% }); %>
       </div>
     
-    </div>    
+    </div>     -->
     <%- include('partials/footer') %>
 </body>
 

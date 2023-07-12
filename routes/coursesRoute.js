@@ -27,10 +27,21 @@ const { validationResult } = require("express-validator");
 
 router.get('/user',verifyToken.verifyToken, async(req, res) => {
     try {
+    
       const courses = await CoursesController.getUserCourses(req.user._id);
-      // console.log(courses.length);
-      //console.log(courses);
-      return res.render('courses/userCourses',{courses});
+      //get user stats
+      const userProgress = await UserProgressModel.find({ user: req.user._id });
+
+      const uniqueCourses = [...new Set(userProgress.map(item => item.course.toString()))];
+      const completedCourseCount = userProgress.filter(item => item.completed).length;
+
+      const userStats = {
+        coursesCompleted: completedCourseCount,
+        registeredCourses: uniqueCourses.length,
+        inprogress: uniqueCourses.length - completedCourseCount  
+      };
+
+      return res.render('courses/userCourses',{courses,userStats});
     } catch (error) {
       return res.render('404',{message:"An error occurred while retrieving"});
     }
@@ -89,8 +100,10 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
       //   // If topic material is not found, render an error page or redirect to an error route
       //   return res.render('', { message: 'Topic material not found' });
       // }
+      //get course 
+      const course = await CourseModel.findById(courseId);
       const admin  = req.user.isAdmin;
-      res.render('courseTopic', { topic,courseId ,admin,courseActive}); // Render the edit topic page with the retrieved data// Pass the courses and progress data to the courses view for rendering
+      res.render('courseTopic', { topic,courseId ,admin,courseActive,course}); // Render the edit topic page with the retrieved data// Pass the courses and progress data to the courses view for rendering
     } catch (error) {
       console.error('Error retrieving courses:', error);
       return res.render('404',{message:"An error occurred while retrieving"});
@@ -129,6 +142,7 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
   try {
     console.log("users here");
     const course = await CourseModel.findById(req.params.id);
+    let countTopics = await TopicModel.countDocuments({courseId:course._id});
     if(!course){
       return res.render('404'); 
     }
@@ -139,6 +153,7 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
         ...course.toObject(), // Spread the properties of the course object
         registered:true,
         completed:userProgress.completed,
+        topics:countTopics
          // Add the progress field
       };
       console.log(updatedCourse);
@@ -154,7 +169,8 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
 
     const updatedCourse = {
       ...course.toObject(), // Spread the properties of the course object
-      owner:owner
+      owner:owner,
+      topics:countTopics
        // Add the progress field
     };
     console.log(updatedCourse);

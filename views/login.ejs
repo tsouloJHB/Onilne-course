@@ -39,12 +39,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style2.css">
   <title>Login</title>
 </head>
 <body>
-  <h1>Login</h1>
-  <form action="/users/login" method="POST" id="login-form">
+  <div class="login-container">
+    <div class="login-img">
+      <img id="login-image" src="/images/manlap.png" width="35%"/>
+    </div>
+    <div class="login-area">
+      <h2>Welcome to Scholar</h2>
+      <p>Login</p>
+      <form class="login-form">
+        <!-- Add your form fields here -->
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+      <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
+      
+    </div>
+   
+  </div>
+
+  <!-- <form action="/users/login" method="POST" id="login-form">
     <div>
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" >
@@ -55,7 +71,7 @@
     </div>
     <div id="error"></div>
     <button type="submit">Login</button>
-  </form>
+  </form> -->
   <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
     <% errors.forEach(function (error) { %>
       <p style="color: red;"><%= error.msg %></p>
