@@ -45,7 +45,7 @@ const CourseSchema = new mongoose.Schema({
   },
   difficulty:{
     type:String,
-    default:"Beginner"
+    default:"beginner"
   },
   prerequisites:{
     type:String,

@@ -23,10 +23,28 @@ const courseDataValidate = {
     notEmpty: { errorMessage: "Category is required" },
   },
   courseVideo: {
-    notEmpty: { errorMessage: "Category is required" },
+    notEmpty: { errorMessage: "courseVideo is required" },
     isURL: { errorMessage: "Please provide a valid course video URL" },
   },
+  difficulty: {
+    notEmpty: { errorMessage: "difficulty is required" },
+  },
+  prerequisites: {
+    notEmpty: { errorMessage: "prerequisites is required" },
+  },
+  language: {
+    notEmpty: { errorMessage: "language is required" },
+  },
+  hours: {
+    notEmpty: { errorMessage: "hours is required" },
+  },
+  
+ material: {
+    notEmpty: { errorMessage: "material is required" },
+  }
 };
+
+
 
 
 const courseEditDataValidate = {
@@ -39,10 +57,7 @@ const courseEditDataValidate = {
  category: {
    notEmpty: { errorMessage: "Category is required" },
  },
-//  courseVideo: {
-//    notEmpty: { errorMessage: "Category is required" },
-//    isURL: { errorMessage: "Please provide a valid course video URL" },
-//  },
+
 };
 
 

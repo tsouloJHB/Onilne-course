@@ -8,67 +8,91 @@
 <body>
   <!-- Navigation -->
   <%- include('partials/clientNav') %>
-  <h1>Courses</h1>
+  
   
   <!-- Create Course Form -->
-  <h2>Create Course</h2>
-  <form id="course-form" action="/course/created" enctype="multipart/form-data" method="POST">
-    <input type="text" name="title" placeholder="Title" >
-    <textarea name="courseDesc" placeholder="Course Description"  cols="30" rows="5"></textarea>
-   
-    
-    <div class="mb-3">
-      <label for="imageUpload" class="form-label">Select Image</label>
-      <input type="file" class="form-control" id="imageUpload" name="imageUpload">
-    </div>
-    <label for="category">Category:</label> 
-    <!-- <select id="category" name="category"></select> -->
-    <select id="category" name="category">
-      <% categories.forEach((category) => { %>
-        <option value="<%= category._id %>"><%= category.name %></option>
-      <% }) %>
-    </select>
-    <input type="text" name="courseVideo" placeholder="Course Video URL">
-    <button type="submit">Create Course</button>  
-  </form>
-  <p id="error"></p>
-  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-    <div class="errors">
-      <% errors.forEach(function (error) { %>
-        <p class="error-message"><%= error.msg %></p>
-      <% }) %>
-    </div>
-  <% } %>
-  <!-- List of Courses -->
 
-  <% courses.forEach(function(course) { %>
-    <div class="course">
-      <h3><%= course.title %></h3>
-      <% if(course.courseImage != ""){%>
-        <img width="200px" src="<%=course.courseImage %>" />
-      <%}%> 
-      <p>Course No: <%= course.courseNo %></p>
-      <p><%= course.courseDesc %></p>
-      <!-- <img src="<%= course.courseImage %>" alt="Course Image"> -->
-      <a href="/course/course-topics/<%= course._id %>">View course</a>
-      <form action="/courses/<%= course._id %>" method="PUT">
-        <span><p class="deleteCourse" data-link-data="<%=course._id %>">Delete course</p></span>
-      </form> 
-      <a href="/course/edit/<%= course._id %>">Edit</a>
+
+  <p class="path"><a href="/users"> Home</a> /<span style="color: gray;"> your courses</span> </p>
+
+  <div class="user-courses-container">
+    <div class="user-column">
+      <div class="user-welcome">
+        <a href="/course/create"><button class="trans-btn">Create Course</button></a>
+        
+      </div>
+      <div class="course-list">
+        <% courses.forEach(function(course) { %>
+        <div class="course">
+          <div class="course-details">
+            <h3><%= course.title %></h3>
+         
+            <p><%= course.usersCount%> <i class="fa fa-user"></i></p>
+            <p><%=course.completed%> completed </p>
+            <% if (course.usersCount > 0){%>
+              <% const completedPercentage = (course.completed/course.usersCount) * 100; %>
+              <p><%=completedPercentage.toFixed(2)%> % course completion</p>
+          
+             
+            <%}%>  
+              <!-- <div class="course-progress">
+                <i class="fa fa-check-circle"></i>
+                <span>Completed</span>
+              </div>
+              
       
-      <p><%= course.usersCount%> registered users</p>
-      <p><%=course.completed%> users have completed the course</p>
-      <% if (course.usersCount > 0){%>
-        <% const completedPercentage = (course.completed/course.usersCount) * 100; %>
-        <p><%=completedPercentage.toFixed(2)%> % course completion</p>
+              <div class="course-progress">
+                <i class="fa fa-check-circle"></i>
+                <span></span>
+              </div> -->
+              
+           
     
-       
-      <%}%>  
-    
-      <span><p>Course status: <%= course.active ?"Active":"inactive" %></p></span>
+           
+           
+              <% if(course.courseImage != ""){%>
+                <img width="100px" src="<%=course.courseImage %>" />
+              <%}%> 
+           
+                <button class="trans-btn-sm deleteCourse"  data-link-data="<%=course._id %>">Delete</button>
+           
+              <a href="/course/edit/<%= course._id %>"><button class="view-course-btn">Edit</button></a>
+              <a href="/course/course-topics/<%= course._id %>""><button class="view-course-btn">View</button></a>
+            
+            
+          </div>
+          <span><p>Course status: <%= course.active ?"Active":"inactive" %></p></span>
+          <p><%= course.courseDesc %></p>
+        </div>
+     
+        <% }); %>
+      </div>
     </div>
-    <div id="message" class="hidden"></div> 
-  <% }); %>
+    <div class="stats-column">
+     
+      <h2 class="display-9"><b>Your Stats</b> </h2>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-laptop"></i>
+          <p>Courses: 2%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Completed Courses: 45</p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-hourglass-half"></i>
+          <p>In Progress: 45</p>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+ 
+
+
   <script>
     $(document).ready(function() {
         $('.deleteCourse').click(function(event){

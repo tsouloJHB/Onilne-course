@@ -276,7 +276,12 @@ module.exports.createCourse = async(req) =>{
       courseVideo: req.body.Video,
       user:req.user._id,
       category:req.body.category,
-      courseImage:'/images/courseimages/'+req.file.filename
+      courseImage:'/images/courseimages/'+req.file.filename,
+      difficulty:req.body.difficulty,
+      prerequisites:req.body.prerequisites,
+      language:req.body.language,
+      hours:req.body.hours,
+      material:req.body.material
     });
     const savedCourse = await course.save();
     return {

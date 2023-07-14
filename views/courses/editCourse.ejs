@@ -21,54 +21,145 @@
       <%- include('../partials/clientNav') %>    
     <%}%> 
   
-  <h1>Edit course</h1>
+
   <% if(admin){%>
-    <a href="/admin/courses/"> <button >Back</button></a>
+    <p class="path"> Home /<a href="/admin/courses/"> courses</a> /<span style="color: gray;"> edit course</span> </p>
   <%} else{%> 
-    <a href="../../course/created"> <button >Back</button></a>
+    <p class="path"> Home /<a href="../../course/created"> courses</a> /<span style="color: gray;"> edit course</span> </p>
   <% }%>  
-  <form id="courseForm" action="/course/<%=course._id %>" >
-    <input type="text" name="title" placeholder="Title" value="<%=course.title%>" >
-    <textarea name="courseDesc" placeholder="Course Description"   cols="30" rows="5"><%=course.courseDesc%></textarea>
-   
- 
-    <label for="category">Category:</label> 
-    <!-- <select id="category" name="category"></select> -->
-   
-    <select id="category" name="category" selected="<%=course.category%>">
-      <% categories.forEach((category) => { %>
+    
+  
+  <div class="user-courses-container">
+    <div class="user-column">
+    
+    <p class="page-small-title"><b>Edit Course</b></p>
+  <form id="courseForm" action="/course/<%=course._id %>" enctype="multipart/form-data" class="d-flex flex-column  px-3">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <input type="text" name="title" placeholder="Title" class="form-control" value="<%=course.title%>">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          
+          <select id="difficulty" name="difficulty" class="form-control">
+           
+            <option value="beginner" <%=course.difficulty == "beginner" ? "select":""%> >beginner</option>
+            <option value="Intermediate" <%=course.difficulty == "intermediate" ? "select":""%> >Intermediate</option>
+            <option value="experienced" <%=course.difficulty == "experienced" ? "select":""%> >experienced</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <select id="language" name="language" class="form-control">
+            <option value="beginner">English</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <input type="number" placeholder="hours" name="hours" id="hours" class="form-control" value="<%=course.hours%>">
+        </div>
+      </div>
+    </div>
+    <div class="form-group mb-2">
+      <textarea name="courseDesc" placeholder="Course Description" cols="40" rows="5" class="form-control"><%=course.courseDesc%></textarea>
+    </div>
+    
+    <div class="form-group mb-2">
+      
+      <select id="category" name="category" class="form-control">
+        <% categories.forEach((category) => { %>
        
-        <% if(category._id.toString() == course.category.toString()){%>
-            <option selected value="<%= category._id %>" ><%= category.name %></option>
-        <%}else{%>    
-            
-        <option  value="<%= category._id %>" ><%= category.name%></option>
-        <%}%>
-      <% }) %>
-    </select>
-    <input type="text" name="courseVideo" placeholder="Course Video URL" value="<%=course.video%>">
-    <button type="submit">Update course</button>  
+          <% if(category._id.toString() == course.category.toString()){%>
+              <option selected value="<%= category._id %>" ><%= category.name %></option>
+          <%}else{%>    
+              
+          <option  value="<%= category._id %>" ><%= category.name%></option>
+          <%}%>
+        <% }) %>
+      </select>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <input type="text" id="courseVideo" value="<%=course.video%>" name="courseVideo" placeholder="Course Video URL" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <textarea placeholder="required material" id="material" name="material" rows="5" cols="30" class="form-control"><%=course.material%></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="form-group mb-2">
+     
+      <textarea placeholder="prerequisites" id="prerequisites" name="prerequisites" rows="5" cols="30" class="form-control"><%=course.prerequisites%></textarea>
+    </div>
+    <button type="submit" class="trans-btn ">Update Course</button>
   </form>
+  <div id="message" class="hidden"></div> 
+  <p id="error"></p>
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="errors">
+      <% errors.forEach(function (error) { %>
+        <p class="error-message"><%= error.msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+  <p><b>Upload course image</b></p>
+  <img id="edit-image" src="<%=course.courseImage%>" width=40%">
+  <form id="uploadImage"  enctype="multipart/form-data" class="d-flex flex-column  px-3">
+    <div class="custom-file mb-3">
+      <input type="hidden" name="courseId" value="<%=course._id %>" />
+      <input type="file" class="custom-file-input" id="image" name="imageUpload">
+      <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+      <div class="invalid-feedback">Example invalid custom file feedback</div>
+    </div>
+    <br>
+    <button type="submit" class="trans-btn ">Update image</button>
+  
+  </form>
+     
+    </div>
+    <div class="stats-column">
+     
+      <h3 class="display-9"><b>Course requirements</b> </h3>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-laptop"></i>
+          <p>Courses: 2%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Completed Courses: 45</p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-hourglass-half"></i>
+          <p>In Progress: 45</p>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+
+
+
   <br>
  
-  <div id="message" class="hidden"></div>  
-  <img src="<%=course.courseImage%>" width="20%">
-  <div class=" mt-2">
-    <p>Upload course image</p>
-    <form id="uploadImage"  enctype="multipart/form-data">
-      <div class="mb-3">
-        <input type="hidden" name="courseId" value="<%=course._id %>" />
-        <label for="imageUpload" class="form-label">Select Image</label>
-        <input type="file" class="form-control" id="image" name="imageUpload">
-      </div>
-      <button type="submit" class="btn btn-primary">Upload</button>
-    </form>
-  </div>
   <script>
     $(document).ready(function() {
       $('#courseForm').submit(function(event) {
         event.preventDefault();
-  
+       
         // Clear previous error messages
         $('.error-message').remove();
   
@@ -81,14 +172,13 @@
             isValid = false;
           }
         });
-  
+      
         if (isValid) {
           var form = $(this);
           var url = form.attr('action');
-  
           // Serialize the data
           var formData = form.serialize();
-  
+    
           // Send the PUT request
           $.ajax({
             url: url,
@@ -100,7 +190,11 @@
               // Display success message in green
               const $message = $('#message');
               $message.text('Course data saved').css('color', 'green').removeClass('hidden');
-  
+                 // Scroll to the error messages
+            var errorOffset = $('#material').offset().top;
+            $('html, body').animate({
+              scrollTop: errorOffset
+            }, 500);
               // Hide the message after a few seconds with fade-out effect
               setTimeout(function() {
                 $message.addClass('hidden');

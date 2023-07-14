@@ -62,6 +62,20 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
       return res.render('404',{message:"An error occurred while retrieving"});
     }
   });
+
+  router.get('/create', verifyToken.verifyToken, async (req, res) => {
+    try {
+      // Retrieve all courses from the database
+      const categories =  await CategoryModel.find();
+      const coursesCount = await CourseModel.countDocuments();
+      return res.render('courses/create',{categories,coursesCount});
+    } catch (error) { 
+      console.error('Error retrieving courses:', error);
+      return res.render('404',{message:"An error occurred while retrieving"});
+    }
+  });
+
+  
   router.get('/created', verifyToken.verifyToken, async (req, res) => {
     try {
       // Retrieve all courses from the database
@@ -185,7 +199,7 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
 
   
 // Create a course
-router.post('/created',verifyToken.verifyToken,upload , courseDataValidate,async (req, res) => {
+router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async (req, res) => {
     try {
       console.log(req.body);
       const errors = validationResult(req);
@@ -252,6 +266,7 @@ router.post('/created',verifyToken.verifyToken,upload , courseDataValidate,async
       await CoursesController.courseUserAuthorized(req.user._id,req.params.id,res,req);
       //validate data
       const errors = validationResult(req);
+      console.log("Update bro");
       if (!errors.isEmpty()) {
         console.log(errors.array());
        

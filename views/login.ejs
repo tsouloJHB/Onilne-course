@@ -35,15 +35,14 @@
 <!-- New code should be here -->
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/style2.css">
+<html>
+
   <title>Login</title>
+  <%- include('partials/header') %>
+
 </head>
 <body>
-  <div class="login-container">
+  <!-- <div class="login-container">
     <div class="login-img">
       <img id="login-image" src="/images/manlap.png" width="35%"/>
     </div>
@@ -51,15 +50,73 @@
       <h2>Welcome to Scholar</h2>
       <p>Login</p>
       <form class="login-form">
-        <!-- Add your form fields here -->
+       
         <button type="submit" class="login-btn">Login</button>
       </form>
       <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
       
     </div>
    
-  </div>
-
+  </div> -->
+  <section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-4">
+					<h2 class="heading-section">Scholar.</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-12 col-lg-10">
+					<div class="wrap d-md-flex">
+						<div class="img" style="background-image: url('/images/login2.jpg');">
+			      </div>
+						<div class="login-wrap p-4 p-md-5">
+			      	<div class="d-flex">
+			      		<div class="w-100">
+			      			<h3 class="mb-4">Sign In</h3>
+			      		</div>
+								<div class="w-100">
+								
+								</div>
+			      	</div>
+							<form class="signin-form" action="/users/login" method="POST" id="login-form">
+			      		<div class="form-group mb-3">
+			      			<label class="label" for="name">Username</label>
+			      			<input type="text" id="email" name="email"  class="form-control" placeholder="Username" >
+			      		</div>
+		            <div class="form-group mb-3">
+		            	<label class="label" for="password">Password</label>
+		              <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+		            </div>
+		            <div class="form-group">
+		            	<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+		            </div>
+		            <!-- <div class="form-group d-md-flex">
+		            	<div class="w-50 text-left">
+			            	<label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+									  <input type="checkbox" checked>
+									  <span class="checkmark"></span>
+										</label>
+									</div>
+									<div class="w-50 text-md-right">
+										<a href="#">Forgot Password</a>
+									</div>
+		            </div> -->
+		          </form>
+              <div id="error"></div>
+              <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <% errors.forEach(function (error) { %>
+                  <p style="color: red;"><%= error.msg %></p>
+                <% }) %>
+              <% } %>
+		          <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
+		        </div>
+		      </div>
+				</div>
+			</div>
+		</div>
+	</section>
+  
   <!-- <form action="/users/login" method="POST" id="login-form">
     <div>
       <label for="email">Email:</label>

@@ -17,15 +17,39 @@
   
     <% if(admin){ %>
       <!-- <a href="/admin/courses/"><button>Back</button></a> -->
-      <p class="path"> Home /<a href="admin/courses/"> courses</a> /<span style="color: gray;"> lessons</span> </p>
+      <p class="path"> Home /<a href="admin/courses/"> courses</a> /<span style="color: gray;"> <%=course.title%></span> </p>
     <%}else{%>
       <!-- <a href="/course/created"><button>Back</button></a> -->
-      <p class="path"> Home /<a href="/course/created"> courses</a> /<span style="color: gray;"> lessons</span> </p>
+      <p class="path"> Home /<a href="/course/created"> courses</a> /<span style="color: gray;"> <%=course.title%></span> </p>
     <%}%>  
 
    
     <div class="user-courses-container">
-    
+      <div class="user-column">
+        <div class="user-welcome">
+          <div class="custom-jumbotron">
+            <div class="container">
+              <h2 class="display-5"><b><%=course.title%></b> </h2>
+              
+              <img src="<%=course.courseImage%>" class="custom-jumbotron-image"/>
+            </div>
+            <p class="lead"><%=course.courseDesc %></p>
+          </div>
+        <div>
+            <% if(!courseActive.active && !courseActive.topics){ %>
+              Your course Is still inactive because you have no topics
+            <%}else if(courseActive.topics && !courseActive.active){%>
+                <form id="courseForm"  action="/course/activate" >
+                  
+                  <input type="hidden" name="courseId" value="<%=topic[0].courseId %>"/>
+                  <button >Activate Course</button>
+                </form>
+                
+                  
+              <p>If you active your course it will be available to the public</p>
+            <%}%>
+       </div>  
+        </div>
         <% if(topic.length == 0 ){ %>
           <p>You can't have an active course without any topics</p>
         <%} %>  
@@ -79,6 +103,8 @@
         </div>
       </div>
     </div>  
+    <a href="/topics/create/<%= courseId%>">
+      <button>Create topic</button> </a>    
 
     <!-- <div>
       <% if(!courseActive.active && !courseActive.topics){ %>

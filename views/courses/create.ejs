@@ -1,0 +1,177 @@
+<!-- courses.ejs -->
+<!DOCTYPE html>
+<html>
+
+  <title>Courses</title>
+  <%- include('../partials/header') %>
+
+<body>
+  <!-- Navigation -->
+  <%- include('../partials/clientNav') %>
+ 
+
+  
+    <p class="path"> Home /<a href="/course/created"> courses</a> /<span style="color: gray;"> course</span> </p>
+
+  <div class="user-courses-container">
+    <div class="user-column">
+    
+    <p class="page-small-title"><b>Create Course</b></p>
+  <form id="course-form" action="/course/create" enctype="multipart/form-data" method="POST" class="d-flex flex-column  px-3">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <input type="text" name="title" placeholder="Title" class="form-control">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <select id="difficulty" name="difficulty" class="form-control">
+            <option value="beginner">beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="experienced">experienced</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <select id="language" name="language" class="form-control">
+            <option value="beginner">English</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <input type="number" placeholder="hours" name="hours" id="hours" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="form-group mb-2">
+      <textarea name="courseDesc" placeholder="Course Description" cols="40" rows="5" class="form-control"></textarea>
+    </div>
+ 
+    <div class="custom-file mb-3">
+      <input type="file" class="custom-file-input" id="validatedCustomFile">
+      <label class="custom-file-label" for="validatedCustomFile" id="validatedCustomFile"  name="imageUpload">Choose file...</label>
+      <div class="invalid-feedback">Example invalid custom file feedback</div>
+    </div>
+    
+    <div class="form-group mb-2">
+      <label for="category">Category:</label> 
+      <select id="category" name="category" class="form-control">
+        <% categories.forEach((category) => { %>
+          <option value="<%= category._id %>"><%= category.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <input type="text" name="courseVideo" placeholder="Course Video URL" class="form-control">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-2">
+          <textarea placeholder="required material" id="material" name="material" rows="5" cols="30" class="form-control"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="form-group mb-2">
+     
+      <textarea placeholder="prerequisites" id="prerequisites" name="prerequisites" rows="5" cols="30" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="trans-btn ">Create Course</button>
+  </form>
+  <p id="error"></p>
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="errors">
+      <% errors.forEach(function (error) { %>
+        <p class="error-message"><%= error.msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+     
+    </div>
+    <div class="stats-column">
+     
+      <h3 class="display-9"><b>Course requirements</b> </h3>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-laptop"></i>
+          <p>Courses: 2%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Completed Courses: 45</p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-hourglass-half"></i>
+          <p>In Progress: 45</p>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  
+
+  
+  <!-- Create Course Form -->
+  
+  
+  
+
+
+  <script>
+    $(document).ready(function() {
+      $('#course-form').submit(function(event) {
+        event.preventDefault(); // Prevent form submission
+        
+        // Clear previous error messages
+        $('#error').empty();
+  
+        // Get form values
+        var fields = [
+          { name: 'title', label: 'Title' },
+          { name: 'courseDesc', label: 'Course Description' },
+          { name: 'imageUpload', label: 'Image' },
+          { name: 'category', label: 'Category' },
+          { name: 'courseVideo', label: 'Course Video URL' },
+          { name: 'material', label: 'Material' },
+          { name: 'language', label: 'Language' },
+          { name: 'hours', label: 'Hours' },
+          { name: 'prerequisites', label: 'prerequisites' }
+        ];
+  
+        // Perform validation
+        var isValid = true;
+  
+        fields.forEach(function(field) {
+          var value = $('*[name="' + field.name + '"]').val().trim();
+          if (value === '') {
+            $('#error').append('<p>Please enter ' + field.label + '.</p>');
+            isValid = false;
+          }
+        });
+  
+        if (isValid) {
+          // Submit the form if valid
+          $('#course-form').unbind('submit').submit();
+        }else {
+            // Scroll to the error messages
+            var errorOffset = $('#error').offset().top;
+            $('html, body').animate({
+              scrollTop: errorOffset
+            }, 500);
+          }
+      });
+    });
+  </script>
+<%- include('../partials/footer') %>
+</body>
+</html>
