@@ -13,49 +13,84 @@
       <%- include('partials/clientNav') %>    
     <%}%> 
 
-  <h1>Quiz</h1>
+    <p class="path"> Home /<a  href="/topics/edit/<%=quiz.topicId %>"> courses</a> /<span style="color: gray;"> course</span> </p>
 
-  <% if (quiz) { %>
-    <h2>Quiz Details</h2>
-    
-   <a href="/topics/edit/<%=quiz.topicId %>"> <button >Back</button></a>
-    <form id="quizForm" action="/topics/quiz/<%=quiz.topicId %>" >
-      <input type="hidden" name="topicId" value="<%=quiz.topicId%>">
-    <% quiz.questions.forEach(function(question, index) { %>
-      <div class="question-div" id="question<%=index+1 %>">
-        <h4>Question <%= index + 1 %>:</h4>
-        <p>Question: <%= question.question %></p>
-        <textarea class="question" name="questions[<%=index %>][question]" rows="5" cols="50"  value=""><%=question.question %></textarea>
-        <p>Answer: <%= question.answer %></p>
-        <textarea class="answer" name="questions[<%=index %>][answer]" rows="5" cols="50"  value=""><%= question.answer %></textarea>
-        <p>Incorrect Answer 1: <%= question.incorrectAnswer1 %></p>
-        <textarea class="incorrectAnswer1" name="questions[<%=index %>][incorrectAnswer1]" rows="5" cols="50"  value=" "><%= question.incorrectAnswer1 %></textarea>
-        <p>Incorrect Answer 2: <%= question.incorrectAnswer2 %></p>
-        <textarea class="incorrectAnswer2" name="questions[<%=index %>][incorrectAnswer2]" rows="5" cols="50" value=""><%= question.incorrectAnswer2 %></textarea>
-   
-        <br>
+    <div class="user-courses-container">
+      <div class="user-column">
       
-        <button type="submit" >Edit question <%=index+1 %></button>
-        <span class="btn btn deleteQuestion" data-question-index="<%=index+1%>">Delete Question<%=index+1 %> </span > 
+      <p class="page-small-title"><b>Create Course</b></p>
+    <form id="quizForm" action="/topics/quiz/<%=quiz.topicId %>" class="d-flex flex-column  px-3">
+      <input type="hidden" name="topicId" value="<%=quiz.topicId%>">
+      <% quiz.questions.forEach(function(question, index) { %>
+        <div class="question-div" id="question<%=index+1 %>">
+          
+          
+          <div class="quiz-detail">
+            <div id="entityContainer ">
+              <div class="entityRow course">
+                <label for="question"><b>Question <%= index + 1 %>:</b></label>
+                <p>Question: <%= question.question %></p>
+                <textarea class="form-control question" name="questions[<%=index %>][question]" rows="2" cols="50"><%=question.question %></textarea>
+                <p>Answer: <%= question.answer %></p>
+                <textarea class="form-control answer" name="questions[<%=index %>][answer]" rows="2" cols="50"><%= question.answer %></textarea>
+                <label for="incorrectAnswer1">Incorrect Answer 1:</label>
+                <textarea class="form-control incorrectAnswer1"  name="questions[<%=index %>][incorrectAnswer1] rows="2" cols="50"><%= question.incorrectAnswer1 %></textarea>
+                <label for="incorrectAnswer2">Incorrect Answer 2:</label>
+                <textarea class="form-control incorrectAnswer2" name="questions[<%=index %>][incorrectAnswer2]" rows="2" cols="50"><%= question.incorrectAnswer2 %></textarea>
+              </div>
+          </div>
+        </div>
+        <button class="trans-btn" type="submit" >Edit question <%=index+1 %></button>
+        <button class="view-course-btn deleteQuestion"  type="button" data-question-index="<%=index+1%>">Delete Question<%=index+1 %> </button > 
         <div class="message hidden"></div>  
         <br><span class="error"></span>
-      </div>   
-    <% }); %>
-  <% } else { %>
-    <p>No quiz data available.</p>
-  <% } %>   
-  </form>
- 
-  <br><button id="add-question">Add question</button>
+        </div>
+      <%})%>  
+  
+      
+    </form>
+    <button style="width: 100%;" type="button" class="trans-btn" id="add-question">Add question</button>
+    <p id="error"></p>
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <div class="errors">
+        <% errors.forEach(function (error) { %>
+          <p class="error-message"><%= error.msg %></p>
+        <% }) %>
+      </div>
+    <% } %>
 
-  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-    you and i
- 
-      <% errors.forEach(function (error) { %>
-        <p class="error-message"><%= error.msg %></p>
-      <% }) %>
+       
+      </div>
+      <div class="stats-column">
+       
+        <h3 class="display-9"><b>Course requirements</b> </h3>
+        <br>
+        <div class="stats">
+          <div class="stats-item">
+            <i class="fa fa-laptop"></i>
+            <p>Courses: 2%> </p>
+          </div>
+          <div class="stats-item">
+            <i class="fa fa-check-circle"></i>
+            <p>Completed Courses: 45</p>
+          </div>
+          <div class="stats-item">
+            <i class="fa fa-hourglass-half"></i>
+            <p>In Progress: 45</p>
+          </div>
+          <% if(quiz){ %>
+      
+         
+          <% } else { %>
+            You haven't created a quiz for this Lesson<br/><br/>
+            
+          <% } %>
+        </div>
+      </div>
     </div>
-  <% } %>
+  
+
+
 
   <!-- Add your additional HTML code here -->
 
@@ -206,17 +241,25 @@
         const incorrectAnswer2Value = "";
         var entityIndex = childCount+1;
         const questionTemplate = `
+         <div  class="quiz-detail">
+         
+              <div class="entityRow course">
           <div class="question-div" id="question${entityIndex+1}">
             <label for="question">Question:</label>
-            <textarea name="questions[${entityIndex}][question]" rows="5" cols="50" >${questionValue}</textarea>
+            <textarea class="form-control"  name="questions[${entityIndex}][question]"rows="2" cols="50" >${questionValue}</textarea>
             <label for="answer">Answer:</label>
-            <textarea name="questions[${entityIndex}][answer]" rows="5" cols="50" >${answerValue}</textarea>
+            <textarea class="form-control"  name="questions[${entityIndex}][answer]"rows="2" cols="50" >${answerValue}</textarea>
             <label for="incorrectAnswer1">Incorrect Answer 1:</label>
-            <textarea name="questions[${entityIndex}][incorrectAnswer1]" rows="5" cols="50" >${incorrectAnswer1Value}</textarea>
+            <textarea class="form-control"  name="questions[${entityIndex}][incorrectAnswer1]" rows="2" cols="50" >${incorrectAnswer1Value}</textarea>
             <label for="incorrectAnswer2">Incorrect Answer 2:</label>
-            <textarea name="questions[${entityIndex}][incorrectAnswer2]" rows="5" cols="50" >${incorrectAnswer2Value}</textarea>
+            <textarea class="form-control"  name="questions[${entityIndex}][incorrectAnswer2]" rows="2" cols="50" >${incorrectAnswer2Value}</textarea>
           </div>
-          <button >Save question</button>
+      
+         </div>
+         </div>
+       
+          <button class="view-course-btn">Save question</button>
+          <br/>
           <div id="message" class="hidden"></div>  
         `;
         $('#quizForm').append(questionTemplate);

@@ -18,13 +18,16 @@
         <a href="/topicOutline/material/<%=topicId%>"><button class="trans-btn-sm">Quit</button></a>
       </div>
       <% if (typeof response !== 'undefined' && response !== null) { %>
-        <p>You received <%=response.mark%></p>
-        <p><%=response.message%></p>
+        <div class="space-border">
+        <p><b>You received <%=response.mark%></b></p>
+        <p style="color:red" ><%=response.message%></p>
         <% if (response.success) { %>
-        <a href="/topicOutline/material/<%=response.nextTopic%>"><button>Continue</button></a>
+        <a href="/topicOutline/material/<%=response.nextTopic%>"><button class="trans-btn-sm">Continue</button></a>
         <% } %>
-      
+        </div> 
         <% } %>
+
+     
         <form action="/quiz/submit" method="POST" id="quizForm">
           <input type="hidden" value="<%=topicId%>" name="topicId" />
           <% quiz.questions.forEach(function(question, index) { %>

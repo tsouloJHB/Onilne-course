@@ -457,6 +457,13 @@ body {
   justify-content: space-between;
 }
 
+.space-border {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 .course .course-details i {
   margin-right: 5px;
 }
@@ -749,6 +756,16 @@ body {
   margin-top: 20px;
 }
 
+/*======================================== Create Quiz ====================================*/
+.entityContainer{
+  width: 100%;
+}
+.entityRow{
+  width: 100%;
+}
+.error-message{
+  color: red;
+}
  /*----------------------------------------------------------*/
     
 /* 

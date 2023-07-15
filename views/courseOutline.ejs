@@ -127,10 +127,10 @@ ul li a{
   <div class="container-out">
     <div class="column" style="flex: 2 2 58%;">
   
-      <% if(downloadCertificate.completed){%>
+      <!-- <% if(downloadCertificate.completed){%>
         <p>Course Completed</p>
         <a href="/<%= downloadCertificate.link%>" download><button>Download certificate</button></a>
-      <%}%> 
+      <%}%>  -->
        
      
       <iframe id="video" height="500" src="<%= topicMaterial.embedLink %>">
@@ -158,9 +158,15 @@ ul li a{
     <div class="column">
       <p id="progress-text" >Progress</p>
       <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: <%=percentage%>%;background-color:black" aria-valuenow="<%=percentage%>" aria-valuemin="0" aria-valuemax="100">
-          <%=percentage%>%
+        <% if(!downloadCertificate.completed){%>
+          <div class="progress-bar" role="progressbar" style="width: <%=percentage%>%;background-color:black" aria-valuenow="<%=percentage%>" aria-valuemin="0" aria-valuemax="100">
+            <%=percentage%>%
+          </div>
+        <%}else{%>  
+        <div class="progress-bar" role="progressbar" style="width: 100%;background-color:black" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+          100%
         </div>
+        <%}%>
       </div>
       
       <ul class="menu-list">
@@ -172,9 +178,16 @@ ul li a{
           </li>
         <% }) %>
       </ul>
-      <div id="courseInfo">     
-        <p >Scroll down to take course </p>
-      <i class="fa fa-angle-down" aria-hidden="true"></i>
+      <div id="courseInfo">
+        <% if(!downloadCertificate.completed){%>
+          <p >Scroll down to take course </p>
+          <i class="fa fa-angle-down" aria-hidden="true"></i>
+        <%}else{%>
+          <p style="color: red;">Course Completed</p>
+          <a href="/<%= downloadCertificate.link%>" download><button class="trans-btn">Download certificate</button></a>
+        <%}%>
+
+     
       </div>
  
   

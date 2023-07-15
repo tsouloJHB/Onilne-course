@@ -16,33 +16,68 @@
     <%- include('partials/clientNav') %>    
   <%}%> 
   <br><br>
-  <a href="/topics/edit/<%=topicId%>"><button>Back</button></a>    
-  <form id="quizForm" action="/topics/createQuiz/<%=topicId%>" method="POST">
-    <input type="hidden" name="topicId" value="<%=topicId%>">
-    
-    <div id="entityContainer">
-      <div class="entityRow">
-        <label for="question">Question:</label>
-        <textarea name="questions[0][question]" rows="5" cols="50"></textarea>
-        <label for="answer">Answer:</label>
-        <textarea name="questions[0][answer]" rows="5" cols="50"></textarea>
-        <label for="incorrectAnswer1">Incorrect Answer 1:</label>
-        <textarea name="questions[0][incorrectAnswer1]" rows="5" cols="50"></textarea>
-        <label for="incorrectAnswer2">Incorrect Answer 2:</label>
-        <textarea name="questions[0][incorrectAnswer2]" rows="5" cols="50"></textarea>
+  <p class="path"> Home /<a href="/topics/edit/<%=topicId%>"> courses</a> /<span style="color: gray;"> course</span> </p>
+  <div class="user-courses-container">
+    <div class="user-column test-column">
+      <div class="test-text-container">
+        <p><b>Questions</b></p>
+       
+      </div>
+
+      <form id="quizForm" action="/topics/createQuiz/<%=topicId%>" method="POST">
+          <input type="hidden" value="<%=topicId%>" name="topicId" />
+         
+         
+              <div class="quiz-detail">
+
+            <div id="entityContainer ">
+              <div class="entityRow course">
+                <label for="question"><b>Question 1:</b></label>
+                <textarea class="form-control" name="questions[0][question]" rows="2" cols="50"></textarea>
+                <label for="answer">Answer:</label>
+                <textarea class="form-control" name="questions[0][answer]" rows="2" cols="50"></textarea>
+                <label for="incorrectAnswer1">Incorrect Answer 1:</label>
+                <textarea class="form-control"  name="questions[0][incorrectAnswer1]" rows="2" cols="50"></textarea>
+                <label for="incorrectAnswer2">Incorrect Answer 2:</label>
+                <textarea class="form-control" name="questions[0][incorrectAnswer2]" rows="2" cols="50"></textarea>
+              </div>
+         
+          </div>
+        </div>
+       
+        <button style="width: 100%;" class="trans-btn" type="button" id="addEntityBtn">Add Question</button><br><br>
+          <% if (typeof response == 'undefined') { %>
+          <button style="width: 100%;" class="view-course-btn" type="submit">Submit Answers</button>
+          
+          <p id="error"></p>
+          <% } %>
+      
+          <% if (typeof response !== 'undefined' && response !== null) { %>
+          <% if (!response.success) { %>
+          <button class="view-course-btn" type="submit">Submit Answers</button>
+        
+          <% } %>
+      
+          <% } %>
+        </form>
+    </div>
+    <div class="stats-column">
+     
+      <h2 class="display-9"><b>Quiz </b> </h2>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-exclamation" aria-hidden="true"></i>
+          <p>You can edit the quiz test after creation</p>
+        </div>
+      
+      
       </div>
     </div>
-  
-    <button type="button" id="addEntityBtn">Add Entity</button>
-    <button type="submit">Submit</button>
-  </form>   
-  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-    <div class="errors">
-      <% errors.forEach(function (error) { %>
-        <p class="error-message"><%= error.msg %></p>
-      <% }) %>
-    </div>
-  <% } %>
+  </div>
+
+
+
 </body>
   
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -78,7 +113,18 @@ $(document).ready(function() {
     
     var newEntityRow = entityRow.clone();
     newEntityRow.find('textarea').val('');
-    
+    // console.log( newEntityRow.find('label').attr('for'));
+
+    // if(newEntityRow.find('label').attr('for') === "question"){
+    //   newEntityRow.find('label').html("Question 2");
+    // }
+    console.log(entityIndex);
+    newEntityRow.find('label').each(function (){
+      if($(this).attr('for') === "question"){
+        console.log($(this).attr('for'));
+        $(this).text("Question "+(entityIndex+1));
+      }
+    });
     newEntityRow.find('textarea').each(function() {
       var nameAttr = $(this).attr('name');
       $(this).attr('name', nameAttr.replace(/\[\d+\]/g, '[' + entityIndex + ']'));
