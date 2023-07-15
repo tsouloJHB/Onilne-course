@@ -7,52 +7,86 @@
 <body>
   <!-- Navigation -->
   <%- include('partials/clientNav') %>
-  <h3>Questions:</h3>
-  <p>You should get 80% to advance</p>
-  <p><a href="/topicOutline/material/<%=topicId%>">Quit Test</a></p>
-  <% if (typeof response !== 'undefined' && response !== null) { %>
-  <p>You received <%=response.mark%></p>
-  <p><%=response.message%></p>
-  <% if (response.success) { %>
-  <a href="/topicOutline/material/<%=response.nextTopic%>"><button>Continue</button></a>
-  <% } %>
 
-  <% } %>
-  <form action="/quiz/submit" method="POST" id="quizForm">
-    <input type="hidden" value="<%=topicId%>" name="topicId" />
-    <% quiz.questions.forEach(function(question, index) { %>
-    <div class="question">
-      <h4>Question <%= index + 1 %>:</h4>
-      <p>Question: <%= question.question %></p>
+  
 
-      <div>
-        <input type="radio" id="answer<%= index%>" name="answer[<%= index%>]" value="<%= question.answer %>">
-        <label for="answer<%= index%>"> <%= question.answer %></label>
+
+  <div class="user-courses-container">
+    <div class="user-column test-column">
+      <div class="test-text-container">
+        <p><b>Questions</b></p>
+        <a href="/topicOutline/material/<%=topicId%>"><button class="trans-btn-sm">Quit</button></a>
       </div>
-      <div>
-        <input type="radio" id="incorrectAnswer1<%= index%>" name="answer[<%= index%>]"
-          value="<%= question.incorrectAnswer1 %>">
-        <label for="incorrectAnswer1<%= index%>"> <%= question.incorrectAnswer1 %></label>
-      </div>
-      <div>
-        <input type="radio" id="incorrectAnswer2<%= index%>" name="answer[<%= index%>]"
-          value="<%= question.incorrectAnswer2 %>">
-        <label for="incorrectAnswer2<%= index%>"> <%= question.incorrectAnswer2 %></label>
+      <% if (typeof response !== 'undefined' && response !== null) { %>
+        <p>You received <%=response.mark%></p>
+        <p><%=response.message%></p>
+        <% if (response.success) { %>
+        <a href="/topicOutline/material/<%=response.nextTopic%>"><button>Continue</button></a>
+        <% } %>
+      
+        <% } %>
+        <form action="/quiz/submit" method="POST" id="quizForm">
+          <input type="hidden" value="<%=topicId%>" name="topicId" />
+          <% quiz.questions.forEach(function(question, index) { %>
+            <div class="course">
+              <div class="course-details">
+          <div class="question">
+            <p id="question-text">Question <%= index + 1 %>:</p>
+            <p id="test-question"> <%= question.question %></p>
+      
+            <div>
+              <input type="radio" id="answer<%= index%>" name="answer[<%= index%>]" value="<%= question.answer %>">
+              <label for="answer<%= index%>"> <%= question.answer %></label>
+            </div>
+            <div>
+              <input type="radio" id="incorrectAnswer1<%= index%>" name="answer[<%= index%>]"
+                value="<%= question.incorrectAnswer1 %>">
+              <label for="incorrectAnswer1<%= index%>"> <%= question.incorrectAnswer1 %></label>
+            </div>
+            <div>
+              <input type="radio" id="incorrectAnswer2<%= index%>" name="answer[<%= index%>]"
+                value="<%= question.incorrectAnswer2 %>">
+              <label for="incorrectAnswer2<%= index%>"> <%= question.incorrectAnswer2 %></label>
+            </div>
+          </div>
+        </div>
+        </div>
+          <% }); %>
+          <% if (typeof response == 'undefined') { %>
+          <button style="width: 100%;" class="view-course-btn" type="submit">Submit Answers</button>
+          
+          <p id="error"></p>
+          <% } %>
+      
+          <% if (typeof response !== 'undefined' && response !== null) { %>
+          <% if (!response.success) { %>
+          <button class="view-course-btn" type="submit">Submit Answers</button>
+        
+          <% } %>
+      
+          <% } %>
+        </form>
+    </div>
+    <div class="stats-column">
+     
+      <h2 class="display-9"><b>Quiz Instructions</b> </h2>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-exclamation" aria-hidden="true"></i>
+          <p>You should get 80% to advance</p>
+        </div>
+      
+      
       </div>
     </div>
-    <% }); %><br><br>
-    <% if (typeof response == 'undefined') { %>
-    <button type="submit">Submit Answers</button>
-    <p id="error"></p>
-    <% } %>
+  </div>
 
-    <% if (typeof response !== 'undefined' && response !== null) { %>
-    <% if (!response.success) { %>
-    <button type="submit">Submit Answers</button>
-    <% } %>
 
-    <% } %>
-  </form>
+
+
+ 
+ 
 
   <script>
     $(document).ready(function () {

@@ -27,6 +27,10 @@ body {
     border-bottom: 1px solid lightgray;
   
   }
+
+  .nav-bar-space{
+    padding-bottom: 100px;
+  }
   
   .navbar .navbar-brand {
     padding: 0px;
@@ -466,6 +470,16 @@ body {
   cursor: pointer;
 }
 
+.view-course-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: #fff;
+  background-color: black;
+  border: none;
+  cursor: pointer;
+}
+
+
 .stats {
   display: flex;
   flex-direction: column;
@@ -706,6 +720,33 @@ body {
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+}
+
+/*===================== Course Outline =======================*/
+#video {
+  height: 550px;
+  width: 100%;
+}
+
+/*===================== Test quiz =======================*/
+#question-text{
+  color: gray;
+  font-size: 12px;
+}
+#test-question{
+  font-weight: 600;
+  font-size: 20px;
+}
+.test-text-container{
+  display: flex;
+  align-items: center;
+}
+.test-text-container .trans-btn-sm{
+  margin-left: 710px;
+  margin-bottom: 10px;
+}
+.test-column #error{
+  margin-top: 20px;
 }
 
  /*----------------------------------------------------------*/

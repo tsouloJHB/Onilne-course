@@ -27,7 +27,7 @@
     <div class="user-courses-container">
       <div class="user-column">
         <div class="user-welcome">
-          <div class="custom-jumbotron">
+          <div style="margin-bottom: 20px;" class="custom-jumbotron">
             <div class="container">
               <h2 class="display-5"><b><%=course.title%></b> </h2>
               
@@ -37,22 +37,27 @@
           </div>
         <div>
             <% if(!courseActive.active && !courseActive.topics){ %>
-              Your course Is still inactive because you have no topics
-            <%}else if(courseActive.topics && !courseActive.active){%>
-                <form id="courseForm"  action="/course/activate" >
-                  
-                  <input type="hidden" name="courseId" value="<%=topic[0].courseId %>"/>
-                  <button >Activate Course</button>
-                </form>
-                
-                  
-              <p>If you active your course it will be available to the public</p>
+              <div class="course">
+            
+                <div class="course-details">
+                  <p><b>!</b> Your course Is still inactive because you have no less</p>
+              </div>
+              </div>
             <%}%>
+              
        </div>  
         </div>
+        
         <% if(topic.length == 0 ){ %>
-          <p>You can't have an active course without any topics</p>
+          <div class="course">
+            
+            <div class="course-details">
+        
+           <p> <b>!</b> You can't have an active course without any topics</p>
+          </div>
+        </div>
         <%} %>  
+        
         <div class="course-list">
           <% topic.forEach(function(top) { %>
           <div class="course">
@@ -75,6 +80,8 @@
           </div>
        
           <% }); %>
+          <a href="/topics/create/<%= courseId%>">
+            <button style="width: 100%;" class="view-course-btn">Create topic</button> </a>  
         </div>
       </div>
       <div class="stats-column">
@@ -98,13 +105,22 @@
             <i class="fa fa-check"></i>
             <p>Status: Inactive </p>
           </div>
-          <button class="trans-btn">Activate</button>
+  
+          <%if(courseActive.topics && !courseActive.active){%>
+            <form id="courseForm"  action="/course/activate" >
+              
+              <input type="hidden" name="courseId" value="<%=topic[0].courseId %>"/>
+              <button style="width: 100%;" class="trans-btn">Activate</button>
+            </form>
+            
+              
+          <p style="font-size: 11px;">If you active your course it will be available to the public</p>
+        <%}%>
         
         </div>
       </div>
     </div>  
-    <a href="/topics/create/<%= courseId%>">
-      <button>Create topic</button> </a>    
+    
 
     <!-- <div>
       <% if(!courseActive.active && !courseActive.topics){ %>

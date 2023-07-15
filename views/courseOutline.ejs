@@ -18,10 +18,7 @@
      padding: 20px;
    }
 
-   .video {
-     width: 100%;
-     height: 360px; /* Adjust the height as needed */
-   }
+ 
 
    h1 {
      color: black;
@@ -43,6 +40,85 @@
    ul {
      list-style-type: disc;
    }
+     
+   .menu-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      margin-top: 30px;
+    }
+    
+    .menu-list li {
+      padding: 20px;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+    }
+    
+    .menu-list li:first-child {
+      border-top: 1px solid #ccc;
+    }
+    
+    .menu-list li span {
+      margin-right: 10px;
+    }
+    .overview-container {
+
+  border-radius:solid black 10px ;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.menu {
+  background-color: #000;
+  border-radius: 10px;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.menu ul li {
+  padding: 10px;
+  color: #fff;
+}
+ul li a{
+  color: black;
+}
+
+.menu ul li:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+.content {
+
+  padding: 20px;
+  border:1px solid black;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  line-height: 20px;
+  margin-right: 10px;
+}
+
+#courseInfo{
+  text-align: center;
+  padding-top: 40px;
+}
+#progress-text{
+  font-size: 10px;
+}
  </style>
 <body>
   <!-- Navigation -->
@@ -56,30 +132,52 @@
         <a href="/<%= downloadCertificate.link%>" download><button>Download certificate</button></a>
       <%}%> 
        
-      <h1><%=topicMaterial.title %></h1>
-      <p class="sub-titile"><%= topic.topicDesc %></p>
-      <iframe class="video" height="315" src="<%= topicMaterial.embedLink %>">
+     
+      <iframe id="video" height="500" src="<%= topicMaterial.embedLink %>">
     </iframe>
       
-      <p><strong>Course Overview:</strong><%= topic.title %></p>
-      <h2>Course Content</h2>
-      <p><%=topicMaterial.content %>  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod justo quis ultrices fringilla. Fusce non erat non sapien facilisis convallis vel eu sem.</p>
+      <p><strong>Lesson : </strong><%= topic.title %></p>
+      <div class="overview-container">
+        <div class="menu">
+          <ul>
+            <li>Course Overview</li>
+            <li>Syllabus</li>
+          </ul>
+        </div>
+        <div class="content">
+          <!-- Content goes here -->
+          <p><%=topicMaterial.content %>  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod justo quis ultrices fringilla. Fusce non erat non sapien facilisis convallis vel eu sem.</p>
+        </div>
+      </div>
+      
+     
       <% if(currentTopic == true) {%>
-      <button><a href="/topicOutline/quiz/<%=topic._id %>">Quiz test</a></button>
+        <a href="/topicOutline/quiz/<%=topic._id %>"><button style="width: 100%;" class="trans-btn-sm deleteCourse">Quiz test</button></a>
       <%}%>
     </div>
     <div class="column">
-      <h1>Chapter Outline</h1>
-      <p><%=percentage%> % completed</p>
-      <a href="/topics/<%=topic.courseId %>">Go to topics</a>
-      <div class="list">
-        <ul>
-          <% topics.forEach(function(topic) {%>
-            <li><a href="/topicOutline/material/<%=topic._id%>"><%= topic.title %></a></li>
-          <% })%>  
-        
-        </ul>
+      <p id="progress-text" >Progress</p>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: <%=percentage%>%;background-color:black" aria-valuenow="<%=percentage%>" aria-valuemin="0" aria-valuemax="100">
+          <%=percentage%>%
+        </div>
       </div>
+      
+      <ul class="menu-list">
+        <p style="text-align: center; border: 1px solid black; border-radius: 5px;"><b>Lessons</b></p>
+        <% topics.forEach(function(topic,index) { %>
+          <li>
+            <span class="circle"><%= index+1 %></span>
+            <a href="/topicOutline/material/<%= topic._id %>"><%= topic.title %></a>
+          </li>
+        <% }) %>
+      </ul>
+      <div id="courseInfo">     
+        <p >Scroll down to take course </p>
+      <i class="fa fa-angle-down" aria-hidden="true"></i>
+      </div>
+ 
+  
     </div>
   </div>
 </body>
