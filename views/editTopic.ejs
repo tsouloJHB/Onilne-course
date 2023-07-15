@@ -13,53 +13,116 @@
       <%- include('partials/clientNav') %>    
     <%}%> 
   
-  <h1>Edit Topic</h1>
-  <a href="/course/course-topics/<%= topic.courseId%>"> <button >Back</button></a>
-  <form action="/topics/edit/<%= topic._id %>" method="POST" id="edit-topic-form">
-    <div>
-      <label for="topicTitle">Topic Title:</label>
-      <input type="text" id="topicTitle" name="topicTitle" value="<%= topic.title %>">
-    </div>
-    <div>
-      <input type="hidden" id="topicNo" name="topicNo" value="<%= topic.topicNo %>">
-    </div>
-    <div>
-      <label for="topicDesc">Topic Description:</label>
-      <textarea id="topicDesc" name="topicDesc" rows="4"><%= topic.topicDesc %></textarea>
-    </div>
-    <% if(topicMaterial != null){ %>
-      <div>
-        <label for="materialTitle">Material Title:</label>
-        <input type="text" id="materialTitle" name="materialTitle" value="<%= topicMaterial.title %>">
+
+    <p class="path"> Home /<a  href="/course/course-topics/<%= topic.courseId%>"> courses</a> /<span style="color: gray;"> course</span> </p>
+
+    <div class="user-courses-container">
+      <div class="user-column">
+      
+      <p class="page-small-title"><b>Create Course</b></p>
+    <form action="/topics/edit/<%= topic._id %>" method="POST" id="edit-topic-form" class="d-flex flex-column  px-3">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group mb-2">
+            <input type="text" id="topicTitle" value="<%= topic.title %>" name="topicTitle" placeholder="Title" class="form-control">
+            <input type="hidden" id="materialTitle" name="materialTitle" value="<%= topicMaterial.title %>">
+            <input type="hidden" id="topicNo" name="topicNo" value="<%= topic.topicNo %>">
+         
+          </div>
+        </div>
+    
       </div>
-      <div>
-        <label for="materialContent">Material Content:</label>
-        <textarea id="materialContent" name="materialContent" rows="6"><%= topicMaterial.content %></textarea>
+      
+      <div class="form-group mb-2">
+        <textarea id="topicDesc" placeholder="Lesson Description" cols="40" rows="5" name="topicDesc" class="form-control"><%= topic.topicDesc %></textarea>
+        
       </div>
-      <div>
-        <label for="materialVideo">Material Video:</label>
-        <input type="text" id="materialVideo" name="materialVideo" value="<%= topicMaterial.topicVideo %>">
-        <input type="hidden" id="materialVideo" name="courseId" value="for-validation-only">
-      </div>
-      <div>
-        <label for="materialVideo">Video Source:</label>
+   
+    
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group mb-2">
+        <label for="category">Category:</label> 
         <select id="category" name="videoSource">
           <% videoSources.forEach((source) => { %>
             <option value="<%= source %>"><%= source %></option>
           <% }) %>
         </select>
-      
       </div>
-    <% } %><br/>
-    <% if(quiz){ %>
-      <a href="/topics/quiz/<%=topic._id %>">View topic quiz</a>
-      <button><a href="#" id="deleteQuiz" data-delete-quiz-data="<%=topic._id %>">Delete quiz</a></button><br/><br/>
-    <% } else { %>
-      You haven't created a quiz for this topic<br/><br/>
-      <button><a href="/topics/createQuiz/<%=topic._id %>">Create topic quiz</a></button><br/><br/>
+      </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group mb-2">
+            <input type="text" value="<%= topicMaterial.topicVideo%>" id="materialVideo" name="materialVideo"  class="form-control">
+            <input type="hidden" id="materialVideo" name="courseId" value="for-validation-only">
+            <!-- <input type="text" id="materialVideo" name="materialVideo" value="<%= topicMaterial.topicVideo %> class="form-control"">
+            <input type="hidden" id="materialVideo" name="courseId" value="for-validation-only"> -->
+          </div>
+        </div>
+        
+      </div>
+      <div class="row">
+      <div class="col-md-12">
+        <div class="form-group mb-2">
+          <textarea id="materialContent" placeholder="Lesson content" name="materialContent" rows="5" cols="30" class="form-control"><%= topicMaterial.content %></textarea>
+        </div>
+      </div>
+      </div>
+  
+      <button type="submit" class="trans-btn ">Edit Course</button>
+    </form>
+    <p id="error"></p>
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <div class="errors">
+        <% errors.forEach(function (error) { %>
+          <p class="error-message"><%= error.msg %></p>
+        <% }) %>
+      </div>
     <% } %>
-    <button type="submit">Update</button>
-  </form>
+    <% if(quiz){ %>
+      
+      <a  href="/topics/quiz/<%=topic._id %>"><button style="width: 100%;" class="trans-btn">View topic quiz</button></a><br/><br/>
+
+      <a href="#" id="deleteQuiz" data-delete-quiz-data="<%=topic._id %>"><button style="width: 100%;" class="view-course-btn">Delete quiz</button></a>
+      
+    <% } else { %>
+   
+      <a href="/topics/createQuiz/<%=topic._id %>"><button style="width: 100%;" class="view-course-btn">Create topic quiz</button></a><br/><br/>
+    <% } %>
+       
+      </div>
+      <div class="stats-column">
+       
+        <h3 class="display-9"><b>Course requirements</b> </h3>
+        <br>
+        <div class="stats">
+          <div class="stats-item">
+            <i class="fa fa-laptop"></i>
+            <p>Courses: 2%> </p>
+          </div>
+          <div class="stats-item">
+            <i class="fa fa-check-circle"></i>
+            <p>Completed Courses: 45</p>
+          </div>
+          <div class="stats-item">
+            <i class="fa fa-hourglass-half"></i>
+            <p>In Progress: 45</p>
+          </div>
+          <% if(quiz){ %>
+      
+         
+          <% } else { %>
+            You haven't created a quiz for this Lesson<br/><br/>
+            
+          <% } %>
+        </div>
+      </div>
+    </div>
+  
+     <!---==================================================================  -->
+ 
   <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
     <div class="errors">
       <% errors.forEach(function (error) { %>
@@ -102,7 +165,7 @@
       }
 
       // Add any additional validation checks for other fields if needed
-
+   
       if (isValid) {
         // Form is valid, proceed with submission
         this.submit();

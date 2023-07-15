@@ -394,7 +394,7 @@ router.post('/edit/:id', verifyToken.verifyToken,topicCreateDataValidate,async (
     }
 
     // Update the topic material properties
-    topicMaterial.title = req.body.materialTitle;
+    topicMaterial.title = req.body.topicTitle;
     topicMaterial.content = req.body.materialContent;
     topicMaterial.topicVideo = req.body.materialVideo;
     topicMaterial.videoSource  = req.body.videoSource;
