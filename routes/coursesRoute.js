@@ -131,8 +131,9 @@ router.get('/search', verifyToken.verifyToken, async (req, res) => {
       }
       
       const courses = await CoursesController.courseSearch(req,res);
-  
+     
 
+      
       res.render('search',{courses});
   } catch (error) {
     console.log(error);
@@ -334,9 +335,11 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
       const { courseId } = req.body;
       //check if the user is registering for their own course
       const userCourse = await CourseModel.find({user:req.user._id,_id:courseId});
+
       if(userCourse.length > 0){
         return res.redirect('/users');
       }
+      
       const topic  = await TopicModel.findOne({topicNo:1,courseId});
       console.log(req.body);
 

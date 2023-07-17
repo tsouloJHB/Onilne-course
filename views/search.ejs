@@ -33,8 +33,19 @@
            </div>
          </div>
          <div class="col-12 card-bottom"> 
-          <a href="/topics/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0">Continue</button></a>
-          <span class="completed"><%=course.percentage %>% completed</span>
+          
+          <% if(course.owner){ %>
+            <a href="/course/view/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0">View</button></a>
+          <%}else{%>
+            <% if(course.registered){%>
+            <a href="/topics/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0">Continue</button></a>
+            <span class="completed"><%=course.percentage %>% completed</span>
+            <%}else{%>
+              <a href="/course/view/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0">View</button></a>
+             <%}%> 
+          <%}%>    
+         
+     
           </div>
             
        </div>
