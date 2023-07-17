@@ -30,7 +30,7 @@
            
             <div class="">
               
-              <% if(currentTopic > topic.topicNo) {%>
+              <% if(currentTopic >= topic.topicNo) {%>
                 <p>Complete</p>
               <%}else{%>
                 <p>Incomplete</p>
@@ -56,11 +56,11 @@
       <div class="stats">
         <div class="stats-item">
           <i class="fa fa-book"></i>
-          <p>Lessons: 5 </p>
+          <p>Lessons:  <%=course.topics%> </p>
         </div>
         <div class="stats-item">
           <i class="fa fa-clock-o"></i>
-          <p>Course hours: <%=course.remainingHours%> </p>
+          <p>Course hours: <%=course.hours%> </p>
         </div>
         <div class="stats-item">
           <i class="fa fa-clock-o"></i>
@@ -72,12 +72,13 @@
         </div>
         <div class="stats-item">
           <i class="fa fa-check"></i>
-          <p>Status: Incomplete</p>
+          <p>Status: <%= course.completed?"Completed":"Incomplete"%></p>
         </div>
        
         <% if(downloadCertificate.completed){%>
      
           <a href="/<%= downloadCertificate.link%>" download></a><button class="trans-btn">Download certificate</button></a>
+          <p style="text-align: center;color: red;">You have completed the course</p>
         <%}%>  
      
       

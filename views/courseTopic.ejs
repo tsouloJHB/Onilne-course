@@ -30,10 +30,10 @@
           <div style="margin-bottom: 20px;" class="custom-jumbotron">
             <div class="container">
               <h2 class="display-5"><b><%=course.title%></b> </h2>
-              
+              <p class="lead"><%=course.courseDesc %></p>        
               <img src="<%=course.courseImage%>" class="custom-jumbotron-image"/>
             </div>
-            <p class="lead"><%=course.courseDesc %></p>
+      
           </div>
         <div>
             <% if(!courseActive.active && !courseActive.topics){ %>

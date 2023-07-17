@@ -376,17 +376,18 @@ body {
   font-weight: 500;
 }
 .custom-jumbotron .container{
-  display: flex
+
 }
 .custom-jumbotron .container .lead{
   display:inline-block;
 }
 .custom-jumbotron .custom-jumbotron-image{
   max-width: 200px;
-  margin-left:auto;
-  position: absolute;
-  left: 50%;
-  top: 230px;
+  max-height: 140px;
+  float: right;
+  position: relative;
+  bottom: 65px;
+  
   border-radius: 10px;
 }
 .user-courses-container {

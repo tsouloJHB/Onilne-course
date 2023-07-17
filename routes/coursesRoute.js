@@ -161,13 +161,16 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
       return res.render('404'); 
     }
     const userProgress = await UserProgressModel.findOne({user:req.user._id,course:course._id});
- 
+    courseCreator = await CoursesController.getCourseCreator(course._id);
+    userCount = await CoursesController.countCourseRegisteredUser(course._id);
     if(userProgress){
       const updatedCourse = modifiedCourse = {
         ...course.toObject(), // Spread the properties of the course object
         registered:true,
         completed:userProgress.completed,
-        topics:countTopics
+        topics:countTopics,
+        creator:courseCreator,
+        userCount:userCount
          // Add the progress field
       };
       console.log(updatedCourse);
@@ -184,7 +187,9 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
     const updatedCourse = {
       ...course.toObject(), // Spread the properties of the course object
       owner:owner,
-      topics:countTopics
+      topics:countTopics,
+      creator:courseCreator.user,
+      userCount:userCount,
        // Add the progress field
     };
     console.log(updatedCourse);
@@ -266,9 +271,8 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
       await CoursesController.courseUserAuthorized(req.user._id,req.params.id,res,req);
       //validate data
       const errors = validationResult(req);
-      console.log("Update bro");
       if (!errors.isEmpty()) {
-        console.log(errors.array());
+    
        
         return res.status(400).json({errors: errors.array()});
       }

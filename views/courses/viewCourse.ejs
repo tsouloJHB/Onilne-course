@@ -11,7 +11,7 @@
 
   <div class="course-details-container">
     <div class="course-details-view">
-      <p class="path"> Home / courses /<span style="color: gray;"> machine</span> </p>
+      
       <div class="course-image">
         <img src="<%=course.courseImage%>" alt="Course Image">
         <div class="rating">
@@ -24,7 +24,7 @@
         <div class="reviews">4.8 (15 reviews)</div>
       </div>
       <div class="course-details-breakdown">
-      <div class="instructor">A course by<span style="color: black;">/James carter</span></div>
+      <div class="instructor">A course by<span style="color: black;"> / <%=course.creator.name +" "+course.creator.surname %></span></div>
       <h2 class="course-title"><%=course.title%></h2>
       <p class="course-description"><%=course.courseDesc%></p>
       </div>
@@ -33,7 +33,7 @@
       <div class="course-info">
         <div class="course-section">
           <div class="course-icon"><i class="fa fa-users"></i></div>
-          <div class="course-detail">50+ Students Registered</div>
+          <div class="course-detail"><%=course.userCount%> Students Registered</div>
         </div>
         <div class="course-section">
           <div class="course-icon"><i class="fa fa-language"></i></div>
@@ -81,12 +81,12 @@
       <hr>
       <div class="course-section2">
         <span class="small-heading">Prerequisites</span>
-        <p>Prerequisites description...</p>
+        <p><%=course.prerequisites%></p>
       </div>  
       
       <div class="course-section2">
         <span class="small-heading">Course Material</span>
-        <p>Course material explanation...</p>
+        <p><%=course.material%></p>
      
       </div>
     </div>
