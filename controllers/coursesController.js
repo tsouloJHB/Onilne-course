@@ -56,8 +56,10 @@ module.exports.getUserCourses = async (userId,completed=false) => {
             
             let percentage =  progress.progress == 1 && countTopics == 1  || progress.progress == 0 ? 0: (progress.progress/countTopics) * 100;
             console.log("countTopics "+ countTopics + "current topic " + progress.progress);
-            percentage.toFixed(0);
+          
             percentage = percentage == 100 & progress.completed == false ? 90 : percentage;
+            percentage = Number(percentage.toFixed(0));
+           
             //get the category fo the course
             const category = await CategoryModel.findById(course.category);
             //get remaining hours 
@@ -69,7 +71,7 @@ module.exports.getUserCourses = async (userId,completed=false) => {
               ...course.toObject(), // Spread the properties of the course object
               progress: progress.progress,
               completed:progress.completed,
-              percentage:percentage.toFixed(1), // Add the progress field
+              percentage:percentage, // Add the progress field
               categoryName:category.name,
               remainingHours:remainingHours,
               topics:countTopics
@@ -350,7 +352,7 @@ module.exports.createCourse = async(req) =>{
 //update course
 module.exports.updateCourse = async(req) =>{
   try {
-    
+    console.log(req.body);
     const course = {
       title: req.body.title,
       courseDesc: req.body.courseDesc,
