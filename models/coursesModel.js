@@ -52,7 +52,20 @@ const CourseSchema = new mongoose.Schema({
   },
   material:{
     type:String,
-  }
+  },
+  ratings: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+      },
+      rating: {
+        type: Number,
+        min: 1,
+        max: 5
+      }
+    }
+  ]
 
   // Add more fields as needed  
 },

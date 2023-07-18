@@ -26,11 +26,17 @@
                 
                 
                 <div>
-                  <i class="fa fa-star text-warning"></i>
-                  <i class="fa fa-star text-warning"></i>
-                  <i class="fa fa-star text-warning"></i>
-                  <i class="fa fa-star text-warning"></i>
-                  <i class="fa fa-star-half-o text-warning"></i>
+                  <% const rating = course.rating; %>
+                  <% const fullStars = Math.floor(rating); %>
+                  <% const halfStar = rating % 1 !== 0 || rating === 0; %>
+                  
+                  <% for (let i = 0; i < fullStars; i++) { %>
+                    <i class="fa fa-star text-warning"></i>
+                  <% } %>
+                  
+                  <% if (halfStar) { %>
+                    <i class="fa fa-star-half-o text-warning"></i>
+                  <% } %>
                   <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> 23 hours</span>
                 </div>
                 <p class="course-description"><%= course.courseDesc %></p>
@@ -59,14 +65,23 @@
                <h2 ><%=course.title%></h2>
                <p class="small text-secondary"><%=course.category.name%></p>
                <p><%= course.courseDesc %></p>
+               
                <div>
-                 <i class="fa fa-star text-warning"></i>
-                 <i class="fa fa-star text-warning"></i>
-                 <i class="fa fa-star text-warning"></i>
-                 <i class="fa fa-star text-warning"></i>
-                 <i class="fa fa-star-half-o text-warning"></i>
-                 <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> 23 hours</span>
-               </div>
+
+                <% const rating = course.rating; %>
+                <% const fullStars = Math.floor(rating); %>
+                <% const halfStar = rating % 1 !== 0 || rating === 0; %>
+                
+                <% for (let i = 0; i < fullStars; i++) { %>
+                  <i class="fa fa-star text-warning"></i>
+                <% } %>
+                
+                <% if (halfStar) { %>
+                  <i class="fa fa-star-half-o text-warning"></i>
+                <% } %>
+                
+                <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> 23 hours</span>
+              </div>
              </div>
              <div class="col-12 card-bottom"> 
               <a href="/topics/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0">Continue</button></a>

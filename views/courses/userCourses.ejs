@@ -41,16 +41,30 @@
               
            
             <%}%>
-            <div class="course-hours">
-              <i class="fa fa-clock-o"></i>
-              <span><%=course.remainingHours%> hours</span>
-            </div>
             <div class="course-rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star-half"></i>
-              <span>4.8</span>
+              <% const rating = course.rating; %>
+              <% const fullStars = Math.floor(rating); %>
+              
+              <% for (let i = 0; i < fullStars; i++) { %>
+                <i class="fa fa-star"></i>
+              <% } %>
+              
+              <% if (rating === 0) { %>
+                <% for (let i = 0; i < 5; i++) { %>
+                  <i class="fa fa-star blank-star"></i>
+                <% } %>
+              <% } else { %>
+                <% const emptyStars = 5 - fullStars; %>
+                <% for (let i = 0; i < emptyStars; i++) { %>
+                  <i class="fa fa-star blank-star"></i>
+                <% } %>
+                
+                <% if (rating % 1 !== 0) { %>
+                  <i class="fa fa-star-half"></i>
+                <% } %>
+              <% } %>
+              
+              <span><%= rating %></span>
             </div>
             <a href="/topics/<%=course._id %>"><button class="view-course-btn">View Course</button></a>
           </div>

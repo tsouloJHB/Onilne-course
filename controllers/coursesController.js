@@ -67,6 +67,7 @@ module.exports.getUserCourses = async (userId,completed=false) => {
           
             let remainingHours = (hours * (100 - percentage) / 100).toFixed(0);
             remainingHours = progress.completed ? 0:remainingHours;
+            const rating = await this.getAverageRating(course.ratings);
              modifiedCourse = {
               ...course.toObject(), // Spread the properties of the course object
               progress: progress.progress,
@@ -74,7 +75,8 @@ module.exports.getUserCourses = async (userId,completed=false) => {
               percentage:percentage, // Add the progress field
               categoryName:category.name,
               remainingHours:remainingHours,
-              topics:countTopics
+              topics:countTopics,
+              rating:rating
             };
           }else{
             modifiedCourse = course
@@ -103,7 +105,7 @@ module.exports.getUserCourses = async (userId,completed=false) => {
       return percentage.toFixed(1);
     } catch (error) {
       return 0;
-      console.log(error);
+   
     }
   } 
   
@@ -698,3 +700,101 @@ module.exports.countCourseRegisteredUser = async(courseId) =>{
     return 0;
   }
 }
+
+module.exports.saveRating = async (req, res) => {
+  try {
+    console.log(req.body);
+    const courseId = req.body.courseId;
+    const rating = req.body.rating;
+    const userId = req.user._id;
+
+    // Retrieve the course and check if it exists
+    const course = await CourseModel.findById(courseId);
+    if (!course) {
+      return res.redirect('/topics/' + courseId + '?error=Course not found');
+    }
+
+    // Check if the user has already rated the course
+    // const existingRating = course.ratings.find(
+    //   (ratingObj) => ratingObj.user.toString() === userId.toString()
+    // );
+    // if (existingRating) {
+    //   return res.redirect('/topics/' + courseId + '?error=User has already rated this course');
+    // }
+
+    // Check if the user has already rated the course
+    const hasRated = await this.hasUserRatedCourse(userId, courseId);
+    if (hasRated) {
+      return res.redirect('/topics/' + courseId + '?error=User has already rated this course');
+    }
+
+    // Add the new rating to the course's ratings array
+    course.ratings.push({ user: userId, rating });
+
+    // Calculate the updated average rating for the course
+    const totalRatings = course.ratings.length;
+    const sumRatings = course.ratings.reduce((acc, ratingObj) => acc + ratingObj.rating, 0);
+    const averageRating = sumRatings / totalRatings;
+
+    // Update the course's average rating
+    course.averageRating = averageRating;
+
+    // Save the updated course
+    await course.save();
+
+    res.redirect('/topics/' + courseId + '?success=Rating saved successfully');
+  } catch (error) {
+    console.error('Error saving rating:', error);
+    res.redirect('/topics/' + courseId + '?error=An error occurred while saving the rating');
+  }
+};
+
+
+// Check if user has already rated the course
+exports.hasUserRatedCourse = async (userId, courseId) => {
+  const course = await CourseModel.findById(courseId);
+  if (!course) {
+    throw new Error('Course not found');
+  }
+
+  const existingRating = course.ratings.find(
+    (ratingObj) => ratingObj.user.toString() === userId.toString()
+  );
+
+  return !!existingRating; // Convert to boolean using double negation
+};
+
+// Controller function to get course ratings
+exports.getCourseRatings = async (courseId) => {
+  try {
+    // Retrieve the course and check if it exists
+    const course = await CourseModel.findById(courseId);
+    if (!course) {
+      throw new Error('Course not found');
+    }
+
+    // Extract the ratings from the course
+    const ratings = course.ratings;
+
+    return ratings;
+  } catch (error) {
+    console.error('Error getting course ratings:', error);
+    throw new Error('An error occurred while getting course ratings');
+  }
+};
+
+exports.getAverageRating = async (ratings) => {
+  try {
+
+
+    // Calculate average rating
+    const totalRatings = ratings.length;
+    const sumRatings = ratings.reduce((acc, ratingObj) => acc + ratingObj.rating, 0);
+    const averageRating = totalRatings > 0 ? sumRatings / totalRatings : 0;
+
+    return averageRating
+  } catch (error) {
+    throw new Error('error occurred');
+
+  }
+};

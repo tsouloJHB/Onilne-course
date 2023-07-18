@@ -381,4 +381,6 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
     }
   });
 
-  module.exports = router;  
+router.post('/ratings', verifyToken.verifyToken,CoursesController.saveRating);
+
+module.exports = router;  

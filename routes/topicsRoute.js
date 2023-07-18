@@ -54,6 +54,7 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
     const hours = course.hours ? course.hours : 0;
     console.log("hours "+ hours+" percentage "+percentage);
     let remainingHours = (hours * (100 - percentage) / 100).toFixed(0);
+    const ratings = await CoursesController.hasUserRatedCourse(req.user._id,courseId);
     //remainingHours = progress.completed ? 0:remainingHours;
      modifiedCourse = {
       ...course.toObject(), // Spread the properties of the course object
@@ -62,7 +63,8 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
       percentage:percentage.toFixed(0), // Add the progress field
       categoryName:category.name,
       remainingHours:remainingHours,
-      topics:countTopics
+      topics:countTopics,
+      ratings:ratings
     };
 
     res.render('topics', { topics,currentTopic,courseId,downloadCertificate,course:modifiedCourse }); // Pass the topics and progress data to the topics view for rendering

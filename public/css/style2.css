@@ -768,7 +768,9 @@ body {
   color: red;
 }
  /*----------------------------------------------------------*/
-    
+.blank-star{
+  color: rgb(229, 229, 229);
+}
 /* 
 .navbar-logo {
     margin-left: 10px;
