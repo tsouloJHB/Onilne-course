@@ -14,12 +14,12 @@
     <%}%> 
   
 
-    <p class="path"> Home /<a  href="/course/course-topics/<%= topic.courseId%>"> courses</a> /<span style="color: gray;"> course</span> </p>
+    <p class="path"> Home /<a  href="/course/course-topics/<%= topic.courseId%>"> course</a> /<span style="color: gray;"> <%=topic.title%></span> </p>
 
     <div class="user-courses-container">
       <div class="user-column">
       
-      <p class="page-small-title"><b>Create Course</b></p>
+      <p class="page-small-title"><b>Update lesson </b></p>
     <form action="/topics/edit/<%= topic._id %>" method="POST" id="edit-topic-form" class="d-flex flex-column  px-3">
       <div class="row">
         <div class="col-md-12">
@@ -83,32 +83,32 @@
     <% } %>
     <% if(quiz){ %>
       
-      <a  href="/topics/quiz/<%=topic._id %>"><button style="width: 100%;" class="trans-btn">View topic quiz</button></a><br/><br/>
+      <a  href="/topics/quiz/<%=topic._id %>"><button style="width: 100%;" class="trans-btn">View quiz</button></a><br/><br/>
 
       <a href="#" id="deleteQuiz" data-delete-quiz-data="<%=topic._id %>"><button style="width: 100%;" class="view-course-btn">Delete quiz</button></a>
       
     <% } else { %>
    
-      <a href="/topics/createQuiz/<%=topic._id %>"><button style="width: 100%;" class="view-course-btn">Create topic quiz</button></a><br/><br/>
+      <a href="/topics/createQuiz/<%=topic._id %>"><button style="width: 100%;" class="view-course-btn">Create quiz</button></a><br/><br/>
     <% } %>
        
       </div>
       <div class="stats-column">
        
-        <h3 class="display-9"><b>Course requirements</b> </h3>
+       
         <br>
         <div class="stats">
           <div class="stats-item">
-            <i class="fa fa-laptop"></i>
-            <p>Courses: 2%> </p>
+            <i class="fa fa-check-circle"></i>
+            <p>Update lesson</p>
           </div>
           <div class="stats-item">
             <i class="fa fa-check-circle"></i>
-            <p>Completed Courses: 45</p>
+            <p>View lesson</p>
           </div>
           <div class="stats-item">
-            <i class="fa fa-hourglass-half"></i>
-            <p>In Progress: 45</p>
+            <i class="fa fa-check-circle"></i>
+            <p>Delete lesson</p>
           </div>
           <% if(quiz){ %>
       

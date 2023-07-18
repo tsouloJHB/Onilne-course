@@ -85,9 +85,19 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
                 
 
       const courses = await CourseModel.find({user:req.user._id});
-      const coursesCount = await CourseModel.countDocuments();
+      const coursesCount = await CourseModel.countDocuments({user:req.user._id});
+      const coursesActive = await CourseModel.countDocuments({user:req.user._id,active:true});
       const coursesWithData = await CoursesController.coursesWithData(courses);
-     return res.render('courses',{courses:coursesWithData,coursesCount,categories});
+
+      const activeCourseCount = coursesWithData.filter(course => course.active).length;
+      // Calculate the overall user count
+      const overallUserCount = coursesWithData.reduce((count, course) => count + course.usersCount, 0);
+      const stats = {
+        activeCourseCount:activeCourseCount,
+        overallUserCount:overallUserCount,
+        coursesCount:coursesCount
+      }
+     return res.render('courses',{courses:coursesWithData,stats});
     } catch (error) { 
       console.error('Error retrieving courses:', error);
       return res.render('404',{message:"An error occurred while retrieving"});
@@ -118,8 +128,13 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
       // }
       //get course 
       const course = await CourseModel.findById(courseId);
+      const students = await UserProgressModel.countDocuments({course:courseId});
       const admin  = req.user.isAdmin;
-      res.render('courseTopic', { topic,courseId ,admin,courseActive,course}); // Render the edit topic page with the retrieved data// Pass the courses and progress data to the courses view for rendering
+      const stats = {
+        students:students,
+        lessons:topic.length
+      }
+      res.render('courseTopic', { topic,courseId ,admin,courseActive,course,stats}); // Render the edit topic page with the retrieved data// Pass the courses and progress data to the courses view for rendering
     } catch (error) {
       console.error('Error retrieving courses:', error);
       return res.render('404',{message:"An error occurred while retrieving"});

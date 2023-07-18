@@ -10,12 +10,12 @@
   <%- include('partials/clientNav') %>
   
 
-  <p class="path"> Home /<a href="/course/created"> courses</a> /<span style="color: gray;"> course</span> </p>
+  <p class="path"> Home /<a href="/course/course-topics/<%=courseId%>"> courses</a> /<span style="color: gray;"> create lesson</span> </p>
 
   <div class="user-courses-container">
     <div class="user-column">
     
-    <p class="page-small-title"><b>Create Course</b></p>
+    <p class="page-small-title"><b>Create lesson</b></p>
   <form id="topicForm" action="/topics/create/<%=courseId%>" method="POST" class="d-flex flex-column  px-3">
     <div class="row">
       <div class="col-md-12">
@@ -63,7 +63,7 @@
     </div>
     </div>
 
-    <button type="submit" class="trans-btn ">Create Course</button>
+    <button type="submit" class="trans-btn ">Create Lesson</button>
   </form>
   <p id="error"></p>
   <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
@@ -77,62 +77,18 @@
     </div>
     <div class="stats-column">
      
-      <h3 class="display-9"><b>Course requirements</b> </h3>
       <br>
       <div class="stats">
         <div class="stats-item">
-          <i class="fa fa-laptop"></i>
-          <p>Courses: 2%> </p>
-        </div>
-        <div class="stats-item">
           <i class="fa fa-check-circle"></i>
-          <p>Completed Courses: 45</p>
-        </div>
-        <div class="stats-item">
-          <i class="fa fa-hourglass-half"></i>
-          <p>In Progress: 45</p>
+          <p>Create lesson</p>
         </div>
       
-      </div>
     </div>
   </div>
 
   <!-- =========================================================== -->
 
-
-   <a href="/course/course-topics/<%=courseId %>"><button>Back</button></a>
-    <% if (typeof error !== 'undefined') { %>
-      <p><strong>Error:</strong> <%= error %></p>
-    <% } %>
-
-    <form id="topicForm" action="/topics/create/<%=courseId%>" method="POST">
-      <label for="topicTitle">Topic Title:</label>
-      <input type="text" id="topicTitle" name="topicTitle">
-      <input type="hidden" name="materialTitle" value="none">
-      <label for="topicDesc">Topic Description:</label>
-      <textarea  id="topicDesc" cols="50" rows="10" name="topicDesc"></textarea>
-
-      <label for="materialContent">Material Content:</label>  
-      <textarea id="materialContent" cols="50" rows="10" name="materialContent" ></textarea><br>
-
-      <label>Video Source</label>  
-      <select id="category" name="videoSource">
-        <% videoSource.forEach((source) => { %>
-          <option value="<%= source %>"><%= source %></option>
-        <% }) %>
-      </select>
-      <label for="materialVideo">Video Link:</label>
-      <input type="text" id="materialVideo" name="materialVideo">
-      <input type="hidden" id="materialVideo" name="courseId" value="<%=courseId %>">
-      <button type="submit">Create</button>
-    </form>
-      <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-        <div class="errors">
-          <% errors.forEach(function (error) { %>
-            <p class="error-message"><%= error.msg %></p>
-          <% }) %>
-        </div>
-      <% } %>
       <%- include('partials/footer') %>
   </body>
   

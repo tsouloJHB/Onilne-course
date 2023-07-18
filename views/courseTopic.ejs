@@ -63,10 +63,10 @@
           <div class="course">
             <div class="course-details">
               <h3><%= top.title %></h3>
-             
+<!--              
               <div class="">
                 <p>Incomplete</p>
-              </div>
+              </div> -->
               <!-- <div class="">
                 <button class="view-course-btn"><a href="/topics/edit/<%= top._id %>">Edit</a></button>
                 <a href="#" data-delete-topic="<%=top._id%>" class="delete-topic"><button class="view-course-btn">Delete</button></a>
@@ -81,7 +81,7 @@
        
           <% }); %>
           <a href="/topics/create/<%= courseId%>">
-            <button style="width: 100%;" class="view-course-btn">Create topic</button> </a>  
+            <button style="width: 100%;" class="view-course-btn">Create lesson</button> </a>  
         </div>
       </div>
       <div class="stats-column">
@@ -91,19 +91,15 @@
         <div class="stats">
           <div class="stats-item">
             <i class="fa fa-user"></i>
-            <p>Students: 20 </p>
-          </div>
-          <div class="stats-item">
-            <i class="fa fa-check-circle"></i>
-            <p>course setup: Incomplete  </p>
+            <p>Students: <%= stats.students%> </p>
           </div>
           <div class="stats-item">
             <i class="fa fa-book"></i>
-            <p>Lessons: 5 </p>
+            <p>Lessons: <%= stats.lessons%> </p>
           </div>
           <div class="stats-item">
             <i class="fa fa-check"></i>
-            <p>Status: Inactive </p>
+            <p>Status: <%= course.active?"active":"Inactive" %> </p>
           </div>
   
           <%if(courseActive.topics && !courseActive.active){%>

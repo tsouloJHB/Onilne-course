@@ -13,7 +13,7 @@
       <%- include('partials/clientNav') %>    
     <%}%> 
 
-    <p class="path"> Home /<a  href="/topics/edit/<%=quiz.topicId %>"> courses</a> /<span style="color: gray;"> course</span> </p>
+    <p class="path"> Home /<a  href="/topics/edit/<%=quiz.topicId %>"> lesson </a> /<span style="color: gray;">quiz edit</span> </p>
 
     <div class="user-courses-container">
       <div class="user-column">
@@ -63,20 +63,19 @@
       </div>
       <div class="stats-column">
        
-        <h3 class="display-9"><b>Course requirements</b> </h3>
         <br>
         <div class="stats">
           <div class="stats-item">
-            <i class="fa fa-laptop"></i>
-            <p>Courses: 2%> </p>
+            <i class="fa fa-check-circle"></i>
+            <p>Update quiz</p>
           </div>
           <div class="stats-item">
             <i class="fa fa-check-circle"></i>
-            <p>Completed Courses: 45</p>
+            <p>View Quiz</p>
           </div>
           <div class="stats-item">
-            <i class="fa fa-hourglass-half"></i>
-            <p>In Progress: 45</p>
+            <i class="fa fa-check-circle"></i>
+            <p>Delete Question</p>
           </div>
           <% if(quiz){ %>
       

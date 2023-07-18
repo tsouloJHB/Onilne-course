@@ -45,14 +45,16 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
     const course = await CourseModel.findById(courseId);
     let countTopics = await TopicModel.countDocuments({courseId:course._id});
     console.log("countTopics "+ countTopics + "current topic " + progress.progress);
-    const percentage =  (progress.progress/countTopics) * 100;
+    //const percentage =  (progress.progress/countTopics) * 100;
+    let percentage =  progress.progress == 1 && countTopics == 1  || progress.progress == 0 ? 0: (progress.progress/countTopics) * 100;
     //get the category fo the course
     const category = await CategoryModel.findById(course.category);
 
     //get remaining hours 
     const hours = course.hours ? course.hours : 0;
     console.log("hours "+ hours+" percentage "+percentage);
-    const remainingHours = (hours * (100 - percentage) / 100).toFixed(0);
+    let remainingHours = (hours * (100 - percentage) / 100).toFixed(0);
+    //remainingHours = progress.completed ? 0:remainingHours;
      modifiedCourse = {
       ...course.toObject(), // Spread the properties of the course object
       progress: progress.progress,

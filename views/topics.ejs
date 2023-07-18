@@ -15,7 +15,7 @@
    
   
   <div class="user-courses-container">
-    <%= topics.length == 0 ? "No topics found":"" %>
+    <%= topics.length == 0 ? "No lessons found":"" %>
     <div class="user-column">
       <div class="custom-jumbotron-small">
         <p class="lead"><b><%=course.title%></b> </p>
@@ -30,7 +30,9 @@
            
             <div class="">
               
-              <% if(currentTopic >= topic.topicNo) {%>
+              <% if(currentTopic > topic.topicNo ) {%>
+                <p>Complete</p>
+              <%}else if(currentTopic == topic.topicNo && course.completed){%>
                 <p>Complete</p>
               <%}else{%>
                 <p>Incomplete</p>
