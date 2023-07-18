@@ -41,6 +41,8 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
         inprogress: uniqueCourses.length - completedCourseCount  
       };
 
+      console.log(courses);
+
       return res.render('courses/userCourses',{courses,userStats});
     } catch (error) {
       return res.render('404',{message:"An error occurred while retrieving"});

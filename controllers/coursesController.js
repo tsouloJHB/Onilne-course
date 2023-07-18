@@ -49,14 +49,15 @@ module.exports.getUserCourses = async (userId,completed=false) => {
         const courses = await Promise.all(userProgresses.map(async (progress) => {
            
           //const course = await CourseModel.findById(progress.course);
-          const course = await CourseModel.findOne({_id:progress.course,active:true});
+          const course = await CourseModel.findOne({_id:progress.course,active:true}).populate('user');;
           let modifiedCourse = {};
           if(course){
             let countTopics = await TopicModel.countDocuments({courseId:course._id});
             
-            let percentage =  (progress.progress/countTopics) * 100;
+            let percentage =  progress.progress == 1 && countTopics == 1  || progress.progress == 0 ? 0: (progress.progress/countTopics) * 100;
             console.log("countTopics "+ countTopics + "current topic " + progress.progress);
             percentage.toFixed(0);
+            percentage = percentage == 100 & progress.completed == false ? 90 : percentage;
             //get the category fo the course
             const category = await CategoryModel.findById(course.category);
             //get remaining hours 
@@ -194,7 +195,7 @@ module.exports.courseSearch = async (req, res) => {
         courses.push(modifiedCourse);
       }
       
-      console.log(courses);
+     
       return courses;
       
     } else {

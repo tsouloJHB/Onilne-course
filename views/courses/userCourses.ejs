@@ -54,7 +54,7 @@
             </div>
             <a href="/topics/<%=course._id %>"><button class="view-course-btn">View Course</button></a>
           </div>
-          <p class="instructor">Instructor Name</p>
+          <p class="instructor"><%=course.user.name +" " +course.user.surname%></p>
         </div>
      
         <% }); %>
