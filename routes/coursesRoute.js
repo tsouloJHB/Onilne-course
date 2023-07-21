@@ -34,7 +34,7 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
 
       const uniqueCourses = [...new Set(userProgress.map(item => item.course.toString()))];
       const completedCourseCount = userProgress.filter(item => item.completed).length;
-
+     
       const userStats = {
         coursesCompleted: completedCourseCount,
         registeredCourses: uniqueCourses.length,
@@ -224,7 +224,6 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
 // Create a course
 router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async (req, res) => {
     try {
-      console.log(req.body);
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         // Render the courses page with errors

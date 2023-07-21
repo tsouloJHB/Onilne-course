@@ -3,6 +3,8 @@ const {CourseModel,UserProgressModel,CategoryModel,TopicModel, TopicQuizModel, U
 const TopicMaterial = require('../models/topicMaterialModel');
 const CoursesModel = require('../models/coursesModel');
 const UserProgressController = require('./userProgressController');
+const sharp = require('sharp');
+const path = require('path');
 
 
 
@@ -313,6 +315,14 @@ module.exports.createCategory = async (name) => {
   }
 };
 
+const resizeImage = async(name) => {
+  const resize = await sharp('public/images/courseimages/'+name)
+  .resize(350, 250)
+  .toFile('public/images/courseimages/resized'+name)
+
+  console.log(resize)
+}
+
 //create course
 module.exports.createCourse = async(req) =>{
   try {
@@ -320,6 +330,7 @@ module.exports.createCourse = async(req) =>{
 
     const { filename, path } = req.file;
     const courseCount = await CourseModel.countDocuments()+1;
+    
     const course = new CourseModel({
       title: req.body.title,
       courseNo: courseCount,
@@ -336,6 +347,7 @@ module.exports.createCourse = async(req) =>{
       material:req.body.material
     });
     const savedCourse = await course.save();
+    
     return {
         success:true,
         course:savedCourse,
@@ -396,11 +408,14 @@ module.exports.updateCourse = async(req) =>{
 
 module.exports.updateCourseImage = async(req,res) =>{
   try {
-   const courseImage = '/images/courseimages/'+req.file.filename;
+   //const courseImage = '/images/courseimages/'+req.file.filename;
+    await resizeImage(req.file.filename);
+    const courseImage  = '/images/courseimages/resized'+req.file.filename;  
    const updateImage = await CourseModel.findByIdAndUpdate(req.body.courseId,{courseImage});
    if(!updateImage){
     return res.status(400).json("Error saving image");
    }
+ 
    return res.status(201).json("Success");
   } catch (error) {
     console.log(error);

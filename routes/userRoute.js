@@ -7,6 +7,8 @@ const { CoursesController, UserProgressController, UsersController } = require('
 const { redirect } = require('react-router-dom');
 const { loginDataValidate, userDataValidateSchemaBased } = require("../validation/user.validation");
 const { validationResult } = require("express-validator");
+const nodemailer = require('nodemailer');
+
 // Login route
 router.post('/login', loginDataValidate,async (req, res) => {
 
@@ -15,7 +17,7 @@ router.post('/login', loginDataValidate,async (req, res) => {
   try {
   
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty()) {  
       console.log(errors.array());
       res.render('login', { errors: errors.array() });
     }
@@ -36,6 +38,7 @@ router.post('/login', loginDataValidate,async (req, res) => {
       maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days in milliseconds
     });
     console.log(req.session);
+    //await UsersController.sendEmail("thabangsoulo@gmail.com","Node mailer boi");
     if (user.isAdmin) {
       // Redirect the admin user to the admin page
      res.redirect('/admin');
@@ -200,6 +203,9 @@ router.post('/changename',verifyToken.verifyToken, async (req, res) => {
     res.status(500).json(error);
   }
 });
+router.get('/resetpassword/:token',UsersController.resetPasswordRender);
+router.post('/forgotpassword',UsersController.forgotPassword);
+router.post('/resetpassword/:token',UsersController.changeForgotPassword);
 
 
 module.exports = router;
