@@ -4,6 +4,7 @@ const { UserModel } = require('../models');
 const bcrypt = require('bcrypt');
 const nodemailer = require("nodemailer");
 const crypto = require('crypto');
+const utils = require('../utils/tokenUtil');
 
 
 
@@ -21,17 +22,17 @@ module.exports.renderSettingsPage = async (req, res,errors) => {
   }
 }
 
-module.exports.sendEmail = async (to,message,subject)=>{
-  try{  
+module.exports.sendEmail = async (to, message, subject) => {
+  try {  
     const password = "dnmwpflioeendxiz";
-    const email = "0784939@gmail.com"
+    const email = "0784939@gmail.com";
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com", // SMTP server address (usually mail.your-domain.com)
       port: 465, // Port for SMTP (usually 465)
       secure: true, // Usually true if connecting to port 465
       auth: {
         user: email, // Your email address
-        pass: password, // Password (for gmail, your app password)
+        pass: password, // Password (for Gmail, your app password)
         // ⚠️ For better security, use environment variables set on the server for these values when deploying
       },
       tls: {
@@ -39,22 +40,45 @@ module.exports.sendEmail = async (to,message,subject)=>{
       },
     });
 
-      // Define and send message inside transporter.sendEmail() and await info about send from promise:
-  let info = await transporter.sendMail({
-    from: email,
-    to: to,
-    subject: subject,
-    html: `
-    <h1>Hello there</h1>
-    <p>${message}</p>
-    `,
-  });
+    // Define and send message inside transporter.sendEmail() and await info about send from promise:
+    let info = await transporter.sendMail({
+      from: email,
+      to: to,
+      subject: subject,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>${subject}</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              color: #003680;
+            }
+            .footer {
+              margin-top: 50px;
+              color: #003680;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>${subject}</h1>
+          <p>${message}</p>
+          <div class="footer">
+            <p>Scholar at the Company Name</p>
+            <p>Contact Us: your_email@example.com</p>
+          </div>
+        </body>
+        </html>
+      `,
+    });
 
-  console.log(info.messageId); 
-  return true;
-  }catch(error){
-    return false;
+    console.log(info.messageId); 
+    return true;
+  } catch (error) {
     console.log(error);
+    return false;
   }
 }
 
@@ -227,7 +251,8 @@ module.exports.forgotPassword = async (req,res) =>{
 
     if (!user) {
       // User with the provided email does not exist
-      return res.status(404).json({ error: 'User not found' });
+      req.message = "Could not send the email";
+      return this.forgotPasswordRender(req,res);
     }
 
     // 2. Generate the reset token and save it in the database
@@ -245,9 +270,17 @@ module.exports.forgotPassword = async (req,res) =>{
       user.save({validateBeforeSave:false});
     }
     // 4. Return a success response
-    return res.status(200).json({ message: 'Password reset token sent to the user' });
+    req.message = "Password reset token sent to your email";
+    return this.forgotPasswordRender(req,res);
+   // return res.status(200).json({ message: 'Password reset token sent to the user' });
   } catch (error) {
-    console.log(error);
+    console.log("error");
+    // Catch validation errors
+  if (error.name === "ValidationError") {
+    const errors = Object.values(error.errors).map((err) => err.message);
+    req.message = errors.join(", ");
+    return this.forgotPasswordRender(req, res);
+  }
     return res.status(500).json({ error: 'Error sending reset password token' });
   }  
 
@@ -256,13 +289,21 @@ module.exports.forgotPassword = async (req,res) =>{
 //Change password for forgot password 
 module.exports.changeForgotPassword =  async (req, res) => {
   try {
-    const token =  crypto.createHash('sha256').update(req.params.token).digest('hex');
+    let token =  crypto.createHash('sha256').update(req.params.token).digest('hex');
     const user = await UserModel.findOne({passwordResetToken:token,passwordResetTokenExpires:{$gt: Date.now()}});
   
     if(!user){
       console.log("Invalid token");
-      return res.status(404).json({ error: 'User not found' });
+      return res.render('404', { message: "An error occurred while retrieving" });
   
+    }
+    if (req.body.password.length < 6) {
+      // Handle the error when the password is too short
+      //req.message = "Password must be at least 6 characters long";
+      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    }
+    if (req.body.password !== req.body.confirmPassword) {
+      return res.status(400).json({ error: 'Passwords do not match' });
     }
     user.password = req.body.password;
     user.passwordResetToken = undefined;
@@ -271,6 +312,7 @@ module.exports.changeForgotPassword =  async (req, res) => {
     user.save();
   
     //login user automatically 
+    token = utils.generateAuthToken(user._id); 
     req.session.user = {
       id: user._id,
       admin: user.isAdmin,
@@ -283,8 +325,14 @@ module.exports.changeForgotPassword =  async (req, res) => {
       httpOnly: true,
       maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days in milliseconds
     });
-    res.redirect('/admin');
+    res.redirect('/users');
   } catch (error) {
+     // Catch validation errors
+  if (error.name === "ValidationError") {
+    const errors = Object.values(error.errors).map((err) => err.message);
+    req.message = errors.join(", ");
+    return this.forgotPasswordRender(req, res);
+  }
     console.log(error);
   
   }
@@ -299,12 +347,25 @@ module.exports.resetPasswordRender = async (req,res) =>{
   
     if(!user){
       console.log("Invalid token");
-      return res.status(404).json({ error: 'User not found' });
+      return res.render('404', { message: "An error occurred while retrieving" });
   
     }
     return res.render("users/resetPassword");
     
   
+  } catch (error) {
+    
+  }
+}
+
+
+module.exports.forgotPasswordRender = async (req,res) =>{
+  try {
+    let message = "";
+    if(req.message){
+      message = req.message; 
+    }
+    return res.render("users/forgotPassword",{responseMessage:message});
   } catch (error) {
     
   }

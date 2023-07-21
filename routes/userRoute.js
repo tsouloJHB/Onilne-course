@@ -204,6 +204,7 @@ router.post('/changename',verifyToken.verifyToken, async (req, res) => {
   }
 });
 router.get('/resetpassword/:token',UsersController.resetPasswordRender);
+router.get('/forgotpassword',UsersController.forgotPasswordRender);
 router.post('/forgotpassword',UsersController.forgotPassword);
 router.post('/resetpassword/:token',UsersController.changeForgotPassword);
 

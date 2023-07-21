@@ -95,7 +95,11 @@ userSchema.pre('save', async function (next) {
   
       next();
     } catch (error) {
-      next(error);
+        // Handle the validation error differently in the pre-save hook
+    if (error.name === 'ValidationError') {
+      return next(error);
+    }
+    next(error);
     }
   });
   
@@ -135,13 +139,13 @@ userSchema.pre('save', async function (next) {
 
     } 
     return false;   
-  }
+  } 
   
   userSchema.methods.createResetPasswordToken = function(){
     const resetToken = crypto.randomBytes(32).toString('hex');
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
     //miliseconds in 10min added to the date time
-    this.passwordResetTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
+    this.passwordResetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
     console.log(resetToken, this.passwordResetToken);
     return resetToken;
   }

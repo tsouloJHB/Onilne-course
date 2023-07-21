@@ -4,10 +4,16 @@
   src: url('/fonts/Elmond.ttf') format('truetype');
   /* Additional font formats can be added here for cross-browser compatibility */
 }
+*{
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
 body {
     margin: 0;
     padding: 0;
-  
+    
     background-color: black;
    
 }
@@ -721,6 +727,150 @@ body {
     font-size: 14px;
     color: #919aa3; }
 
+/* new login */
+.auth-section {
+  position: relative;
+  min-height: 100vh;
+  background:#003680;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.auth-section .container {
+  position: relative;
+  width: 800px;
+  height: 500px;
+  background: #fee648;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.auth-section .container .user {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.auth-section .container .user .imgBx {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  background: #ff0;
+  transition: 0.5s;
+}
+.auth-section .container .user .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.auth-section .container .user .formBx {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  transition: 0.5s;
+}
+.auth-section .container .user .formBx form h2 {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 10px;
+  color: #555;
+}
+.auth-section .container .user .formBx form input {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  background: #f5f5f5;
+  color: #333;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  margin: 8px 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+.auth-section .container .user .formBx form input[type="submit"] {
+  max-width: 100px;
+  background: #677eff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: 0.5s;
+}
+.auth-section .container .user .formBx form .signup {
+  position: relative;
+  margin-top: 20px;
+  font-size: 12px;
+  letter-spacing: 1px;
+ color: #00000;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+.auth-section .container .user .formBx form .signup a {
+  font-weight: 600;
+  text-decoration: none;
+  color: #00000;
+}
+.auth-section .container .signupBx {
+  pointer-events: none;
+}
+.auth-section .active .signupBx {
+  pointer-events: initial;
+}
+
+.auth-section .container .signupBx .formBx {
+  left: 100%;
+}
+.auth-section .active .signupBx .formBx {
+  left: 0;
+}
+.auth-section .container .signupBx .imgBx {
+  left: -100%;
+}
+.auth-section .active .signupBx .imgBx {
+  left: 0;
+}
+
+.auth-section .container .signinBx .formBx {
+  left: 0;
+}
+.auth-section .active .signinBx .formBx {
+  left: 100%;
+}
+.auth-section .container .signinBx .imgBx {
+  left: 0;
+}
+.auth-section .active .signinBx .imgBx {
+  left: -100%;
+}
+
+@media (max-width: 991px) {
+  .auth-section .container {
+    max-width: 400px;
+  }
+  .auth-section .container .imgBx {
+    display: none;
+  }
+  .auth-section .container .user .formBx {
+    width: 100%;
+  }
+}
 /*======================= Edit course ========================*/
 #edit-image{
   padding: 20px;
