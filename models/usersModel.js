@@ -61,7 +61,9 @@ const userSchema = new mongoose.Schema({
     },
     passwordChangedAt: Date,
     passwordResetToken:String,
-    passwordResetTokenExpires:Date
+    passwordResetTokenExpires:Date,
+    verificationToken: { type: String },
+    verified: { type: Boolean, default: false },
     
     
 },
@@ -146,7 +148,6 @@ userSchema.pre('save', async function (next) {
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
     //miliseconds in 10min added to the date time
     this.passwordResetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
-    console.log(resetToken, this.passwordResetToken);
     return resetToken;
   }
 

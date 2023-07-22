@@ -8,6 +8,10 @@ const { redirect } = require('react-router-dom');
 const { loginDataValidate, userDataValidateSchemaBased } = require("../validation/user.validation");
 const { validationResult } = require("express-validator");
 const nodemailer = require('nodemailer');
+const {sendEmail} = require('../utils/emailer');
+const crypto = require('crypto');
+const {  signUpSchemaValidator } = require('../validation/user.validation');
+
 
 // Login route
 router.post('/login', loginDataValidate,async (req, res) => {
@@ -64,33 +68,54 @@ router.get('/login', (req, res) => {
 });
 
 // Signup route
-router.post('/signup', async (req, res) => {
-  const { email, password, name, surname } = req.body;
-
+router.post('/signup',loginDataValidate ,async (req, res) => {
+  const { email, password, name, surname,confirmpassword } = req.body;
+  console.log(req.body);
   try {
     // Check if the email already exists
+    if (password == null || password == "" || name == "" || name == null || surname == "" || surname == null
+        || email == "" || email == null
+    ) {
+      return res.status(400).json({ error: 'empty fields submitted' });
+    }
+    if (password !== confirmpassword) {
+      return res.status(400).json({ error: 'passwords do not match' });
+    }
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email already exists' });
     }
-
-    // Create a new user
-    
+   
+    // Inside the /signup route handler
     const newUser = new UserModel({ email, password, name, surname });
-    //generate user progress module 
-    await newUser.save();
 
+    // Generate verification token and save it to the user document
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    newUser.verificationToken = crypto.createHash('sha256').update(verificationToken).digest('hex');
+
+    await newUser.save();
+    // Generate the verification URL
+    const restUrl = `${req.protocol}://${req.get('host')}/users/verify/${verificationToken}`;
+      // Send verification email
+    const message = `Thank you for signing up! Please click the following link to verify your account:\n\n ${restUrl}`;
+    const sendmail = await sendEmail(email, message, 'Account Verification');
+
+    if (!sendmail) {
+      // Handle email sending error
+      return res.status(500).json({ error: 'Error sending verification email' });
+    }
     // Generate JWT token
     const token = utils.generateAuthToken();
 
     // Create a cookie with the token
-    res.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days in milliseconds
-    });
+    // res.cookie('token', token, {
+    //   httpOnly: true,
+    //   maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days in milliseconds
+    // });
 
     // Redirect the user to the topics page
-    res.redirect('/course');
+    return res.status(201).json({ message: 'Account created please check your email to verify your account'});
+   // res.redirect('/users');
   } catch (err) {
     // Return the error messages to the signup page
     console.log(err);
@@ -203,6 +228,8 @@ router.post('/changename',verifyToken.verifyToken, async (req, res) => {
     res.status(500).json(error);
   }
 });
+router.get('/verify/:token', UsersController.verifyAccount);
+
 router.get('/resetpassword/:token',UsersController.resetPasswordRender);
 router.get('/forgotpassword',UsersController.forgotPasswordRender);
 router.post('/forgotpassword',UsersController.forgotPassword);

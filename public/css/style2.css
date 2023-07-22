@@ -741,9 +741,10 @@ body {
   position: relative;
   width: 800px;
   height: 500px;
-  background: #fee648;
+  background: #ffffff;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  overflow-y: visible;
 }
 .auth-section .container .user {
   position: absolute;
@@ -757,7 +758,7 @@ body {
   position: relative;
   width: 50%;
   height: 100%;
-  background: #ff0;
+  background: rgb(255, 255, 255);
   transition: 0.5s;
 }
 .auth-section .container .user .imgBx img {
@@ -778,6 +779,7 @@ body {
   align-items: center;
   padding: 40px;
   transition: 0.5s;
+ 
 }
 .auth-section .container .user .formBx form h2 {
   font-size: 18px;

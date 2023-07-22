@@ -40,24 +40,36 @@
                 </a>
               </p>
               <div id="error"></div>
+              <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <% errors.forEach(function (error) { %>
+                  <p style="color: red;"><%= error.msg %></p>
+                <% }) %>
+              <% } %>
             </form>
           </div>
         </div>
         <div class="user signupBx">
           <div class="formBx">
-            <form>
+            <form action="/users/signup" method="POST" id="signup-form">
               <h2>Create an Account</h2>
-              <input type="text" name="" placeholder="name" />
-              <input type="text" name="" placeholder="surname" />
-              <input type="email" name="" placeholder="Email" />
-              <input type="password" name="" placeholder="Create Password" />
-              <input type="password" name="" placeholder="Confirm Password" />
+              <input type="text" id="signup-name" name="name" placeholder="name" />
+              <input type="text"  id="signup-surname" name="surname" placeholder="surname" />
+              <input type="email" id="signup-email" name="email" placeholder="Email" />
+              <input type="password"  id="signup-password" name="password" placeholder="Create Password" />
+              <input type="password" id="signup-confirm-password" name="confirmpassword" placeholder="Confirm Password" />
               <input type="submit" name="" value="Sign Up" />
               <p class="signup">
                 Already have an account ?
                 <a href="#" onclick="toggleForm();"> Sign In </a>
               </p>
+              <div id="error-signup"></div>
+              <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <% errors.forEach(function (error) { %>
+                  <p style="color: red;"><%= error.msg %></p>
+                <% }) %>
+              <% } %>
             </form>
+            
           </div>
           <div class="imgBx"><img src="https://images.unsplash.com/photo-1628972799193-1a6be77e183e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80" /></div>
         </div>
@@ -195,6 +207,76 @@
           $('#login-form').unbind('submit').submit();
         }
       });
+      //sign up 
+      $('#signup-form').submit(function (event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Clear previous error messages
+      $('#error-signup').empty();
+
+      // Get form values
+      var email = $('#signup-email').val();
+      var password = $('#signup-password').val();
+      var passwordConfirm = $('#signup-confirm-password').val();
+      var name = $('#signup-name').val();
+      var surname = $('#signup-surname').val();
+
+      // Perform validation
+      var isValid = true;
+
+      if (email.trim() === '') {
+        $('#error-signup').append('<p>Please enter your email.</p>');
+        isValid = false;
+      }
+
+      if (password.trim() === '') {
+        $('#error-signup').append('<p>Please enter your password.</p>');
+        isValid = false;
+      }
+
+      if (name.trim() === '') {
+        $('#error-signup').append('<p>Please enter your name.</p>');
+        isValid = false;
+      }
+
+      if (surname.trim() === '') {
+        $('#error-signup').append('<p>Please enter your surname.</p>');
+        isValid = false;
+      }
+
+      if (passwordConfirm.trim() !== password.trim()) {
+        $('#error-signup').append("<p>Passwords don't match.</p>");
+        isValid = false;
+      }
+
+      if (isValid) {
+        // Send the form data using AJAX
+        $.ajax({
+          url: '/users/signup',
+          method: 'POST',
+          data: {
+            email: email,
+            password: password,
+            confirmpassword: passwordConfirm,
+            name: name,
+            surname: surname,
+          },
+          success: function (data) {
+            // Handle the successful response
+            // For example, show a success message to the user
+            console.log(data); // Log the response data
+            
+            $('#error-signup').append(`<p>Success! ${data.responseJSON.message}.</p>`);
+          },
+          error: function (error) {
+            // Handle errors
+            // For example, display error messages to the user
+            console.log(error.responseJSON); // Log the error object
+            $('#error-signup').append('<p>Error creating account.</p>');
+          },
+        });
+      }
+    });
     });
   </script>
   <%- include('partials/footer') %>

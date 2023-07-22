@@ -19,26 +19,43 @@
 <body>
   <%- include('../partials/clientNav') %>
 
-  <div>
-    <div>
-      <p>Change display name</p>
+
+  <div class="user-courses-container">
+    <div class="user-column">
+    
+    <p class="page-small-title"><b>Change display name </b></p>
       <form action="/users/changename" method="POST" id="changeName">
-        <input type="text" id="name" name="name" placeholder="change name" value="<%=user.name%>" /> 
-        <input type="submit" value="Change Name"/>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group mb-2">
+              <input type="text" class="form-control" id="name" name="name" placeholder="change name" value="<%=user.name%>" /> 
+            </div>
+          </div>
+        </div>
+        <button type="submit"  class="trans-btn ">Change name</button>
       </form>
       <p id="response"></p> 
-    </div>
-
-    <div>
+      
       <br>
-      <p>Change Password</p>
+      <p class="page-small-title"><b>Change password </b></p>
       <form action="/users/changepassword" method="POST" id="changePassword">
-        <label> Enter old password</label>
-        <input type="password" id="password" name="password" placeholder="password" />
-        <p id="errorOld"></p>
-        <input type="password" id="newPassword" name="newPassword" placeholder="New password" />
-        <p id="errorNew"></p>
-        <input type="submit" value="Change password"/>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group mb-2">
+              <input type="password" class="form-control" id="password" name="password" placeholder="password" />
+              <p id="errorOld"></p>
+            </div>
+          </div>
+        </div>      
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group mb-2">
+               <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New password" />
+               <p id="errorNew"></p>
+            </div>
+          </div>     
+       
+          <button type="submit" class="trans-btn ">Change password</button>
       </form>
       <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
         <div class="errors">
@@ -48,8 +65,33 @@
         </div>
       <% } %>
     </div>
+    </div>
+    <div class="stats-column">
+     
+     
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>change name</p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>change password</p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Change surname</p>
+        </div>
+      
+      </div>
+    </div>
   </div>
-  <%- include('../partials/footer') %>
+ 
+
+
+
+
 <script>
   $(document).ready(function() {
     $('#changeName').submit(function(event) {

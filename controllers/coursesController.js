@@ -5,7 +5,7 @@ const CoursesModel = require('../models/coursesModel');
 const UserProgressController = require('./userProgressController');
 const sharp = require('sharp');
 const path = require('path');
-
+const fs = require('fs').promises;
 
 
 //page renders
@@ -315,14 +315,23 @@ module.exports.createCategory = async (name) => {
   }
 };
 
-const resizeImage = async(name) => {
-  const resize = await sharp('public/images/courseimages/'+name)
-  .resize(350, 250)
-  .toFile('public/images/courseimages/resized'+name)
+const resizeImage = async (filename) => {
+  try {
+    // Define the output filename for the resized image (with PNG extension)
+    const resizedFilename = `resized_${path.basename(filename, path.extname(filename))}.png`;
 
-  console.log(resize)
-}
+    // Resize the image and save the resized image in PNG format
+    await sharp(`public/images/courseimages/${filename}`)
+      .resize(350, 250)
+      .toFile(`public/images/courseimages/${resizedFilename}`);
 
+    console.log('Image resized and converted to PNG successfully!');
+    return resizedFilename; // Return the resized filename
+  } catch (error) {
+    console.log('Error resizing image:', error);
+    throw error; // Rethrow the error to be caught in the calling function
+  }
+};
 //create course
 module.exports.createCourse = async(req) =>{
   try {
@@ -406,22 +415,39 @@ module.exports.updateCourse = async(req) =>{
   }
 }
 
-module.exports.updateCourseImage = async(req,res) =>{
+module.exports.updateCourseImage = async (req, res) => {
   try {
-   //const courseImage = '/images/courseimages/'+req.file.filename;
-    await resizeImage(req.file.filename);
-    const courseImage  = '/images/courseimages/resized'+req.file.filename;  
-   const updateImage = await CourseModel.findByIdAndUpdate(req.body.courseId,{courseImage});
-   if(!updateImage){
-    return res.status(400).json("Error saving image");
-   }
- 
-   return res.status(201).json("Success");
+    // Resize the uploaded image using Sharp and convert to PNG
+    const resizedFilename = await resizeImage(req.file.filename);
+
+    // Update the course image path in the database with the resized image path
+    const courseImage = '/images/courseimages/' + resizedFilename;
+    const updateImage = await CourseModel.findByIdAndUpdate(req.body.courseId, { courseImage });
+
+    if (!updateImage) {
+      return res.status(400).json("Error saving image");
+    }
+
+    // Delete the old image (original uploaded image)
+    await deleteOldImage(req.file.filename);
+
+    return res.status(201).json("Success");
   } catch (error) {
     console.log(error);
-    return res.status(400).json("Error saving image");
+    return res.status(500).json("Error saving image");
   }
-}
+};
+
+const deleteOldImage = async (filename) => {
+  try {
+    // Delete the old image (original uploaded image)
+    await fs.unlink(`public/images/courseimages/${filename}`);
+    console.log('Old image deleted successfully!');
+  } catch (error) {
+    console.log('Error deleting old image:', error);
+    throw error; // Rethrow the error to be caught in the calling function
+  }
+};
 
 module.exports.deleteCourse = async(courseId,res) =>{
   try { 

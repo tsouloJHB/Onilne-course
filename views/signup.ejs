@@ -1,19 +1,155 @@
 
+
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Sign Up</title>
-  <link rel="stylesheet" href="/styles/style.css">
+
+  <title>Login</title>
+  <%- include('partials/header') %>
+<style>
+  * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+
+</style>
 </head>
 <body>
-  <h1>Sign Up</h1>
 
-  <% if (error) { %>
-    <p class="error"><%= error %></p>
-  <% } %>
-
-  <form action="/users/signup" method="POST" id="signup-form">
+  <body>
+    <section class="auth-section">
+      <div class="container">
+        <div class="user signinBx">
+          <div class="formBx">
+            <form action="/users/signup" method="POST" id="signup-form">
+              <h2>Create an Account</h2>
+              <input type="text" id="signup-name" name="name" placeholder="name" />
+              <input type="text"  id="signup-surname" name="surname" placeholder="surname" />
+              <input type="email" id="signup-email" name="email" placeholder="Email" />
+              <input type="password"  id="signup-password" name="password" placeholder="Create Password" />
+              <input type="password" id="signup-confirm-password" name="confirmpassword" placeholder="Confirm Password" />
+              <input type="submit" name="" value="Sign Up" />
+              <p class="signup">
+                Already have an account ?
+                <a href="#" onclick="toggleForm();"> Sign In </a>
+              </p>
+              <div id="error-signup"></div>
+              <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <% errors.forEach(function (error) { %>
+                  <p style="color: red;"><%= error.msg %></p>
+                <% }) %>
+              <% } %>
+            </form>
+            
+          </div>
+          <div class="imgBx"><img src="https://images.unsplash.com/photo-1628972799193-1a6be77e183e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80" /></div>
+        </div>
+        
+        <div class="user signupBx ">
+          <div class="imgBx"><img src="https://images.unsplash.com/photo-1576859958081-27de5c70262a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80" /></div>
+          <div class="formBx">
+            <form class="signin-form" action="/users/login" method="POST" id="login-form">
+              <h2>Sign In</h2>
+              <input type="text" id="email" name="email" placeholder="email" />
+              <input type="password" id="password" name="password" placeholder="Password" />
+              <input type="submit" name="" value="Login" />
+              <p class="signup">
+                Don't have an account ?<a href="#" onclick="toggleForm();">
+                  Sign Up
+                </a>
+              </p>
+              <p class="signup">
+                <a href="/users/forgotpassword" >
+                  Forgot password
+                </a>
+              </p>
+             
+            </form>
+          </div>
+        </div>
+      
+      </div>
+    </section>
+ 
+  </body>
+  <!-- <div class="login-container">
+    <div class="login-img">
+      <img id="login-image" src="/images/manlap.png" width="35%"/>
+    </div>
+    <div class="login-area">
+      <h2>Welcome to Scholar</h2>
+      <p>Login</p>
+      <form class="login-form">
+       
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+      <p>Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
+      
+    </div>
+   
+  </div> -->
+  <!-- <section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-4">
+					<h2 class="heading-section">Scholar.</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-12 col-lg-10">
+					<div class="wrap d-md-flex">
+						<div class="img" style="background-image: url('/images/login2.jpg');">
+			      </div>
+						<div class="login-wrap p-4 p-md-5">
+			      	<div class="d-flex">
+			      		<div class="w-100">
+			      			<h3 class="mb-4">Sign In</h3>
+			      		</div>
+								<div class="w-100">
+								
+								</div>
+			      	</div>
+							<form class="signin-form" action="/users/login" method="POST" id="login-form">
+			      		<div class="form-group mb-3">
+			      			<label class="label" for="name">Username</label>
+			      			<input type="text" id="email" name="email"  class="form-control" placeholder="Username" >
+			      		</div>
+		            <div class="form-group mb-3">
+		            	<label class="label" for="password">Password</label>
+		              <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+		            </div>
+		            <div class="form-group">
+		            	<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+		            </div> -->
+		            <!-- <div class="form-group d-md-flex">
+		            	<div class="w-50 text-left">
+			            	<label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+									  <input type="checkbox" checked>
+									  <span class="checkmark"></span>
+										</label>
+									</div>
+									<div class="w-50 text-md-right">
+										<a href="#">Forgot Password</a>
+									</div>
+		            </div> -->
+		          <!-- </form>
+              <div id="error"></div>
+              <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <% errors.forEach(function (error) { %>
+                  <p style="color: red;"><%= error.msg %></p>
+                <% }) %>
+              <% } %>
+		          <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
+		        </div>
+		      </div>
+				</div>
+			</div>
+		</div>
+	</section> -->
+  
+  <!-- <form action="/users/login" method="POST" id="login-form">
     <div>
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" >
@@ -22,25 +158,25 @@
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" >
     </div>
-    <div>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" >
-    </div>
-    <div>
-      <label for="surname">Surname:</label>
-      <input type="text" id="surname" name="surname" >
-    </div>
     <div id="error"></div>
-    <div>
-      <button type="submit">Sign Up</button>
-    </div>
-  </form>
-  <%- include('partials/footer') %>
+    <button type="submit">Login</button>
+  </form> -->
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <% errors.forEach(function (error) { %>
+      <p style="color: red;"><%= error.msg %></p>
+    <% }) %>
+  <% } %>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+          function toggleForm() {
+          
+        var container = document.querySelector(".container");
+        container.classList.toggle("active");
+        
+      }
     $(document).ready(function() {
-      $('#signup-form').submit(function(event) {
+      $('#login-form').submit(function(event) {
         event.preventDefault(); // Prevent form submission
         
         // Clear previous error messages
@@ -49,38 +185,97 @@
         // Get form values
         var email = $('#email').val();
         var password = $('#password').val();
-        var name = $('#name').val();
-        var surname = $('#surname').val();
 
         // Perform validation
         var isValid = true;
-
+        
         if (email.trim() === '') {
           $('#error').append('<p>Please enter your email.</p>');
           isValid = false;
         }
-
+        
         if (password.trim() === '') {
           $('#error').append('<p>Please enter your password.</p>');
           isValid = false;
         }
 
-        if (name.trim() === '') {
-          $('#error').append('<p>Please enter your name.</p>');
-          isValid = false;
-        }
-
-        if (surname.trim() === '') {
-          $('#error').append('<p>Please enter your surname.</p>');
-          isValid = false;
-        }
-
         if (isValid) {
           // Submit the form if valid
-          $('#signup-form').unbind('submit').submit();
+          $('#login-form').unbind('submit').submit();
         }
       });
+      //sign up 
+      $('#signup-form').submit(function (event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Clear previous error messages
+      $('#error-signup').empty();
+
+      // Get form values
+      var email = $('#signup-email').val();
+      var password = $('#signup-password').val();
+      var passwordConfirm = $('#signup-confirm-password').val();
+      var name = $('#signup-name').val();
+      var surname = $('#signup-surname').val();
+
+      // Perform validation
+      var isValid = true;
+
+      if (email.trim() === '') {
+        $('#error-signup').append('<p>Please enter your email.</p>');
+        isValid = false;
+      }
+
+      if (password.trim() === '') {
+        $('#error-signup').append('<p>Please enter your password.</p>');
+        isValid = false;
+      }
+
+      if (name.trim() === '') {
+        $('#error-signup').append('<p>Please enter your name.</p>');
+        isValid = false;
+      }
+
+      if (surname.trim() === '') {
+        $('#error-signup').append('<p>Please enter your surname.</p>');
+        isValid = false;
+      }
+
+      if (passwordConfirm.trim() !== password.trim()) {
+        $('#error-signup').append("<p>Passwords don't match.</p>");
+        isValid = false;
+      }
+
+      if (isValid) {
+        // Send the form data using AJAX
+        $.ajax({
+          url: '/users/signup',
+          method: 'POST',
+          data: {
+            email: email,
+            password: password,
+            confirmpassword: passwordConfirm,
+            name: name,
+            surname: surname,
+          },
+          success: function (data) {
+            // Handle the successful response
+            // For example, show a success message to the user
+            console.log(data); // Log the response data
+            
+            $('#error-signup').append(`<p>Success! ${data.responseJSON.message}.</p>`);
+          },
+          error: function (error) {
+            // Handle errors
+            // For example, display error messages to the user
+            console.log(error.responseJSON); // Log the error object
+            $('#error-signup').append('<p>Error creating account.</p>');
+          },
+        });
+      }
+    });
     });
   </script>
+  <%- include('partials/footer') %>
 </body>
 </html>

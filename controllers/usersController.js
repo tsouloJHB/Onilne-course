@@ -66,8 +66,8 @@ module.exports.sendEmail = async (to, message, subject) => {
           <h1>${subject}</h1>
           <p>${message}</p>
           <div class="footer">
-            <p>Scholar at the Company Name</p>
-            <p>Contact Us: your_email@example.com</p>
+            <p>at Scholar</p>
+            <p>Contact Us: Scholar@example.com</p>
           </div>
         </body>
         </html>
@@ -347,7 +347,7 @@ module.exports.resetPasswordRender = async (req,res) =>{
   
     if(!user){
       console.log("Invalid token");
-      return res.render('404', { message: "An error occurred while retrieving" });
+      return res.render('404', { message: " Your password reset link is not valid, or already used." });
   
     }
     return res.render("users/resetPassword");
@@ -368,6 +368,34 @@ module.exports.forgotPasswordRender = async (req,res) =>{
     return res.render("users/forgotPassword",{responseMessage:message});
   } catch (error) {
     
+  }
+}
+
+module.exports.verifyAccount = async (req,res) =>{
+  try {
+    const token = req.params.token;
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find the user with the verification token
+    const user = await UserModel.findOne({ verificationToken: hashedToken });
+
+    if (!user) {
+      // Handle the case when the token is not valid
+      
+      return res.render('404', { message: "Invalid verification token" });
+    }
+
+    // Mark the user as verified
+    user.verified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    // Redirect the user to the login page or any other desired page
+    return res.redirect('/users/login');
+  } catch (err) {
+    // Handle any errors
+    console.log(err);
+    return res.status(500).json({ error: 'Error verifying account' });
   }
 }
 

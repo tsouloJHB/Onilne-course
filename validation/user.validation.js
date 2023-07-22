@@ -1,4 +1,4 @@
-const { checkSchema } = require("express-validator");
+const { check ,checkSchema } = require("express-validator");
 
 const userDataValidateSchemaBased = {
   userName: {
@@ -36,7 +36,40 @@ const loginDataValidate = {
   },
 };
 
+const signUpSchemaValidator = checkSchema({
+  name: {
+    notEmpty: { errorMessage: 'Name is required' },
+  },
+  surname: {
+    notEmpty: { errorMessage: 'Surname is required' },
+  },
+  email: {
+    isEmail: { errorMessage: 'Please provide a valid email' },
+  },
+  password: {
+    notEmpty: { errorMessage: 'Password is required' },
+    isLength: {
+      options: { min: 6 },
+      errorMessage: 'Password should be at least 6 characters',
+    },
+  },
+  confirmpassword: {
+    notEmpty: { errorMessage: 'Confirm Password is required' },
+    custom: {
+      options: (value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error('Passwords do not match');
+        }
+        return true;
+      },
+    },
+  },
+});
+
+
+
 module.exports = {
   userDataValidateSchemaBased: checkSchema(userDataValidateSchemaBased),
   loginDataValidate: checkSchema(loginDataValidate),
+  signUpSchemaValidator,
 };
