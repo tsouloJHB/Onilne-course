@@ -79,15 +79,16 @@
        
         <% if(downloadCertificate.completed){%>
      
-          <a href="/<%= downloadCertificate.link%>" download></a><button class="trans-btn">Download certificate</button></a>
-          <p style="text-align: center;color: red;">You have completed the course</p>
+          <a href="/<%= downloadCertificate.link%>" download><button class="trans-btn">Download certificate</button></a>
+          <br/>
+          <p style="color: red;">You have completed the course</p>
         <%}%> 
         <% if(!course.ratings){%>
         <form action="/course/ratings" method="POST">
           <input type="hidden" name="courseId" value="<%=course._id%>"/>
           <div>
-            <label for="rating">Rating:</label>
-            <select name="rating" id="rating">
+            <label for="rating"><b>Rating</b></label>
+            <select class="form-control" name="rating" id="rating">
               <option value="1">1 star</option>
               <option value="2">2 stars</option>
               <option value="3">3 stars</option>
@@ -95,8 +96,8 @@
               <option value="5">5 stars</option>
             </select>
           </div>
-        
-          <button type="submit">Submit Rating</button>
+          <br/>
+          <button class="trans-btn" type="submit">Submit Rating</button>
         </form>
         <%}%>
       

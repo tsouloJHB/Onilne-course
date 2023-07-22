@@ -46,15 +46,19 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
     let countTopics = await TopicModel.countDocuments({courseId:course._id});
     console.log("countTopics "+ countTopics + "current topic " + progress.progress);
     //const percentage =  (progress.progress/countTopics) * 100;
-    let percentage =  progress.progress == 1 && countTopics == 1  || progress.progress == 0 ? 0: (progress.progress/countTopics) * 100;
+    countTopics++;
+    let percentage =  progress.progress == 1 && countTopics == 1  || progress.progress == 0 || progress.progress == 1 ? 0: (progress.progress/countTopics) * 100;
     //get the category fo the course
     const category = await CategoryModel.findById(course.category);
-
+    if(progress.completed){
+      percentage = 100;
+    }
     //get remaining hours 
     const hours = course.hours ? course.hours : 0;
     console.log("hours "+ hours+" percentage "+percentage);
     let remainingHours = (hours * (100 - percentage) / 100).toFixed(0);
     const ratings = await CoursesController.hasUserRatedCourse(req.user._id,courseId);
+  
     //remainingHours = progress.completed ? 0:remainingHours;
      modifiedCourse = {
       ...course.toObject(), // Spread the properties of the course object
@@ -63,7 +67,7 @@ router.get('/:id', verifyToken.verifyToken, async (req, res) => {
       percentage:percentage.toFixed(0), // Add the progress field
       categoryName:category.name,
       remainingHours:remainingHours,
-      topics:countTopics,
+      topics:countTopics-1,
       ratings:ratings
     };
 

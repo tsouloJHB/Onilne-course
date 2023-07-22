@@ -55,10 +55,11 @@ module.exports.getUserCourses = async (userId,completed=false) => {
           let modifiedCourse = {};
           if(course){
             let countTopics = await TopicModel.countDocuments({courseId:course._id});
-            
-            let percentage =  progress.progress == 1 && countTopics == 1  || progress.progress == 0 ? 0: (progress.progress/countTopics) * 100;
+            console.log("Topics "+ countTopics)
+            countTopics++;
+            let percentage =  progress.progress == 1 && countTopics == 1  || progress.progress == 0 || progress.progress == 1 ? 0: (progress.progress/countTopics) * 100;
             console.log("countTopics "+ countTopics + "current topic " + progress.progress);
-          
+            console.log((progress.progress/countTopics) * 100);
             percentage = percentage == 100 & progress.completed == false ? 90 : percentage;
             percentage = Number(percentage.toFixed(0));
            
@@ -103,7 +104,8 @@ module.exports.getUserCourses = async (userId,completed=false) => {
       const userProgresses = await UserProgressModel.findOne({ user: userId,course:courseId});
       let countTopics = await TopicModel.countDocuments({courseId});
       countTopics++;
-      const percentage =  ( userProgresses.progress/countTopics) * 100;
+     // const percentage =  ( userProgresses.progress/countTopics) * 100;
+      let percentage =  userProgresses.progress== 1 && countTopics == 1  || userProgresses.progress == 0 ||userProgresses.progress == 1 ? 0: (userProgresses.progress/countTopics) * 100;
       return percentage.toFixed(1);
     } catch (error) {
       return 0;

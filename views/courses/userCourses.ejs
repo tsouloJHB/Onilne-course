@@ -21,6 +21,9 @@
         
       </div>
       <div class="course-list">
+        <% if(courses.length == 0){%>
+          <p><b>You haven't registered for any course</b></p>
+        <% }%>  
         <% courses.forEach(function(course) { %>
         <div class="course">
           <div class="course-details">
@@ -81,7 +84,7 @@
       <div class="stats">
         <div class="stats-item">
           <i class="fa fa-laptop"></i>
-          <p>Courses: 2%> </p>
+          <p>Courses:<%=userStats.registeredCourses%>%> </p>
         </div>
         <div class="stats-item">
           <i class="fa fa-check-circle"></i>
