@@ -26,24 +26,17 @@
         <div class="course">
           <div class="course-details">
             <h3><%= course.title %></h3>
-         
             <p><%= course.usersCount%> <i class="fa fa-user"></i></p>
            
               <!-- <div class="course-progress">
                 <i class="fa fa-check-circle"></i>
                 <span>Completed</span>
               </div>
-              
-      
+
               <div class="course-progress">
                 <i class="fa fa-check-circle"></i>
                 <span></span>
               </div> -->
-              
-           
-    
-           
-           
               <% if(course.courseImage != ""){%>
                 <img width="100px" src="<%=course.courseImage %>" />
               <%}%> 
@@ -81,19 +74,15 @@
         </div>
        
         <% courses.forEach(function(course) { %>
-          <div class="stats-item">
-            <i class="fa fa-check" aria-hidden="true"></i>
-            <p>Completed: <%=course.completed%>  </p>
-          </div>
-        <% if (course.usersCount > 0){%>
-          <% const completedPercentage = (course.completed/course.usersCount) * 100; %>
-          <div class="stats-item">
-            <i class="fa fa-check" aria-hidden="true"></i>
-            <p>Course completion: <%=completedPercentage.toFixed(0)%>% </p>
-          </div>
+        
+          <% if (course.usersCount > 0){%>
+            <% const completedPercentage = (course.completed/course.usersCount) * 100; %>
+            <div class="stats-item">
+              <i class="fa fa-check" aria-hidden="true"></i>
+              <p>Course completion: <%=completedPercentage.toFixed(0)%>% </p>
+            </div>
+          <%}})%>  
          
-         
-        <%}})%>  
       
       </div>
     </div>

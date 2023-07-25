@@ -18,120 +18,85 @@
 <body>
    
   <%- include('../partials/navBar') %>
-  <h3>Search course</h3>
-  <form  method="GET">
-  <input type="text" name="search" placeholder="search name, category" />
-  <input type="submit" value="Search"/>
-  </form>
-  <% if(coursesSearch){ %>
-    <h1>Search Results</h1>
-  <% if (coursesSearch.length === 0) { %>
-    <p>No courses found.</p>
-  <% } else { %>
-    <ul>
-      <% coursesSearch.forEach((course) => { %>
-        <li><%= course.title %></li>
-      <% }) %>
-    </ul>
-  <% } }%>
 
 
-  <p><a href="?allcourses=courses" >all courses</a></p>
-  <% if (allCourses.length === 0) { %>
-    <p>No courses found.</p>
-  <% } else { %>
-    <ul>
-      <% allCourses.forEach((course) => { %>
-        <li>
-          <%= course.title %>
-          <button onclick="revealDetails('<%= course._id %>')">Show Details</button>
-          <div id="<%= course._id %>" class="course-details">
-            <p><%= course.courseDesc %></p>
-            <img src="<%= course.courseImage %>" alt="<%= course.title %> Image">
-            <video src="<%= course.courseVideo %>" controls></video>
+  <div class="user-courses-container">
+    <div class="user-column">
+      <div class="user-welcome">
+        <a href="/course/create"><button class="trans-btn">Create Course</button></a>
+        
+      </div>
+      <div class="course-list">
+        <% if (courses.length === 0) { %>
+          <p>No courses found.</p>
+         <%}%> 
+        <% courses.forEach(function(course) { %>
+        <div class="course">
+          <div class="course-details">
+            <h3><%= course.title %></h3>
+            <p><%= course.usersCount%> <i class="fa fa-user"></i></p>
+           
+              <!-- <div class="course-progress">
+                <i class="fa fa-check-circle"></i>
+                <span>Completed</span>
+              </div>
+
+              <div class="course-progress">
+                <i class="fa fa-check-circle"></i>
+                <span></span>
+              </div> -->
+              <% if(course.courseImage != ""){%>
+                <img width="100px" src="<%=course.courseImage %>" />
+              <%}%> 
+           
+                <button class="trans-btn-sm deleteCourse"  data-link-data="<%=course._id %>">Delete</button>
+           
+              <a href="/course/edit/<%= course._id %>"><button class="view-course-btn">Edit</button></a>
+              <a href="/course/course-topics/<%= course._id %>""><button class="view-course-btn">View</button></a>
+            
+            
           </div>
-        </li>
-      <% }) %>
-    </ul>
-  <% } %>  
+          <span><p>Course status: <%= course.active ?"Active":"inactive" %></p></span>
+          <p><%= course.courseDesc %></p>
+        </div>
+     
+        <% }); %>
+      </div>
+    </div>
+    <div class="stats-column">
+     
+      <h2 class="display-9"><b>Your Stats</b> </h2>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-laptop"></i>
+          <p>Courses: <%=stats.coursesCount%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Active Courses: <%=stats.activeCourseCount%></p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-users"></i>
+          <p>Users: <%=stats.overallUserCount%></p>
+        </div>
+       
+        <% courses.forEach(function(course) { %>
+        
+        <% if (course.usersCount > 0){%>
+          <% const completedPercentage = (course.completed/course.usersCount) * 100; %>
+          <div class="stats-item">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <p>Course completion: <%=completedPercentage.toFixed(0)%>% </p>
+          </div>
+        <%}})%>  
+      
+      </div>
+    </div>
+  </div>
 
  
 
-  <hr>
-  <p>add new course cataegories</p>
-  <form  id="createCategoryForm">
-    <input type="text" id="categoryName" name="categoryName" placeholder="course category" /> 
-    <input type="submit"  value="Add category"/>
-    </form>
-   <p id="response"></p> 
-  <h2>Create Course</h2>
-  <form action="/admin/createCourse" enctype="multipart/form-data" method="POST">
-    <input type="text" name="title" placeholder="Title" required>
-    <textarea name="courseDesc" placeholder="Course Description" required cols="30" rows="5"></textarea>
-   
-    <div class="mb-3">
-      <label for="imageUpload" class="form-label">Select Image</label>
-      <input type="file" class="form-control" id="imageUpload" name="imageUpload">
-    </div>
-    <label for="category">Category:</label> 
-    <!-- <select id="category" name="category"></select> -->
-    <select id="category" name="category">
-      <% categories.forEach((category) => { %>
-        <option value="<%= category._id %>"><%= category.name %></option>
-      <% }) %>
-    </select>
-    <input type="text" name="courseVideo" placeholder="Course Video URL">
-    <button type="submit">Create Course</button>  
-  </form>
-  <div>
-    </div>
-
-    <div class="outline_courses_info">
-      <a href="">Create course</a>
-    
-      <% if(courses.length == 0){ %>
-      <p>No courses found </p> 
-      <%} %>
-      <div id="accordion">
-        <% let counter = 1; %>
-        <% courses.forEach(function(course) { %>
-          <p> <%= course.title %></p>
-          <div class="card">
-            <div class="card-header" id="<%=course._id %>">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=course._id+course._id %>" aria-expanded="false" aria-controls="collapseTwo">
-                        <i class="flaticon-question"></i> <%= course.title %>
-                    </button>
-                
-                    <% if(course.courseImage != ""){%>
-                      <img width="200px" src="<%=course.courseImage %>" />
-                    <%}%> 
-                    <span><a href="/course/course-topics/<%=course._id %>"> course</a></span>
-                    <span><a href="/course/edit/<%=course._id %>"> Edit Course</a></span>
-                    <span><p class="deleteCourse" data-link-data="<%=course._id %>">Delete course</p></span>
-                    <span><p>Course status: <%= course.active ?"Active":"inactive" %></p></span>
-                       
-                </h5>     
-            </div>
-            <div id="<%=course._id+course._id %>" class="collapse" aria-labelledby="<%=course._id %>" data-parent="#accordion">
-                <div class="card-body">
-                  <%= course.courseDesc %>
-                  <p><%= course.usersCount%> registered users</p>
-                  <p><%=course.completed%> users have completed the course</p>
-                  <% if (course.usersCount > 0){%>
-                    <% const completedPercentage = (course.completed/course.usersCount) * 100; %>
-                    <p><%=completedPercentage.toFixed(2)%> % course completion</p>
-                
-                   
-                  <%}%>  
-                </div>
-                <img src="<%=course.courseImage%>"/>
-            </div>
-          </div>
-          <% counter++; %>
-      <% }); %>
-      </div>
-    </div>
     <script>
       function revealDetails(courseId) {
         const courseDetails = document.getElementById(courseId);

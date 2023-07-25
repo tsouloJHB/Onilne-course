@@ -70,7 +70,13 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
       // Retrieve all courses from the database
       const categories =  await CategoryModel.find();
       const coursesCount = await CourseModel.countDocuments();
-      return res.render('courses/create',{categories,coursesCount});
+      const response = {
+        message: req.session.successMessage
+      }
+      const admin  = req.user.isAdmin;
+      // Clear the session variable to avoid displaying it on subsequent requests
+      req.session.successMessage = null;
+      return res.render('courses/create',{categories,coursesCount,response,admin});
     } catch (error) { 
       console.error('Error retrieving courses:', error);
       return res.render('404',{message:"An error occurred while retrieving"});
@@ -232,6 +238,7 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
       } else {
         const createCourse = await CoursesController.createCourse(req);
         // Handle course creation and redirection
+        req.session.successMessage = 'Course created successfully!';
         res.redirect(req.headers.referer);
       }
     } catch (error) {

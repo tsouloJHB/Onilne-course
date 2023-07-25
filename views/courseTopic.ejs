@@ -17,7 +17,7 @@
   
     <% if(admin){ %>
       <!-- <a href="/admin/courses/"><button>Back</button></a> -->
-      <p class="path"> Home /<a href="admin/courses/"> courses</a> /<span style="color: gray;"> <%=course.title%></span> </p>
+      <p class="path"> Home /<a href="/admin/courses/"> courses</a> /<span style="color: gray;"> <%=course.title%></span> </p>
     <%}else{%>
       <!-- <a href="/course/created"><button>Back</button></a> -->
       <p class="path"> Home /<a href="/course/created"> courses</a> /<span style="color: gray;"> <%=course.title%></span> </p>
@@ -30,7 +30,7 @@
           <div style="margin-bottom: 20px;" class="custom-jumbotron">
             <div class="container">
               <h2 class="display-5"><b><%=course.title%></b> </h2>
-              <p class="lead"><%=course.courseDesc %></p>        
+              <p class="lead two-line-description"><%=course.courseDesc %></p>        
               <img src="<%=course.courseImage%>" class="custom-jumbotron-image"/>
             </div>
       

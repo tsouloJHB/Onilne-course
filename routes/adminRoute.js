@@ -55,9 +55,19 @@ router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
 
     //get course data
     const coursesWithData = await CoursesController.coursesWithData(courses);
+
+    const activeCourseCount = coursesWithData.filter(course => course.active).length;
+    // Calculate the overall user count
+    const overallUserCount = coursesWithData.reduce((count, course) => count + course.usersCount, 0);
+    const stats = {
+      activeCourseCount:activeCourseCount,
+      overallUserCount:overallUserCount,
+      coursesCount:courses.length
+    }
+
     console.log(coursesWithData);
     courses = coursesWithData;
-    res.render('admin/adminCourses', { courses,coursesCount,coursesSearch,allCourses,categories}); // Pass the topics and progress data to the topics view for rendering
+    res.render('admin/adminCourses', { courses,coursesCount,coursesSearch,allCourses,categories,stats}); // Pass the topics and progress data to the topics view for rendering
   } catch (error) { 
     console.error('Error retrieving Courses:', error);
     res.status(500).send('An error occurred while retrieving the Courses.');

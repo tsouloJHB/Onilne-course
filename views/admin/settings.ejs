@@ -18,53 +18,94 @@
    
   <%- include('../partials/navBar') %>
 
-
-<div>
   
-    <div>
-      <br>
-        <p>add quiz pass percentage</p>
-        <form action="/admin/settings" id="adminSettings"   method="POST">
-          <input type="text" id="percentage"  name="percentage" value="<%= settings.passPercentage %>" placeholder="add percentage" /><br>
-          <p id="errorPercentage"></p>
-          <label>Video source optional</label><br>
-          <input type="text" name="videoSource" placeholder="Add video source" />
-          <input type="submit"  value="Update"/>
-        </form>
-        <%  settings.videoSource.forEach(function(source) { %>
-          <p><%=source%></p>
-        <%}) %> 
-        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-          <div class="errors">
-            <% errors.forEach(function (error) { %>
-              <p class="error-message"><%= error.msg %></p>
-            <% }) %>
+
+  <div class="user-courses-container">
+    <div class="user-column">
+ 
+
+    <p class="page-small-title"><b>Add quiz pass percentage </b></p>
+     <form action="/admin/settings" id="adminSettings"   method="POST">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group mb-2">
+              <input type="text" id="percentage"  name="percentage" value="<%= settings.passPercentage %>" placeholder="add percentage" class="form-control"  /> 
+              <p id="errorPercentage"></p>
+            </div>
           </div>
-        <% } %>
-    </div>
-    <div>
-      <p>add new course categories</p>
-      <form  id="createCategoryForm" >
-        <input type="text" id="categoryName" name="categoryName" placeholder="course category" /> 
-        <P id="errorCategory"></P>
-        <input type="submit"  value="Add category"/>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group mb-2">
+              <label>Video source optional</label>
+              <input type="text" name="videoSource" placeholder="Add video source"  class="form-control"  /> 
+              <%  settings.videoSource.forEach(function(source) { %>
+                <span><%=source%></span>
+              <%}) %> 
+            </div>
+          </div>
+        </div>
+        <button type="submit"  class="trans-btn ">Update</button>
+      </form>
+      <p id="response"></p> 
+  
+      <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="errors">
+          <% errors.forEach(function (error) { %>
+            <p class="error-message"><%= error.msg %></p>
+          <% }) %>
+        </div>
+      <% } %>
+      
+      <br>
+     
+
+      
+        <p class="page-small-title"><b>add new course categories </b></p>
+        <form id="createCategoryForm">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group mb-2">
+                <input  type="text" id="categoryName" name="categoryName" placeholder="course category"  />
+                <P id="errorCategory"></P>
+              </div>
+            </div>
+          </div>      
+          <button type="submit" class="trans-btn ">Add category</button>
         </form>
         <p id="response"></p> 
         <%  categories.forEach(function(category) { %>
           <p><%=category.name%> | <a href="/admin/category/remove/<%=category._id%>"> remove</a></p>
         <%}) %>  
-  </div>
-    <div class="container mt-4">
-        <h3>Upload logo image</h3>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-          <div class="mb-3">
-            <label for="imageUpload" class="form-label">Select Image</label>
-            <input type="file" class="form-control" id="imageUpload" name="image">
-          </div>
-          <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
+   
+    </div>
+ 
+    <div class="stats-column">
+     
+     
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Update pass percentage</p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Add video courses</p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>Add and remove category</p>
+        </div>
+      
       </div>
-</div>
+    </div>
+  </div>
+ 
+
+
+
+
 <script>
   $('document').ready(function () {
     $('#createCategoryForm').submit(function(event) {

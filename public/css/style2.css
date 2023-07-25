@@ -419,6 +419,15 @@ body {
 .custom-jumbotron-small .lead{
   font-weight: 500;
 }
+.two-line-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  
+  max-width: 520px;
+  overflow: hidden;
+  line-height: 1.5; /* Adjust this value as needed to control line spacing */
+  max-height: 3em; /* Adjust this value as needed to control the number of lines displayed */
+}
 .custom-jumbotron .container{
 
 }

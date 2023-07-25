@@ -3,20 +3,32 @@
 <html>
 
   <title>Courses</title>
+  
   <%- include('../partials/header') %>
 
 <body>
   <!-- Navigation -->
-  <%- include('../partials/clientNav') %>
+   <% if(admin){ %>
+    <%- include('../partials/navBar') %>
+    <%}else {%>
+      <%- include('../partials/clientNav') %>    
+    <%}%> 
  
 
-  
-    <p class="path"> Home /<a href="/course/created"> courses</a> /<span style="color: gray;"> course</span> </p>
+    <% if(admin){ %>
+      <p class="path"> Home /<a href="/admin/courses"> courses</a> /<span style="color: gray;"> course</span> </p>
+      <%}else {%>
+        <p class="path"> Home /<a href="/course/created"> courses</a> /<span style="color: gray;"> course</span> </p>   
+      <%}%>   
+   
 
   <div class="user-courses-container">
     <div class="user-column">
     
     <p class="page-small-title"><b>Create Course</b></p>
+    <% if(response !== null && response.message !== null && response !== ""){ %>
+      <p style="color: red;"><%=response.message %></p>
+    <%}%>  
   <form id="course-form" action="/course/create" enctype="multipart/form-data" method="POST" class="d-flex flex-column  px-3">
     <div class="row">
       <div class="col-md-6">
