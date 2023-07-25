@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Section with Parallax Effect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+  <style>
+      @font-face {
+      font-family: 'Extatica';
+      src: url('fonts/Vilane Medium.ttf');
+    }
+    @font-face {
+      font-family: 'GreatVibes';
+      src: url('fonts/GreatVibes-Regular.ttf');
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+   /* Set body height to 100vh to cover the entire screen */
+    }
+
+    /* First column styles */
+    .column1 {
+      flex: 1;
+      background-color: white;
+      color: #003680;
+      padding: 50px;
+      height: 100%; /* Set height to 100% to cover the entire screen */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center the content vertically */
+      justify-content: center; /* Center the content horizontally */
+    }
+
+    /* Second column styles */
+    .column2 {
+      flex: 1;
+      background-color: #000000;
+      /* background-color: #003680; */
+      padding: 0px;
+      display: flex;
+     
+      height: 100%; /* Set height to 100% to cover the entire screen */
+    }
+
+    /* Image inside the second column */
+    .image-container {
+  position: relative;
+  width: 100%; /* Set the width of the container to match the width of the images */
+  height:600px;
+}
+
+/* First image */
+.hero-image {
+  position: absolute;
+  top: 100px;
+  left: 20%;
+  width: 70%;
+}
+
+/* Second image */
+.hero-image2 {
+  position: absolute;
+
+  top: 0;
+  bottom: 100px;
+  left: 0;
+  width: 100%;
+}
+
+    /* Text color for the first column */
+    .column1 h1,
+    .column1 p {
+      color: #000000;
+      text-align: center;
+    }
+
+    /* Text color for links in the first column */
+    .column1 a {
+      color: #000000;
+      text-decoration: none;
+    }
+
+    /* Separate container for ul elements */
+    .ul-container {
+      display: flex;
+      justify-content: center; /* Center the ul elements horizontally */
+    }
+
+    /* Styles for the ul element */
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul li {
+      margin: 5px 10px;
+      display: inline-block;
+      color: #9c9c9c;
+    }
+
+    .hero-content h1 {
+      font-size: 60px;
+      font-family: 'Extatica', Arial, sans-serif; /* Use the custom font as the first fallback */
+    }
+     h1 {
+      font-size: 40px;
+      text-align: center;
+      font-family: 'Extatica', Arial, sans-serif; /* Use the custom font as the first fallback */
+    }
+    .hero-content p{
+      color: #999797;
+    }
+    .hero-content {
+      text-align: center; /* Center the text horizontally */
+    }
+    .logo{
+      /* font-family: 'GreatVibes', Arial, sans-serif;  */
+      font-size: 20px;
+    }
+   
+@media screen and (max-width: 801px) {
+  /* First column styles */
+  .column1 {
+    flex: 1;
+    background-color: white;
+    color: #003680;
+    padding: 50px;
+    height: 100%; /* Set height to 100% to cover the entire screen */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content vertically */
+    justify-content: center; /* Center the content horizontally */
+  }
+
+  /* Second column styles */
+  .column2 {
+    display: none; /* Hide the second column for smaller screens */
+  }
+
+  /* Hide the fixed navbar by default */
+ 
+}
+    /* Add CSS for the fixed-positioned nav bar */
+    .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  
+  background-color: #003680;
+  padding: 5px 0;
+  color: rgb(9, 9, 9);
+  text-align: center;
+  transition: top 1.3s ease-in-out, opacity 1.3s ease-in-out;
+  z-index: 1000;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Center the brand logo and search form */
+.navbar-brand,
+/* Center the brand logo and search form */
+.navbar-brand,
+.form-inline {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  left: 200px;
+}
+
+/* Add some space between the search form and other elements */
+.form-inline {
+  margin-left: 20px;
+}
+.navbar .navbar-brand{
+    position: relative;
+    left: 0%;
+}
+
+
+/* Increase the width of the input text */
+.form-inline input[type="search"] {
+  width: 400px; /* Adjust the width as needed */
+}
+
+.navbar a{
+  color: rgb(2, 2, 2);
+}
+
+/* Hide the nav bar initially */
+.navbar-hidden {
+  top: -80px;
+  opacity: 0;
+}
+
+/* Show the nav bar when scrolling down 40px */
+.navbar-show {
+  top: 0;
+  opacity: 1;
+}
+    .stuff{
+        padding:50px
+    }
+    /* Container for the hero sections */
+.container-hero {
+  display: flex;
+  height: 100vh;
+
+}
+.section1{
+  margin-top: 100px;
+}
+
+/* Style for the black footer */
+.black-footer {
+  /* background-color: #003680; */
+  background-color: #000;
+  color: #fff;
+  padding: 20px 0;
+}
+
+/* Style for the footer list */
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin-bottom: 10px;
+}
+.home-more{
+  padding: 40px;
+}
+/* Center align the copyright text in medium-sized screens */
+@media (max-width: 768px) {
+  .text-center {
+    text-align: center;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- Nav bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top navbar-hidden" id="navbar">
+    <div class="container">
+      <!-- Centered Brand Logo -->
+      <a class="navbar-brand " href="#"><b>scholar</b></a>
+  
+      <!-- Centered Search Form -->
+      <form class="form-inline mx-auto">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+  
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sign Up</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-hero .reveal-bottom-reset">  
+    <div class="column1">
+      <h1 class="logo">Sch<span style="color:red" >olar</span>.</h1>
+      <div class="ul-container">
+        <!-- The ul element with its content -->
+        <ul>
+          <li>Home</li>
+          <li> Courses</li>
+          <li>sign up</li>
+        </ul>
+      </div>
+      <div class="hero-content element" data-scroll-speed="2" data-opacity-speed="5">
+        <h1>Improve your skills by<br> signing up </h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor tincidunt lacus, eget consequat tellus
+        tincidunt in.</p>
+  
+        <button type="button" class="btn btn-primary btn-lg">Learn more</button>
+      </div>
+    </div>
+    
+    <div class="column2">
+      <div class="image-container">
+        
+        <img class="hero-image2 element" data-scroll-speed="1" data-opacity-speed="1" src="line.png" alt="Hero Image">
+        <img class="hero-image element" data-scroll-speed="3"    src="login2.png" alt="Hero Image">
+      </div>
+    </div>
+  </div>
+  
+  <div class="container section1 animate-on-scroll reveal-bottom-reset">
+    <h1>All  course's are for free </h1>
+      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+         standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+          make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+           remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets 
+           containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
+            including versions of Lorem Ipsum
+        </p>
+        <div class="container mt-5">
+          <h2 class="text-center mb-4">Course Categories</h2>
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <i class="fas fa-code fa-3x mb-3"></i>
+                  <h5 class="card-title">Programming</h5>
+                  <p class="card-text">Explore the world of programming languages and development frameworks.</p>
+                </div>
+              </div>
+            </div>
+            <!-- Add more cards for other categories -->
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <i class="fas fa-brain fa-3x mb-3"></i>
+                  <h5 class="card-title">Data Science</h5>
+                  <p class="card-text">Dive into the exciting world of data analysis, machine learning, and AI.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <i class="fas fa-paint-brush fa-3x mb-3"></i>
+                  <h5 class="card-title">Design</h5>
+                  <p class="card-text">Unlock your creativity with courses on graphic design and UI/UX.</p>
+                </div>
+              </div>
+            </div>
+            <!-- Add more cards for other categories -->
+          </div>
+          <div class="row">
+            <div class="col-md-4 offset-md-4 text-center home-more">
+              <button type="button" class="btn btn-dark btn-lg">See more</button>
+            </div>
+          </div>
+        </div>
+        
+  </div>
+  <!-- Add the rest of your content here -->
+  <footer class="black-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <ul class="footer-list">
+            <li>About Us</li>
+            <li>Contact</li>
+            <li>Privacy Policy</li>
+          </ul>
+        </div>
+        <div class="col-md-4 text-center">
+          <p>&copy; 2023 Your Company. All rights reserved.</p>
+        </div>
+        <div class="col-md-4">
+          <!-- Add content for the middle section here if needed -->
+      
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Add your JavaScript scripts and Bootstrap CDN if needed -->
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Show the nav bar when scrolling down 40px
+    window.addEventListener("scroll", function () {
+  var navbar = document.getElementById("navbar");
+
+  if (window.scrollY >= 40) {
+    navbar.classList.add("navbar-show");
+    navbar.classList.remove("navbar-hidden");
+  } else {
+    navbar.classList.remove("navbar-show");
+    navbar.classList.add("navbar-hidden");
+  }
+});
+    // Function to check if an element is in the viewport
+  // Function to check if an element is in the viewport
+  function isElementInViewport(el) {
+    var rect = el.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+  }
+
+  // Function to reveal the animated elements when they come into view
+  function revealOnScroll() {
+    var elements = document.querySelectorAll(".animate-on-scroll");
+    elements.forEach(function (element) {
+      if (isElementInViewport(element)) {
+        element.classList.add("reveal");
+      }
+    });
+  }
+
+  // Call the revealOnScroll function on page load
+  function revealFunction() {
+    //first we need to initialize our "sr" (scroll reveal)
+    //do you know all the behaviors that will be the same for all animations? Just send it directly here, as in my case, the duration, the distance...
+
+    window.sr = ScrollReveal({ duration: 1350, distance: '250px', easing: 'ease-out' });
+
+    //here we can create infinite classes according to our needs
+    //so first we declare the name of the class and pass the props to it
+    //see the documentation and you are free to do anything you can think of about the scroll fade effect :)
+
+    sr.reveal('.reveal-left', { origin: 'left', reset: false });
+    sr.reveal('.reveal-top', { origin: 'top', reset: false });
+    sr.reveal('.reveal-bottom', { origin: 'bottom', reset: false });
+    sr.reveal('.reveal-right', { origin: 'right', reset: false });
+
+    sr.reveal('.reveal-reset-true', { origin: 'bottom', reset: true });
+    // sr.reveal('.reveal-rotate', { origin: 'bottom', rotate: { x:1000, z:1000 }, reset: true });
+    sr.reveal('.reveal-bottom-reset', { origin: 'bottom', reset: true });
+}
+//fist of all, on load we call our magic
+window.addEventListener('load', function () {
+    revealFunction();
+});
+ScrollReveal().reveal('.container-hero');
+
+// $(function(){
+//   var boxes = $('.element'),
+//       $window = $(window);
+//   $window.scroll(function(){
+//     var scrollTop = $window.scrollTop();
+//     boxes.each(function(){
+//       var $this = $(this),
+//           scrollspeed = parseInt($this.data('scroll-speed')),
+//           val = - scrollTop / scrollspeed;
+//       $this.css('transform', 'translateY(' + val + 'px)');
+//     });
+//   });
+// });
+$(function(){
+  var boxes = $('.element'),
+      $window = $(window);
+  
+  $window.scroll(function(){
+    var scrollTop = $window.scrollTop();
+    
+    boxes.each(function(){
+      var $this = $(this),
+          scrollspeed = parseInt($this.data('scroll-speed')),
+          opacitySpeed = parseFloat($this.data('opacity-speed')),
+          val = -scrollTop / scrollspeed,
+          opacityVal = 1 - (scrollTop * opacitySpeed) / 1000; // Adjust the 1000 value for desired opacity change speed
+      
+      $this.css({
+        'transform': 'translateY(' + val + 'px)',
+        'opacity': opacityVal
+      });
+    });
+  });
+});
+
+
+  </script>
+</body>
+
+</html>
