@@ -18,7 +18,7 @@
           <div class="course-card  p-3">
             <div class="row align-items-start">
               <div class="">
-                <img src="<%=course.courseImage %>" alt="Course 1" class="img-fluid">
+                <img  src="<%=course.courseImage %>" alt="Course 1" class="img-fluid card-image">
               </div>
               <div class="col-12"> 
                 <p class="small text-secondary"><%=course.category.name%></p>
@@ -37,12 +37,12 @@
                   <% if (halfStar) { %>
                     <i class="fa fa-star-half-o text-warning"></i>
                   <% } %>
-                  <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> 23 hours</span>
+                  <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> <%=course.hours%></span>
                 </div>
                 <p class="course-description"><%= course.courseDesc %></p>
               </div>
               <div class="col-12 card-bottom"> 
-              <a href="/course/view/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0">View</button></a>
+              <a href="/course/view/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0" style="color: black;">View</button></a>
               </div>
             </div>
             
@@ -59,12 +59,12 @@
          <div class="course-card  p-3">
            <div class="row align-items-start">
              <div class="">
-               <img src="<%=course.courseImage %>" alt="Course 1" class="img-fluid">
+               <img  src="<%=course.courseImage %>" alt="Course 1"  class="img-fluid card-image">
              </div>
              <div class="col-12"> 
                <h2 ><%=course.title%></h2>
                <p class="small text-secondary"><%=course.category.name%></p>
-               <p><%= course.courseDesc %></p>
+               <p class="course-description"><%= course.courseDesc %></p>
                
                <div>
 
@@ -80,11 +80,11 @@
                   <i class="fa fa-star-half-o text-warning"></i>
                 <% } %>
                 
-                <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> 23 hours</span>
+                <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> <%=course.hours%></span>
               </div>
              </div>
              <div class="col-12 card-bottom"> 
-              <a href="/topics/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0">Continue</button></a>
+              <a href="/topics/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0" style="color: black;">Continue</button></a>
               <span class="completed"><%=course.percentage %>% completed</span>
               </div>
                 
@@ -99,18 +99,17 @@
     <div class="filter-column">
      
       <h3>Search Filter</h3>
-      <form>
+      <form action="/course/search" method="GET">
         <label for="category">Search by Category:</label>
-        <select class="form-control form-rounded"  id="category">
-          <option value="">All Categories</option>
-          <option value="web">Web Development</option>
-          <option value="design">Design</option>
-          <option value="marketing">Marketing</option>
+        <select class="form-control form-rounded" name="search"  id="category">
+          <% categories.forEach(function(category){ %>
+            <option value="<%=category.name%>"><%=category.name%></option>   
+          <%})%>  
         </select>
         <br>
         <label for="ratings">Search by Ratings:</label>
         <br>
-        <select class="form-control form-rounded"  id="ratings">
+        <select class="form-control form-rounded" name="rating"  id="ratings">
           <option value="">All Ratings</option>
           <option value="5">5 Stars</option>
           <option value="4">4 Stars</option>

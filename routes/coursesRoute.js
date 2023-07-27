@@ -40,10 +40,11 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
         registeredCourses: uniqueCourses.length,
         inprogress: uniqueCourses.length - completedCourseCount  
       };
+      
 
-      console.log(courses);
-
-      return res.render('courses/userCourses',{courses,userStats});
+  
+      delete req.user.password;
+      return res.render('courses/userCourses',{courses,userStats,user:req.user});
     } catch (error) {
       return res.render('404',{message:"An error occurred while retrieving"});
     }
@@ -71,12 +72,16 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
       const categories =  await CategoryModel.find();
       const coursesCount = await CourseModel.countDocuments();
       const response = {
-        message: req.session.successMessage
+        message: req.session.successMessage,
+        
       }
+      const errors =  req.session.errors ? req.session.errors.errors:[];
+      console.log(errors.msg);
       const admin  = req.user.isAdmin;
       // Clear the session variable to avoid displaying it on subsequent requests
       req.session.successMessage = null;
-      return res.render('courses/create',{categories,coursesCount,response,admin});
+      req.session.errors = null;
+      return res.render('courses/create',{categories,coursesCount,response,admin,errors});
     } catch (error) { 
       console.error('Error retrieving courses:', error);
       return res.render('404',{message:"An error occurred while retrieving"});
@@ -154,10 +159,35 @@ router.get('/search', verifyToken.verifyToken, async (req, res) => {
       }
       
       const courses = await CoursesController.courseSearch(req,res);
-     
+      const categories =  await CategoryModel.find();
+      //filter by rating
+      if (req.query.rating && !isNaN(req.query.rating)) {
+        const ratingFilter = parseInt(req.query.rating);
+                                     
+        const filteredCourses = await CourseModel.aggregate([
+          {
+            $match: {
+              _id: { $in: courses.map((course) => course._id) }, // Filter only the received courses
+              ratings: { $elemMatch: { rating: ratingFilter } }, // Filter courses with matching ratings
+            },
+          },
+          {
+            $addFields: {
+              // Calculate average rating for each course
+              averageRating: { $avg: '$ratings.rating' },
+            },
+          },
+          {
+            $sort: { averageRating: -1 }, // Sort by average rating in descending order
+          },
+        ]);
+       
+   
+        return res.render('search', { courses: filteredCourses,categories});
+      }
 
       
-      res.render('search',{courses});
+      res.render('search',{courses,categories});
   } catch (error) {
     console.log(error);
   }  
@@ -234,11 +264,14 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
       if (!errors.isEmpty()) {
         // Render the courses page with errors
         console.log(errors.array());
-         await CoursesController.renderCourseCreatedPage(req, res, errors.array());
+        req.session.errors = errors;
+       
+        res.redirect(req.headers.referer);
+        //await CoursesController.renderCourseCreatedPage(req, res, errors.array());
       } else {
         const createCourse = await CoursesController.createCourse(req);
         // Handle course creation and redirection
-        req.session.successMessage = 'Course created successfully!';
+        req.session.successMessage = createCourse.course;
         res.redirect(req.headers.referer);
       }
     } catch (error) {
@@ -361,7 +394,7 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
       if(userCourse.length > 0){
         return res.redirect('/users');
       }
-      console.log(courseId);
+     
       const topic  = await TopicModel.findOne({topicNo:1,courseId});
       
 

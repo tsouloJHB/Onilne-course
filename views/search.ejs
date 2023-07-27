@@ -22,7 +22,7 @@
          <div class="col-12"> 
            <h2 ><%=course.title%></h2>
            <p class="small text-secondary"><%=course.category.name%></p>
-           <p><%= course.courseDesc %></p>
+           <p class="course-description"><%= course.courseDesc %></p>
            <div>
              <i class="fa fa-star text-warning"></i>
              <i class="fa fa-star text-warning"></i>
@@ -62,16 +62,15 @@
     <h3>Search Filter</h3>
     <form>
       <label for="category">Search by Category:</label>
-      <select class="form-control form-rounded"  id="category">
-        <option value="">All Categories</option>
-        <option value="web">Web Development</option>
-        <option value="design">Design</option>
-        <option value="marketing">Marketing</option>
+      <select class="form-control form-rounded" name="search"  id="category">
+        <% categories.forEach(function(category){ %>
+          <option value="<%=category.name%>"><%=category.name%></option>   
+        <%})%>  
       </select>
       <br>
       <label for="ratings">Search by Ratings:</label>
       <br>
-      <select class="form-control form-rounded"  id="ratings">
+      <select class="form-control form-rounded" name="rating"  id="ratings">
         <option value="">All Ratings</option>
         <option value="5">5 Stars</option>
         <option value="4">4 Stars</option>

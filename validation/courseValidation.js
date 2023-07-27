@@ -22,10 +22,7 @@ const courseDataValidate = {
   category: {
     notEmpty: { errorMessage: "Category is required" },
   },
-  courseVideo: {
-    notEmpty: { errorMessage: "courseVideo is required" },
-    isURL: { errorMessage: "Please provide a valid course video URL" },
-  },
+ 
   difficulty: {
     notEmpty: { errorMessage: "difficulty is required" },
   },

@@ -27,8 +27,14 @@
     
     <p class="page-small-title"><b>Create Course</b></p>
     <% if(response !== null && response.message !== null && response !== ""){ %>
-      <p style="color: red;"><%=response.message %></p>
-    <%}%>  
+      <% if( response.message._id !== null ){%>
+        <div class="align-on-form">  
+          <p style="color: red;">Course successfully created </p> <a href="/course/course-topics/<%=response.message._id%>"><button class="trans-btn">View course</button> </a><br><br>
+       </div>  
+        <%}%>  
+      
+    <%}%>
+   
   <form id="course-form" action="/course/create" enctype="multipart/form-data" method="POST" class="d-flex flex-column  px-3">
     <div class="row">
       <div class="col-md-6">
@@ -81,12 +87,8 @@
     </div>
     
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group mb-2">
-          <input type="text" name="courseVideo" placeholder="Course Video URL" class="form-control">
-        </div>
-      </div>
-      <div class="col-md-6">
+  
+      <div class="col-md-12">
         <div class="form-group mb-2">
           <textarea placeholder="required material" id="material" name="material" rows="5" cols="30" class="form-control"></textarea>
         </div>
@@ -100,7 +102,7 @@
   </form>
   <p id="error"></p>
   <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-    <div class="errors">
+    <div id="errors" class="errors">
       <% errors.forEach(function (error) { %>
         <p class="error-message"><%= error.msg %></p>
       <% }) %>
@@ -133,6 +135,13 @@
 
 
   <script>
+    // This code will scroll to the "errors" section if it exists in the rendered view
+document.addEventListener("DOMContentLoaded", function () {
+  const errorsSection = document.getElementById("errors");
+  if (errorsSection) {
+    errorsSection.scrollIntoView({ behavior: "smooth" });
+  }
+});
     $(document).ready(function() {
       $('#course-form').submit(function(event) {
         event.preventDefault(); // Prevent form submission
@@ -146,7 +155,6 @@
           { name: 'courseDesc', label: 'Course Description' },
           { name: 'imageUpload', label: 'Image' },
           { name: 'category', label: 'Category' },
-          { name: 'courseVideo', label: 'Course Video URL' },
           { name: 'material', label: 'Material' },
           { name: 'language', label: 'Language' },
           { name: 'hours', label: 'Hours' },

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const utils = require('../utils/tokenUtil');
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel,UserModel, CourseModel } = require('../models');
+const { TopicModel,UserModel, CourseModel, CategoryModel } = require('../models');
 const { CoursesController, UserProgressController, UsersController } = require('../controllers');
 const { redirect } = require('react-router-dom');
 const { loginDataValidate, userDataValidateSchemaBased } = require("../validation/user.validation");
@@ -172,7 +172,9 @@ router.get('/',verifyToken.verifyToken,async (req, res) => {
     const courses = await CoursesController.getUserCourses(userId,true);
     const usersProgress = await UserProgressController.getUserProgress(userId);
     //console.log(topCourses);
-    res.render('users/usersHome',{courses,topCourses,usersProgress});
+    //get course categories
+    const categories =  await CategoryModel.find();
+    res.render('users/usersHome',{courses,topCourses,usersProgress,categories});
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
