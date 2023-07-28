@@ -29,9 +29,17 @@
         <div class="user-welcome">
           <div style="margin-bottom: 20px;" class="custom-jumbotron">
             <div class="container">
-              <h2 class="display-5"><b><%=course.title%></b> </h2>
-              <p class="lead two-line-description"><%=course.courseDesc %></p>        
-              <img src="<%=course.courseImage%>" class="custom-jumbotron-image"/>
+              <div class="row">
+                <div class="col-8">
+                <h2 class="display-5"><b><%=course.title%></b> </h2>
+                <p class="lead two-line-description"><%=course.courseDesc %></p>
+               </div>
+                
+                <div class="col-3">    
+                <img src="<%=course.courseImage%>" class="custom-jumbotron-image"/>
+                </div>    
+              </div>
+             
             </div>
       
           </div>
@@ -40,7 +48,7 @@
               <div class="course">
             
                 <div class="course-details">
-                  <p><b>!</b> Your course Is still inactive because you have no less</p>
+                  <p><b>!</b> Your course is still inactive because you have no lessons</p>
               </div>
               </div>
             <%}%>

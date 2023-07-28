@@ -6,6 +6,7 @@
 }
 :root {
   --primary-color: #fcfcfc;
+  --base-color:#003680;
   /*--primary-color: #003680;*/
   --secondary-color: #ffffff;
   --background-color: #f0f0f0;
@@ -315,7 +316,13 @@ body {
 
 .course-details-container .instructor {
   margin-top: 10px;
-  
+ 
+  color: #777;
+}
+
+.desc {
+  margin-top: 10px;
+  width: 700px;
   color: #777;
 }
  .path{
@@ -426,7 +433,7 @@ body {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   
-  max-width: 520px;
+  max-width: 500px;
   overflow: hidden;
   line-height: 1.5; /* Adjust this value as needed to control line spacing */
   max-height: 3em; /* Adjust this value as needed to control the number of lines displayed */
@@ -436,14 +443,17 @@ body {
 }
 .custom-jumbotron .container .lead{
   display:inline-block;
+  color: #676666;
+  font-size: 16px;
 }
 .custom-jumbotron .custom-jumbotron-image{
   max-width: 200px;
   max-height: 140px;
-  float: right;
+  /* Use inline-block instead of float */
   position: relative;
-  bottom: 65px;
   
+  /* left: 80px;  */
+
   border-radius: 10px;
 }
 .user-courses-container {

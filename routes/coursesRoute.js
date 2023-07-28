@@ -69,7 +69,7 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
   router.get('/create', verifyToken.verifyToken, async (req, res) => {
     try {
       // Retrieve all courses from the database
-      const categories =  await CategoryModel.find();
+      const categories = await CategoryModel.find().sort({ name: 1 });
       const coursesCount = await CourseModel.countDocuments();
       const response = {
         message: req.session.successMessage,
@@ -217,6 +217,7 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
     const userProgress = await UserProgressModel.findOne({user:req.user._id,course:course._id});
     courseCreator = await CoursesController.getCourseCreator(course._id);
     userCount = await CoursesController.countCourseRegisteredUser(course._id);
+    const rating = await CoursesController.getAverageRating(course.ratings);
     if(userProgress){
       const updatedCourse = modifiedCourse = {
         ...course.toObject(), // Spread the properties of the course object
@@ -224,16 +225,18 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
         completed:userProgress.completed,
         topics:countTopics,
         creator:courseCreator,
-        userCount:userCount
+        userCount:userCount,
+        ratingsAverage:rating
+    
          // Add the progress field
       };
-      console.log(updatedCourse);
+ 
       return res.render('courses/viewCourse',{course:updatedCourse});
     }
 
     let owner = false;
-    console.log(course.user);
-    console.log(req.user._id);
+   // console.log(course.user);
+    //console.log(req.user._id);
     if(req.user._id.toString() == course.user.toString()){
       owner = true;
     }
@@ -244,9 +247,11 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
       topics:countTopics,
       creator:courseCreator.user,
       userCount:userCount,
+      ratingsAverage:rating
        // Add the progress field
     };
-    console.log(updatedCourse);
+    console.log(rating);
+    //console.log(updatedCourse);
     
     res.render('courses/viewCourse',{course:updatedCourse});
   } catch (error) {
@@ -360,7 +365,7 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
       
       const admin  = req.user.isAdmin;
      
-      const categories =  await CategoryModel.find();
+      const categories = await CategoryModel.find().sort({ name: 1 });
       const userCategory = await CategoryModel.findById(course.category);
       res.render('courses/editCourse',{course,admin,categories,userCategory});
     } catch (error) {

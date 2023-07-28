@@ -15,13 +15,25 @@
       <div class="course-image">
         <img src="<%=course.courseImage%>" alt="Course Image">
         <div class="rating">
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>  
+          <% const rating = course.ratingsAverage %>
+          <% const fullStars = Math.floor(rating); %>
+          <% const halfStar = rating % 1 !== 0 %>
+          
+          <% for (let i = 0; i < fullStars; i++) { %>
+            <i class="fa fa-star text-warning"></i>
+          <% } %>
+          
+          <% if (halfStar) { %>
+            <i class="fa fa-star-half-o text-warning"></i>
+          <% } %>
+          <% const reminder = (5 - fullStars)  - halfStar%>
+     
+          <% for (let i = 0; i < reminder; i++){%>
+            <i class="fa fa-star-o"></i>
+          <%}%>  
         </div>
         <br/>
-        <div class="reviews">4.8 (15 reviews)</div>
+        <div class="reviews"><%=course.ratingsAverage%> (<%=course.ratings.length%> reviews)</div>
       </div>
       <div class="course-details-breakdown">
       <div class="instructor">A course by<span style="color: black;"> / <%=course.creator.name +" "+course.creator.surname %></span></div>
@@ -60,7 +72,7 @@
           <a href="/topics/<%=course._id %>"><button class="enroll-btn">Open</button></a>
       <%}else{%>
           <% if(!course.owner){ %>
-          <form action="/course/register" method="POST">
+            <form action="/course/register" method="POST">
               <input type="hidden" value="<%=course._id %>" name="courseId" />
               <button class="enroll-btn">Enroll Course</button>
              

@@ -11,6 +11,7 @@ const nodemailer = require('nodemailer');
 const {sendEmail} = require('../utils/emailer');
 const crypto = require('crypto');
 const {  signUpSchemaValidator } = require('../validation/user.validation');
+const handleErrors = require('../utils/errors');
 
 
 // Login route
@@ -27,6 +28,7 @@ router.post('/login', loginDataValidate,async (req, res) => {
     }
   
     const user = await UserModel.login(email, password);
+
     const token = utils.generateAuthToken(user._id); // Use the instance method to generate the token
     
     req.session.user = {
@@ -58,7 +60,7 @@ router.post('/login', loginDataValidate,async (req, res) => {
   } catch (err) {
     // Return the error messages to the login page
     console.log(err);
-    res.render('login', { error: err.message });
+    res.render('login', { errors: [{msg:"Incorrect email or password"}] });
   }
 });
 
@@ -118,7 +120,9 @@ router.post('/signup',loginDataValidate ,async (req, res) => {
    // res.redirect('/users');
   } catch (err) {
     // Return the error messages to the signup page
-    console.log(err);
+    const errors = handleErrors(err);
+      
+    console.log(errors);
     res.status(400).json({ error: err.message });
   }
 });
@@ -173,7 +177,7 @@ router.get('/',verifyToken.verifyToken,async (req, res) => {
     const usersProgress = await UserProgressController.getUserProgress(userId);
     //console.log(topCourses);
     //get course categories
-    const categories =  await CategoryModel.find();
+    const categories = await CategoryModel.find().sort({ name: 1 });
     res.render('users/usersHome',{courses,topCourses,usersProgress,categories});
   } catch (error) {
     console.log(error);

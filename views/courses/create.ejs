@@ -26,8 +26,8 @@
     <div class="user-column">
     
     <p class="page-small-title"><b>Create Course</b></p>
-    <% if(response !== null && response.message !== null && response !== ""){ %>
-      <% if( response.message._id !== null ){%>
+    <% if (response && response.message && response.message._id) { %>
+      <% if( response.message?._id !== null){%>
         <div class="align-on-form">  
           <p style="color: red;">Course successfully created </p> <a href="/course/course-topics/<%=response.message._id%>"><button class="trans-btn">View course</button> </a><br><br>
        </div>  

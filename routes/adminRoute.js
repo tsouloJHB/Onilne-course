@@ -49,7 +49,7 @@ router.get('/courses',verifyToken,isAdmin, async (req,res)=>{
       allCourses = courses
     }
    
-    const categories =  await CategoryModel.find();
+    const categories = await CategoryModel.find().sort({ name: 1 });
     
     const coursesCount = await CourseModel.countDocuments() + 1;
 
@@ -78,7 +78,7 @@ router.get('/settings',verifyToken,isAdmin, async (req,res)=>{
   try {
     let settings = await SettingsModel.findOne({user:"admin"});
     //get the categories
-    const categories  = await CategoryModel.find();
+    const categories = await CategoryModel.find().sort({ name: 1 });
     if(!settings){
       settings = {};
     }
