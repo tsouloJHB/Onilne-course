@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const { TopicModel, TopicMaterialModel,TopicQuizModel, UserProgressModel } = require('../models');
-const { CoursesController, UsersController, TopicsController } = require('../controllers');
+const { CoursesController, UsersController, TopicsController,TopicMaterialController } = require('../controllers');
+const { URL } = require('url');
 
 
 router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
@@ -25,11 +26,12 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
     // Pass the topic material data to the course outline view for rendering
     if(topicMaterial.topicVideo){
       topicMaterial.embedLink = topicMaterial.topicVideo;
-      if(topicMaterial.videoSource === "youtube"){
-        const videoId = extractVideoId(topicMaterial.topicVideo);
-        const embedLink = `https://www.youtube.com/embed/${videoId}`;
-        topicMaterial.embedLink = embedLink;
-      }
+      // if(topicMaterial.videoSource === "youtube"){
+      //   const videoId = extractVideoId(topicMaterial.topicVideo);
+      //   const embedLink = `https://www.youtube.com/embed/${videoId}`;
+      //   topicMaterial.embedLink = embedLink;
+      // }
+      
       
      
     }

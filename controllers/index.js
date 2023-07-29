@@ -4,11 +4,13 @@ const TopicsController = require('./topicsController');
 const UserProgressController = require('./userProgressController');
 const QuizController = require('./quizController');
 const SettingsController = require('./settingsController');
+const TopicMaterialController = require('./topicMaterialController');
 module.exports =  {
     UsersController,
     CoursesController,
     TopicsController,
     UserProgressController,
     QuizController,
-    SettingsController
+    SettingsController,
+    TopicMaterialController
 };

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const { TopicModel, TopicMaterialModel,TopicQuizModel, SettingsModel, CourseModel, CategoryModel } = require('../models');
-const {CoursesController,TopicsController ,UserProgressController, QuizController} = require('../controllers');
+const {CoursesController,TopicsController ,UserProgressController, QuizController, TopicMaterialController} = require('../controllers');
 const { topicCreateDataValidate } = require('../validation/topicValidation');
 const { validationResult } = require('express-validator');
 const { quizCreateDataValidate } = require('../validation/quizValidation');
@@ -113,6 +113,23 @@ router.post('/create/:id', verifyToken.verifyToken,topicCreateDataValidate,async
       return await TopicsController.renderCreateTopic(courseId,req.user.id,req,res,errors.array()  );
       //return res.status(400).json({errors: errors.array()});
     }
+    //check the video link for errors and processing
+    const videoResponse = await TopicMaterialController.processVideoLink(req.body.videoSource,req.body.materialVideo);
+    console.log(videoResponse);
+    if(!videoResponse.success){
+      console.log(req.headers.referer);
+      const link = req.headers.referer.toString().split("/");
+      const courseId = link[link.length-1];
+      //console.log(link[link.length-1]);
+      //render the create topic page with error 
+      const errors = [
+        {
+          msg : videoResponse.error
+        }
+      ]
+      return await TopicsController.renderCreateTopic(courseId,req.user.id,req,res,errors );
+    }
+  
     const courseId = req.body.courseId;
     await CoursesController.courseUserAuthorized(req.user._id,courseId,res,req); 
     // Check if topic number already exists
@@ -135,8 +152,8 @@ router.post('/create/:id', verifyToken.verifyToken,topicCreateDataValidate,async
     });
 
     // Save the topic to the database
-    const savedTopic = await topic.save();
-
+    // const savedTopic = await topic.save();
+    
     // Create a new topic material
     const topicMaterial = new TopicMaterialModel({
       title: req.body.topicTitle,
@@ -147,7 +164,7 @@ router.post('/create/:id', verifyToken.verifyToken,topicCreateDataValidate,async
     });
 
     // Save the topic material to the database
-    const savedTopicMaterial = await topicMaterial.save();
+    // const savedTopicMaterial = await topicMaterial.save();
 
     res.redirect('/course/course-topics/'+req.body.courseId); // Redirect to the topics page after successful creation
   } catch (error) {
