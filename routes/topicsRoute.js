@@ -115,7 +115,7 @@ router.post('/create/:id', verifyToken.verifyToken,topicCreateDataValidate,async
     }
     //check the video link for errors and processing
     const videoResponse = await TopicMaterialController.processVideoLink(req.body.videoSource,req.body.materialVideo);
-    console.log(videoResponse);
+
     if(!videoResponse.success){
       console.log(req.headers.referer);
       const link = req.headers.referer.toString().split("/");
@@ -152,19 +152,19 @@ router.post('/create/:id', verifyToken.verifyToken,topicCreateDataValidate,async
     });
 
     // Save the topic to the database
-    // const savedTopic = await topic.save();
+    const savedTopic = await topic.save();
     
     // Create a new topic material
     const topicMaterial = new TopicMaterialModel({
       title: req.body.topicTitle,
       content: req.body.materialContent,
       topicId: savedTopic._id,
-      topicVideo: req.body.materialVideo,
+      topicVideo: videoResponse.data,
       videoSource:req.body.videoSource
     });
 
     // Save the topic material to the database
-    // const savedTopicMaterial = await topicMaterial.save();
+    const savedTopicMaterial = await topicMaterial.save();
 
     res.redirect('/course/course-topics/'+req.body.courseId); // Redirect to the topics page after successful creation
   } catch (error) {
@@ -227,6 +227,7 @@ router.get('/edit/:id',verifyToken.verifyToken ,async (req, res) => {
     }else{
       videoSources = videoSources.videoSource;
     }
+  
     res.render('editTopic', { topic, topicMaterial,quiz,admin,videoSources }); // Render the edit topic page with the retrieved data
   } catch (error) {
     if (error.name === 'CastError') {
@@ -386,12 +387,7 @@ router.post('/edit/:id', verifyToken.verifyToken,topicCreateDataValidate,async (
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log(req.headers.referer);
-      const link = req.headers.referer.toString().split("/");
-   
-      //console.log(link[link.length-1]);
-      //render the create topic page with error 
-     
+
       return await TopicsController.renderEditTopic(topicId,req,res,errors.array());
       //return res.status(400).json({errors: errors.array()});
     }
@@ -419,10 +415,24 @@ router.post('/edit/:id', verifyToken.verifyToken,topicCreateDataValidate,async (
       return res.render('error', { message: 'Topic material not found' });
     }
 
+    const videoResponse = await TopicMaterialController.processVideoLink(req.body.videoSource,req.body.materialVideo);
+
+    if(!videoResponse.success){
+   
+
+
+      const errors = [
+        {
+          msg : videoResponse.error
+        }
+      ]
+      return await TopicsController.renderEditTopic(topicId,req,res,errors);
+    }
+    console.log(videoResponse.data);
     // Update the topic material properties
     topicMaterial.title = req.body.topicTitle;
     topicMaterial.content = req.body.materialContent;
-    topicMaterial.topicVideo = req.body.materialVideo;
+    topicMaterial.topicVideo = videoResponse.data;
     topicMaterial.videoSource  = req.body.videoSource;
 
     // Save the updated topic material

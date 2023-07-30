@@ -2,7 +2,7 @@
 <html>
 
   <title>Topics </title>
-  <%- include('partials/header') %>
+  <%- include('../partials/header') %>
   <style>
     body {
      font-family: Arial, sans-serif;
@@ -122,15 +122,17 @@ ul li a{
  </style>
 <body>
   <!-- Navigation -->
-  <%- include('partials/clientNav') %>
-  
+  <%- include('../partials/clientNav') %>
+  <% if(admin){ %>
+    <!-- <a href="/admin/courses/"><button>Back</button></a> -->
+    <p class="path"> Home /<a href="/admin/courses/"> courses</a> </p>
+  <%}else{%>
+    <!-- <a href="/course/created"><button>Back</button></a> -->
+    <p class="path"><a href="/course/created"> course</a> /<a href="/course/course-topics/<%=topic.courseId%>"> lessons</a> </p>
+  <%}%>  
   <div class="container-out">
     <div class="column" style="flex: 2 2 58%;">
-  
-      <!-- <% if(downloadCertificate.completed){%>
-        <p>Course Completed</p>
-        <a href="/<%= downloadCertificate.link%>" download><button>Download certificate</button></a>
-      <%}%>  -->
+
    
       <% if(topicMaterial.videoSource === "youtube"){%>
         <iframe id="video" height="500" src="<%= topicMaterial.embedLink %>" allowfullscreen>
@@ -157,48 +159,13 @@ ul li a{
       </div>
       
      
-      <% if(currentTopic == true) {%>
-        <a href="/topicOutline/quiz/<%=topic._id %>"><button style="width: 100%;" class="trans-btn-sm deleteCourse">Quiz test</button></a>
-      <%}%>
+     
     </div>
     <div class="column">
-      <p id="progress-text" >Progress</p>
-      <div class="progress">
-        <% if(!downloadCertificate.completed){%>
-          <div class="progress-bar" role="progressbar" style="width: <%=percentage%>%;background-color:black" aria-valuenow="<%=percentage%>" aria-valuemin="0" aria-valuemax="100">
-            <%=percentage%>%
-          </div>
-        <%}else{%>  
-        <div class="progress-bar" role="progressbar" style="width: 100%;background-color:black" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-          100%
-        </div>
-        <%}%>
-      </div>
-      
-      <ul class="menu-list">
-        <p style="text-align: center; border: 1px solid black; border-radius: 5px;"><b>Lessons</b></p>
-        <% topics.forEach(function(topic,index) { %>
-          <li>
-            <span class="circle"><%= index+1 %></span>
-            <a href="/topicOutline/material/<%= topic._id %>"><%= topic.title %></a>
-          </li>
-        <% }) %>
-      </ul>
-      <div id="courseInfo">
-        <% if(!downloadCertificate.completed){%>
-          <p >Scroll down to take course </p>
-          <i class="fa fa-angle-down" aria-hidden="true"></i>
-        <%}else{%>
-          <p style="color: red;">Course Completed</p>
-          <a href="/<%= downloadCertificate.link%>" download><button class="trans-btn">Download certificate</button></a>
-        <%}%>
-
-     
-      </div>
+      <p  >Preview</p>
  
-  
     </div>
   </div>
-  <%- include('partials/footer') %>
+  <%- include('../partials/footer') %>
 </body>
 </html>

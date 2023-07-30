@@ -489,6 +489,24 @@ body {
 
 }
 
+/* Media Query for Smaller Screens */
+@media (max-width: 767px) {
+  .dash-container {
+    flex-direction: column; /* Set the flex-direction to column for smaller screens */
+    padding: 30px; /* Reduce padding on smaller screens */
+  }
+
+  .dash-column {
+    flex: 1; /* Take full width on smaller screens */
+    padding: 0; /* Remove padding on smaller screens */
+  }
+
+  .filter-column {
+    flex: 1; /* Take full width on smaller screens */
+    padding: 0; /* Remove padding on smaller screens */
+  }
+}
+
 .user-welcome {
   padding-bottom: 20px;
 }
@@ -951,7 +969,10 @@ body {
   height: 550px;
   width: 100%;
 }
-
+#video-vimeo{
+  height: 650px;
+  width: 100%;
+}
 /*===================== Test quiz =======================*/
 #question-text{
   color: gray;

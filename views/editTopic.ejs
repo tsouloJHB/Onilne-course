@@ -45,7 +45,11 @@
         <label for="category">Video source:</label> 
         <select id="category" name="videoSource">
           <% videoSources.forEach((source) => { %>
+            <% if(source === topicMaterial.videoSource){%>
+              <option selected value="<%= source %>"><%= source %></option>
+            <%}else{%>  
             <option value="<%= source %>"><%= source %></option>
+            <%}%>
           <% }) %>
         </select>
       </div>

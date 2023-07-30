@@ -26,14 +26,6 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
     // Pass the topic material data to the course outline view for rendering
     if(topicMaterial.topicVideo){
       topicMaterial.embedLink = topicMaterial.topicVideo;
-      // if(topicMaterial.videoSource === "youtube"){
-      //   const videoId = extractVideoId(topicMaterial.topicVideo);
-      //   const embedLink = `https://www.youtube.com/embed/${videoId}`;
-      //   topicMaterial.embedLink = embedLink;
-      // }
-      
-      
-     
     }
     //get users progress to further check if the user has completed the topic
     const progress  = await UserProgressModel.findOne({user:req.user._id,course:topic.courseId});
@@ -50,7 +42,7 @@ router.get('/material/:topicId', verifyToken.verifyToken, async (req, res) => {
     const downloadCertificate = await CoursesController.checkCourseComplete(topic.courseId,req.user._id);
     //get course completion percentage
     const percentage = await CoursesController.getUserCourseCompletePercentage(topic.courseId,req.user._id);
-    console.log(percentage);
+  
     res.render('courseOutline', { topicMaterial ,topic,currentTopic,topics,downloadCertificate,percentage});
   } catch (error) {
     console.error('Error retrieving topic material:', error);
@@ -115,6 +107,8 @@ router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
 });
 
 
+router.get('/preview/:topicId', verifyToken.verifyToken,TopicMaterialController.previewTopic);
+
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -144,5 +138,8 @@ function extractVideoId(videoLink) {
     throw new Error('Invalid YouTube video link');
   }
 }
+
+
+
 
 module.exports = router;

@@ -51,7 +51,13 @@ module.exports.renderEditTopic = async(topicId,req,res,errors) => {
     }
 
     const admin  = req.user.isAdmin;
-    return res.render('editTopic', { topic, topicMaterial,quiz,admin,errors }); // Render the edit topic page with the retrieved data
+    let videoSources = await SettingsModel.findOne();
+    if(!videoSources){
+      videoSources = ['youtube'];
+    }else{
+      videoSources = videoSources.videoSource;
+    }
+    return res.render('editTopic', { topic, topicMaterial,quiz,admin,errors,videoSources }); // Render the edit topic page with the retrieved data
   } catch (error) {
     if (error.name === 'CastError') {
       return res.render('404');
@@ -106,8 +112,9 @@ module.exports.topicUserAuthorized = async (userId,topicId,res,req) =>{
 }
 
 module.exports.getCourseTopicsByTopic = async (topicId) =>{
+
   const topic = await TopicModel.findById(topicId);
- 
+
   const topics = await TopicModel.find({courseId:topic.courseId});
   return topics
 }
