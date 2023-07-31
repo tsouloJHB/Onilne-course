@@ -261,11 +261,7 @@ body {
   text-overflow: ellipsis;
   }
   
-  @media (max-width: 992px) {
-    .course-container {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
+
   
   @media (max-width: 576px) {
     .course-container {
@@ -490,22 +486,7 @@ body {
 }
 
 /* Media Query for Smaller Screens */
-@media (max-width: 767px) {
-  .dash-container {
-    flex-direction: column; /* Set the flex-direction to column for smaller screens */
-    padding: 30px; /* Reduce padding on smaller screens */
-  }
 
-  .dash-column {
-    flex: 1; /* Take full width on smaller screens */
-    padding: 0; /* Remove padding on smaller screens */
-  }
-
-  .filter-column {
-    flex: 1; /* Take full width on smaller screens */
-    padding: 0; /* Remove padding on smaller screens */
-  }
-}
 
 .user-welcome {
   padding-bottom: 20px;
@@ -725,9 +706,7 @@ body {
 
 .img, .login-wrap {
   width: 50%; }
-  @media (max-width: 991.98px) {
-    .img, .login-wrap {
-      width: 100%; } }
+ 
 
 
 .brand-wrapper {
@@ -798,9 +777,7 @@ body {
     font-size: 16px;
     color: #0d2366;
     margin-bottom: 60px; }
-    @media (max-width: 767px) {
-      .login-card-footer-text {
-        margin-bottom: 24px; } }
+ 
   .login-card-footer-nav a {
     font-size: 14px;
     color: #919aa3; }
@@ -940,17 +917,7 @@ body {
   left: -100%;
 }
 
-@media (max-width: 991px) {
-  .auth-section .container {
-    max-width: 400px;
-  }
-  .auth-section .container .imgBx {
-    display: none;
-  }
-  .auth-section .container .user .formBx {
-    width: 100%;
-  }
-}
+
 /*======================= Edit course ========================*/
 #edit-image{
   padding: 20px;
@@ -1008,6 +975,207 @@ body {
 .blank-star{
   color: rgb(229, 229, 229);
 }
+
+
+
+
+/*===============Media queries ================================*/
+
+
+
+@media (max-width: 991px) {
+  .auth-section .container {
+    max-width: 400px;
+  }
+  .auth-section .container .imgBx {
+    display: none;
+  }
+  .auth-section .container .user .formBx {
+    width: 100%;
+  }
+  .img, .login-wrap {
+    width: 100%; } 
+    .course-container {
+      grid-template-columns: repeat(2, 1fr);
+    }  
+
+    /*---------user courses --------------*/
+    .user-column {
+     
+  
+      padding: 0px 10px;
+    }
+    .user-column .view-course-btn {
+      font-size: 10px;
+      padding: 5px;
+      
+      border-radius: 10px;
+    }
+    
+    .course-details h3{
+      font-size: 12px;
+    }
+    .course-progress span{
+      font-size: 12px;
+    }
+    .course-progress .fa-check-circle {
+      font-size: 12px; /* You can adjust this value as needed */
+    }
+
+    .course-rating .fa-star , .fa-star-half , span{
+      font-size: 12px;
+    }
+    .course .instructor{
+      font-size: 12px;
+      
+    }
+}
+
+
+/* Media Query for Smaller Screens */
+@media (max-width: 767px) {
+  .dash-container {
+    flex-direction: column; /* Set the flex-direction to column for smaller screens */
+    padding: 30px; /* Reduce padding on smaller screens */
+    background-color: red;
+  }
+
+  .dash-column {
+    flex: 1; /* Take full width on smaller screens */
+    padding: 0; /* Remove padding on smaller screens */
+  }
+
+  .filter-column {
+    display: none;
+    flex: 1; /* Take full width on smaller screens */
+    padding: 0; /* Remove padding on smaller screens */
+  }
+
+  .course-card {
+    
+    padding: 10px;
+  
+  }
+
+  .user-courses-container{
+    flex-direction: column;
+    padding: 0px 50px;
+  }
+
+  .user-column {
+    flex: 1;
+
+    padding: 0px 10px;
+  }
+  .user-column .view-course-btn {
+    font-size: 10px;
+    padding: 5px;
+
+    border-radius: 10px;
+  }
+  .course-details h3{
+    font-size: 12px;
+  }
+  .course-progress span{
+    font-size: 12px;
+  }
+  .course-progress .fa-check-circle {
+    font-size: 12px; /* You can adjust this value as needed */
+  }
+  
+
+  .course-rating .fa-star , .fa-star-half , span{
+    font-size: 12px;
+  }
+  .course .instructor{
+    font-size: 12px;
+    
+  }
+  .stats-column {
+    flex: 1;
+    padding: 0px 50px;
+  }
+
+  .login-card-footer-text {
+    margin-bottom: 24px; } 
+}
+
+@media (max-width: 576px) {
+
+  /*-----course views --------*/
+  .course-progress .fa-check-circle{
+    display: none;
+  }
+  .course-progress #completed{
+    display: none ;
+  }
+  .user-courses-container{
+    position: relative;
+    bottom: 50px;
+    padding: 0px 20px;
+  }
+  .path{
+    font-size: 12px;
+    position: relative;
+    bottom: 50px;
+    right: 70px;
+  }
+
+  .course-card .card-image{
+    min-height: 360px;
+    width: 190%;
+  }
+  .course-card {
+  
+    padding: 10px;
+  
+  }
+  /*------------Courses / created -------------*/
+  .course .course-details {
+    
+  }
+  .course-details .trans-btn-sm{
+    font-size: 12px;
+  }
+  .course-details img{
+    width: 50px;
+  }
+}
+@media (max-width: 425px) {
+  .course-card .card-image{
+    min-height: 260px;
+    width: 100%;
+  }
+  .course-card {
+  
+    padding: 10px;
+  
+  }
+  .course-details .trans-btn-sm{
+   border: none;
+   font-weight: bold;
+  }
+  .course-details .view-course-btn {
+  
+    padding: 0px;
+    margin: 2px;
+    font-size: 12px;
+    position: relative;
+    top: 5px;
+    font-weight: bold;
+  }
+  
+}
+
+@media (max-width:377px) {
+  .course-rating .fa-star , .fa-star-half {
+    display: none;
+  }
+}  
+
+
+
+
 /* 
 .navbar-logo {
     margin-left: 10px;
