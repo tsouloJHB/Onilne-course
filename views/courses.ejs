@@ -26,27 +26,16 @@
         <div class="course">
           <div class="course-details">
             <h3><%= course.title %></h3>
-            <p><%= course.usersCount%> <i class="fa fa-user"></i></p>
-           
-              <!-- <div class="course-progress">
-                <i class="fa fa-check-circle"></i>
-                <span>Completed</span>
-              </div>
-
-              <div class="course-progress">
-                <i class="fa fa-check-circle"></i>
-                <span></span>
-              </div> -->
+            
               <% if(course.courseImage != ""){%>
                 <img width="100px" src="<%=course.courseImage %>" />
               <%}%> 
-           
-                <button class="trans-btn-sm deleteCourse"  data-link-data="<%=course._id %>">Delete</button>
-           
-              <a href="/course/edit/<%= course._id %>"><button class="view-course-btn">Edit</button></a>
-              <a href="/course/course-topics/<%= course._id %>""><button class="view-course-btn">View</button></a>
-            
-            
+              <p><%= course.usersCount%> <i class="fa fa-user"></i></p>
+              <div>
+                <button class="trans-btn-sm deleteCourse"  data-link-data="<%=course._id %>">Delete</button>     
+                <a href="/course/edit/<%= course._id %>"><button class="view-course-btn">Edit</button></a>
+                <a href="/course/course-topics/<%= course._id %>""><button class="view-course-btn">View</button></a>
+              </div>    
           </div>
           <span><p>Course status: <%= course.active ?"Active":"inactive" %></p></span>
           <p><%= course.courseDesc %></p>

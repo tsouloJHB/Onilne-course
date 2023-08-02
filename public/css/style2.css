@@ -263,11 +263,7 @@ body {
   
 
   
-  @media (max-width: 576px) {
-    .course-container {
-      grid-template-columns: 1fr;
-    }
-  }
+
 /* ======================== Course view---------------------------*/
 .course-details-container {
   display: flex;
@@ -278,6 +274,7 @@ body {
 .course-details-container .course-details-view {
   flex: 2;
   padding:0 80px;
+
 }
 
 .course-details-container .course-details-breakdown{
@@ -287,6 +284,7 @@ body {
 .course-details-container .course-image {
   text-align: center;
   margin-bottom: 20px;
+  
 }
 
 .course-details-container .course-image img {
@@ -434,9 +432,7 @@ body {
   line-height: 1.5; /* Adjust this value as needed to control line spacing */
   max-height: 3em; /* Adjust this value as needed to control the number of lines displayed */
 }
-.custom-jumbotron .container{
 
-}
 .custom-jumbotron .container .lead{
   display:inline-block;
   color: #676666;
@@ -471,6 +467,7 @@ body {
 
 .dash-container {
   display: flex;
+  
   padding: 50px 60px 100px  80px;
  
 }
@@ -1037,12 +1034,13 @@ body {
   .dash-container {
     flex-direction: column; /* Set the flex-direction to column for smaller screens */
     padding: 30px; /* Reduce padding on smaller screens */
-    background-color: red;
+    
   }
 
   .dash-column {
     flex: 1; /* Take full width on smaller screens */
     padding: 0; /* Remove padding on smaller screens */
+
   }
 
   .filter-column {
@@ -1054,7 +1052,7 @@ body {
   .course-card {
     
     padding: 10px;
-  
+    
   }
 
   .user-courses-container{
@@ -1062,9 +1060,10 @@ body {
     padding: 0px 50px;
   }
 
+
   .user-column {
     flex: 1;
-
+ 
     padding: 0px 10px;
   }
   .user-column .view-course-btn {
@@ -1100,9 +1099,14 @@ body {
     margin-bottom: 24px; } 
 }
 
+
+
 @media (max-width: 576px) {
 
   /*-----course views --------*/
+  .course-container {
+    grid-template-columns: 1fr;
+  }
   .course-progress .fa-check-circle{
     display: none;
   }
@@ -1122,18 +1126,29 @@ body {
   }
 
   .course-card .card-image{
-    min-height: 360px;
-    width: 190%;
+    min-height: 100px;
+    width: 460px;
   }
   .course-card {
   
     padding: 10px;
   
   }
-  /*------------Courses / created -------------*/
-  .course .course-details {
-    
+  .user-column .course-list .course .course-details {
+    flex-direction: column;
+  
+  
   }
+  .user-column .course-list .course .course-details img{
+    width: 70%;
+  }
+
+  .user-column .course-list .course .course-detail{
+   
+  }
+  /*------------Courses / created -------------*/
+
+  
   .course-details .trans-btn-sm{
     font-size: 12px;
   }
@@ -1145,11 +1160,11 @@ body {
   .course-card .card-image{
     min-height: 260px;
     width: 100%;
+
   }
   .course-card {
   
     padding: 10px;
-  
   }
   .course-details .trans-btn-sm{
    border: none;
@@ -1157,12 +1172,33 @@ body {
   }
   .course-details .view-course-btn {
   
-    padding: 0px;
+    padding: 5px;
     margin: 2px;
-    font-size: 12px;
+    font-size: 8px;
     position: relative;
-    top: 5px;
+    top: 0px;
     font-weight: bold;
+  }
+  .course-details .course-progress{
+    position: relative;
+    bottom:5px;
+  }
+  .course-rating span{
+    position: relative;
+    bottom:5px;
+  }
+  .custom-jumbotron .fa-user , .custom-jumbotron .display-5{
+    font-size: 15px;
+  }
+  .custom-jumbotron .container .lead{
+    font-size: 12px;
+  }
+
+  .stats-column .display-9{
+    font-size: 20px;
+  }
+  .stats-column .stats{
+    font-size: 13px;
   }
   
 }
