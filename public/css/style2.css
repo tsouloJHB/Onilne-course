@@ -286,6 +286,11 @@ body {
   margin-bottom: 20px;
   
 }
+.course-details h3{
+  font-size: 20px;
+  width: 50%;
+  font-weight: 550;
+}  
 
 .course-details-container .course-image img {
   width: 80%;
@@ -310,14 +315,15 @@ body {
 
 .course-details-container .instructor {
   margin-top: 10px;
- 
+
   color: #777;
 }
 
 .desc {
   margin-top: 10px;
-  width: 700px;
+  width: 80%;
   color: #777;
+
 }
  .path{
   margin-left: 150px;
@@ -439,13 +445,11 @@ body {
   font-size: 16px;
 }
 .custom-jumbotron .custom-jumbotron-image{
-  max-width: 200px;
-  max-height: 140px;
+  max-width: 140%;
+  height: auto;
   /* Use inline-block instead of float */
+  display: inline-block;
   position: relative;
-  
-  /* left: 80px;  */
-
   border-radius: 10px;
 }
 .user-courses-container {
@@ -511,6 +515,7 @@ body {
 .course .instructor {
   font-size: 14px;
   color: #777;
+  margin-top: 10px;
 }
 
 .course .course-details {
@@ -978,7 +983,17 @@ body {
 
 /*===============Media queries ================================*/
 
-
+@media (max-width: 1175px) {
+  .course-details .trans-btn{
+    font-size: 10px;
+    padding: 10px;
+    border-radius: 13px;
+  }
+  .course-details h3{
+    font-size: 12px;
+ 
+  }  
+}
 
 @media (max-width: 991px) {
   .auth-section .container {
@@ -1003,14 +1018,15 @@ body {
       padding: 0px 10px;
     }
     .user-column .view-course-btn {
-      font-size: 10px;
-      padding: 5px;
+      font-size: 12px;
+      padding: 10px;
       
       border-radius: 10px;
     }
     
     .course-details h3{
       font-size: 12px;
+   
     }
     .course-progress span{
       font-size: 12px;
@@ -1067,12 +1083,13 @@ body {
     padding: 0px 10px;
   }
   .user-column .view-course-btn {
-    font-size: 10px;
-    padding: 5px;
+    font-size: 12px;
+    padding: 10px;
 
     border-radius: 10px;
   }
   .course-details h3{
+
     font-size: 12px;
   }
   .course-progress span{
@@ -1097,6 +1114,12 @@ body {
 
   .login-card-footer-text {
     margin-bottom: 24px; } 
+
+  .course-details .trans-btn{
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 13px;
+  }  
 }
 
 
@@ -1155,6 +1178,24 @@ body {
   .course-details img{
     width: 50px;
   }
+
+  .desc{
+    text-align: center;
+    font-size: 13px;
+    margin-left: 10px;
+  }
+  .smaller-screen-space{
+    position: relative;
+    top: 10px;
+  }
+
+  .custom-jumbotron .custom-jumbotron-image{
+    max-width: 190%;
+
+
+
+    border-radius: 10px;
+  }
 }
 @media (max-width: 425px) {
   .course-card .card-image{
@@ -1167,17 +1208,18 @@ body {
     padding: 10px;
   }
   .course-details .trans-btn-sm{
-   border: none;
+   padding: 3px; 
    font-weight: bold;
   }
   .course-details .view-course-btn {
   
-    padding: 5px;
+    font-size: 12px;
     margin: 2px;
-    font-size: 8px;
+    font-size: 12px;
     position: relative;
     top: 0px;
     font-weight: bold;
+    border-radius: 10px;
   }
   .course-details .course-progress{
     position: relative;
@@ -1200,12 +1242,28 @@ body {
   .stats-column .stats{
     font-size: 13px;
   }
+
+  .custom-jumbotron .custom-jumbotron-image{
+    max-width: 250%;
+
+
+
+    border-radius: 10px;
+  }
   
 }
 
 @media (max-width:377px) {
   .course-rating .fa-star , .fa-star-half {
     display: none;
+  }
+
+  .custom-jumbotron .custom-jumbotron-image{
+    max-width: 350%;
+    right: 10px;
+
+
+    border-radius: 10px;
   }
 }  
 

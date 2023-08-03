@@ -1,7 +1,8 @@
+<!-- courses.ejs -->
 <!DOCTYPE html>
 <html>
 
-  <title>Topics </title>
+  <title>Courses</title>
   <%- include('partials/header') %>
 
 <body>
@@ -9,12 +10,106 @@
   <%- include('partials/clientNav') %>
   
 
+
   
   <!-- List topics here -->
 
-   
+  <div class="user-courses-container smaller-screen-space">
+    <%= topics.length == 0 ? "No lessons found":"" %>
+    <div class="user-column">
+      <div class="custom-jumbotron-small">
+        <p class="lead"><b><%=course.title%></b> </p>
+         <p  style="color: gray;"><%=course.courseDesc%></p>
+      </div>
+      <br/>
+    
+      <div class="course-list">
+        <% topics.forEach(function(topic) { %>
+        <div class="course">
+          <div class="course-details">
+            <h3><%= topic.title %></h3>
+           
+            <div class="">
+              
+              <% if(currentTopic > topic.topicNo ) {%>
+                <p>Complete</p>
+              <%}else if(currentTopic == topic.topicNo && course.completed){%>
+                <p>Complete</p>
+              <%}else{%>
+                <p>Incomplete</p>
+              <%}%>    
+            </div>
+        
+            <div class="">
+            
+            <a href="/topicOutline/material/<%= topic._id %>"><button class="view-course-btn">View</button></a>
+        
+          </div>
+          </div>
+          <p class="desc"><%= topic.topicDesc %></p>
+        </div>
+     
+        <% }); %>
+      </div>
+    </div>
+
+    <div class="stats-column">
+     
+      <h2 class="display-9"><b>Course Stats</b> </h2>
+      <br>
+      <div class="stats">
+        <div class="stats-item">
+          <i class="fa fa-book"></i>
+          <p>Lessons:  <%=course.topics%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-clock-o"></i>
+          <p>Course hours: <%=course.hours%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-clock-o"></i>
+          <p>Remaining hours: <%=course.remainingHours%> </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check-circle"></i>
+          <p>completed: <%=course.percentage %>% </p>
+        </div>
+        <div class="stats-item">
+          <i class="fa fa-check"></i>
+          <p>Status: <%= course.completed?"Completed":"Incomplete"%></p>
+        </div>
+       
+        <% if(downloadCertificate.completed){%>
+     
+          <a href="/<%= downloadCertificate.link%>" download><button class="trans-btn">Download certificate</button></a>
+          <br/>
+          <p style="color: red;">You have completed the course</p>
+        <%}%> 
+        <% if(!course.ratings){%>
+        <form action="/course/ratings" method="POST">
+          <input type="hidden" name="courseId" value="<%=course._id%>"/>
+          <div>
+            <label for="rating"><b>Rating</b></label>
+            <select class="form-control" name="rating" id="rating">
+              <option value="1">1 star</option>
+              <option value="2">2 stars</option>
+              <option value="3">3 stars</option>
+              <option value="4">4 stars</option>
+              <option value="5">5 stars</option>
+            </select>
+          </div>
+          <br/>
+          <button class="trans-btn" type="submit">Submit Rating</button>
+        </form>
+        <%}%>
+      
+      </div>
+    </div>
+  </div>
+
+ 
   
-  <div class="user-courses-container">
+  <!-- <div class="user-courses-container">
     <%= topics.length == 0 ? "No lessons found":"" %>
     <div class="user-column">
       <div class="custom-jumbotron-small">
@@ -103,45 +198,9 @@
       
       </div>
     </div>
-  </div>  
+  </div>   -->
 
-    <!-- <div class="outline_courses_info">
-    
-      <div id="accordion">
-        <p>All Topics</p>
-        <a href="/course/user"><button>Back to courses</button></a><br>
-        <% if(downloadCertificate.completed){%>
-          <a href="/<%= downloadCertificate.link%>" download><button>Download certificate</button></a>
-        <%}%>  
-        <%= topics.length == 0 ? "No topics found":"" %>
-        <% topics.forEach(function(topic) { %>
-          <div class="card">
-            <div class="card-header" id="<%=topic._id %>">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=topic._id+topic._id %>" aria-expanded="false" aria-controls="collapseTwo">
-                        <i class="flaticon-question"></i> <%= topic.title %>
-                    </button>
-                    <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
-                      <!-- <% if (topic.topicNo <= currentTopic) { %>
-                        <i class="fa fa-unlock" aria-hidden="true"></i>
-                        <a href="/topicOutline/material/<%= topic._id %>">Open topic</a>
-                      <% } else if (currentTopic < topic.topicNo) { %>
-                        <i class="fa fa-lock" aria-hidden="true"></i>
-                      <% } %> 
-          
-                       
-                </h5>
-            </div>
-            <div id="<%=topic._id+topic._id %>" class="collapse" aria-labelledby="<%=topic._id %>" data-parent="#accordion">
-                <div class="card-body">
-                  <%= topic.topicDesc %>
-                </div>
-            </div>
-          </div>
-      <% }); %>
-      </div>
-    
-    </div>     -->
+  
     <%- include('partials/footer') %>
 </body>
 
