@@ -44,6 +44,7 @@ body {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid lightgray;
+    margin-bottom:100px;
   
   }
 
@@ -136,7 +137,8 @@ body {
   }
   
   .course-card .card-image{
-    min-height: 220px;
+    min-height: 310px;
+    width:100%;
   }
   .navbar  .dropdown-menu {
     border: none;
@@ -177,7 +179,7 @@ body {
   }
   .user-courses-container .custom-file{
  
-    background-color: red;
+   
     
   }
 
@@ -189,6 +191,7 @@ body {
       text-align: center;
       padding: 20px 0;
       border-top: 1px solid lightgray;
+      margin-top: 40px;
     }
 
     /* Footer links styles */
@@ -327,7 +330,7 @@ body {
 }
  .path{
   margin-left: 150px;
-  
+
 }
 
 .course-details-container .course-title {
@@ -934,6 +937,13 @@ body {
 }
 
 /*===================== Course Outline =======================*/
+.courseOutline-column{
+  flex: 2 2 58%;
+}
+.smaller-screens-outline{
+  display: none;
+ 
+}
 #video {
   height: 550px;
   width: 100%;
@@ -951,13 +961,18 @@ body {
   font-weight: 600;
   font-size: 20px;
 }
-.test-text-container{
+.test-text-container {
   display: flex;
-  align-items: center;
+  
+  width: 100%;
+  position: relative; /* Add relative positioning to the parent container */
 }
-.test-text-container .trans-btn-sm{
-  margin-left: 710px;
-  margin-bottom: 10px;
+
+.test-text-container .trans-btn-sm {
+  position: absolute; /* Change to absolute positioning */
+  left: 85%; /* Set the initial position to the center of the parent */
+  transform: translateX(90%); /* Move the button 90% to the right */
+  bottom: 10px;
 }
 .test-column #error{
   margin-top: 20px;
@@ -983,6 +998,27 @@ body {
 
 /*===============Media queries ================================*/
 
+@media (max-width: 1483px) {
+  .course-details .view-course-btn {
+  
+    font-size: 12px;
+    padding: 10px;
+
+  }
+  .course-details .course-rating .fa-star{
+    font-size: 12px;
+  }
+  .course-details h3{
+
+    width: 40%;
+  }
+
+  .course-card .card-image{
+    min-height: 210px;
+
+  }
+}
+
 @media (max-width: 1175px) {
   .course-details .trans-btn{
     font-size: 10px;
@@ -991,8 +1027,17 @@ body {
   }
   .course-details h3{
     font-size: 12px;
- 
-  }  
+    width: 30%;
+  }
+  .test-text-container .trans-btn-sm {
+  
+    left: 80%; /* Set the initial position to the center of the parent */
+    transform: translateX(90%); /* Move the button 90% to the right */
+  }    
+  .course-card .card-image{
+    min-height: 200px;
+    
+  }
 }
 
 @media (max-width: 991px) {
@@ -1042,6 +1087,25 @@ body {
       font-size: 12px;
       
     }
+    .test-text-container .trans-btn-sm {
+      position: absolute; /* Change to absolute positioning */
+      left: 75%; /* Set the initial position to the center of the parent */
+      transform: translateX(90%); /* Move the button 90% to the right */
+    } 
+    
+    /*--------------preview -------------------------*/
+    .course-details-container .course-details-view {
+      
+      padding:0 0px;
+ 
+    }
+}
+
+@media (max-width: 821px) {
+  .test-text-container .trans-btn-sm {
+    left: 65%; /* Set the initial position to the center of the parent */
+    transform: translateX(90%); /* Move the button 90% to the right */
+  } 
 }
 
 
@@ -1119,7 +1183,50 @@ body {
     font-size: 12px;
     padding: 10px;
     border-radius: 13px;
-  }  
+  } 
+  .container-out{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .courseOutline-column {
+    /* Flex properties to fill the entire row on smaller screens */
+    flex: 1 1 100%;
+  }
+  .smaller-screens-outline{
+    display: block;
+    
+  }
+  .outline-progress{
+    display: none;
+  }
+
+  /*-----------------------view course -----------------------*/
+  .course-details-container {
+    flex-direction: column;
+    padding: 0 0px;
+  }
+
+  .course-details-container .course-breakdown {
+   text-align: center;
+  }
+  .course-section {
+    display: flex;
+    align-items: center; /* Center the items vertically */
+    justify-content: flex-start; /* Align items to the start (left) of the container */
+    margin-bottom: 10px; /* Optional: Add margin to separate each course-section */
+  }
+  
+  .course-breakdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .course-details-breakdown .course-title{
+    font-size: 40px;
+  }
+
 }
 
 
@@ -1146,6 +1253,8 @@ body {
     position: relative;
     bottom: 50px;
     right: 70px;
+    margin-top: 40px;
+
   }
 
   .course-card .card-image{
@@ -1250,11 +1359,31 @@ body {
 
     border-radius: 10px;
   }
+
+  .test-text-container .trans-btn-sm {
+    left: 65%; /* Set the initial position to the center of the parent */
+    transform: translateX(90%); /* Move the button 90% to the right */
+  }  
+
+  .course-details h3{
+    text-align: center;
+    width: 70%;
+  
+  }
+
+  /*------------course view ---------------*/
+  .course-details-breakdown .course-title{
+    font-size: 20px;
+  }
+  
+  .course-details-container .course-details-breakdown{
+    padding: 0 60px;
+  }
   
 }
 
 @media (max-width:377px) {
-  .course-rating .fa-star , .fa-star-half {
+  .course-rating span {
     display: none;
   }
 
@@ -1265,6 +1394,11 @@ body {
 
     border-radius: 10px;
   }
+
+  .test-text-container .trans-btn-sm {
+    left: 55%; /* Set the initial position to the center of the parent */
+    transform: translateX(90%); /* Move the button 90% to the right */
+  } 
 }  
 
 
