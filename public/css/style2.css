@@ -124,6 +124,15 @@ body {
     color: black;
     border-radius: 10px;
   }
+
+  /*-------------------------Home page ---------------------------------------------*/
+
+  .home-section-two{
+    background-image: ;
+    background-color: #cccccc;
+  }
+
+
   .course-card .btn{
     background-color: white;
     border: 1px solid lightgray;

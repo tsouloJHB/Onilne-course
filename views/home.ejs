@@ -1,167 +1,416 @@
 <!DOCTYPE html>
+
 <head>
-    <link rel="stylesheet" href="/css/style.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-    <section class="hero">
-        <!--Navbar-->
-        <nav class="navbar-mobile navbar navbar-light light-blue lighten-4 ">
-            <!-- Navbar brand -->
-            <a class="navbar-brand" href="#">
-                <img src="/images/logo1.png" class="logo"  alt="Logo">
-            </a>
-          
-            <!-- Collapse button -->
-            <button class="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1"
-              aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation"><span class="dark-blue-text"><i class="fa fa-bars" aria-hidden="true"></i></span></button>
-          
-            <!-- Collapsible content -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent1">
-                <!-- Links -->
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
-                    </li>
-                   
-                </ul>
-                <!-- Links -->
-            </div>
-            <!-- Collapsible content -->
-        </nav>
+<style>
+    @import url('https://rsms.me/inter/inter.css');
 
-        <nav class="navbar navbar-desktop">
-            <img src="/images/logo1.png" class="logo" width="5%" alt="Logo">
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Course Outline</a></li>
-                <li><a href="#" class="current">Register</a></li>
-                <li class="login"><a  href="/users/login">Login</a></li>
-            </ul>
-        </nav>
+html,
+body {
+  background: #ffffff;
+}
 
-        <div class="hero-content">
-            <h1>Start your course today</h1>
-            <div class="button">Start course</div>
-        </div>
-    </section>
-    <h1>Home page</h1>
-       <!-- bradcam_area_start -->
-       <div class="courses_details_banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-6">
-                    <div class="course_text">
-                           <h3>UI/UX design with <br> Adobe XD with</h3>
-                           <div class="prise">
-                               <span class="inactive">$89.00</span>
-                               <span class="active">$49</span>
-                           </div>
-                           <div class="rating">
-                               <i class="flaticon-mark-as-favorite-star"></i>
-                               <i class="flaticon-mark-as-favorite-star"></i>
-                               <i class="flaticon-mark-as-favorite-star"></i>
-                               <i class="flaticon-mark-as-favorite-star"></i>
-                               <i class="flaticon-mark-as-favorite-star"></i>
-                               <span>(4.5)</span>
-                           </div>
-                           <div class="hours">
-                               <div class="video">
-                                    <div class="single_video">
-                                           <i class="fa fa-clock-o"></i> <span>12 Videos</span>
-                                    </div>
-                                    <div class="single_video">
-                                           <i class="fa fa-play-circle-o"></i> <span>9 Hours</span>
-                                    </div>
-                                  
-                               </div>
-                           </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-   </div>
-   <!-- bradcam_area_end -->
+body {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -1px;
+  text-align: center;
 
-   <div class="courses_details_info">
-       <div class="container">
-           <div class="row">
-               <div class="col-xl-7 col-lg-7">
 
-                
+  color: #fff;
+  margin: 0;
+}
 
-                   <div class="single_courses">
-                       <h3>Objectives</h3>
-                       <p>Our set he for firmament morning sixth subdue darkness creeping gathered divide our let god moving. Moving in fourth air night bring upon you’re it beast let you dominion likeness open place day great wherein heaven sixth lesser subdue fowl male signs his day face waters itself and make be to our itself living. Fish in thing lights moveth. Over god spirit morning, greater had man years green multiply creature, form them in, likeness him behold two cattle for divided. Fourth darkness had. Living light there place moved divide under earth. Light face, fly dry us </p>
-                   <h3 class="second_title">Courses </h3>
-                   </div>
-                   <div class="outline_courses_info">
-                    <div id="accordion">
-                      <% courses.forEach(function(course) { %>
-                        <div class="card">
-                          <div class="card-header" id="<%=course._id %>">
-                              <h5 class="mb-0">
-                                  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#<%=course._id+course._id %>" aria-expanded="false" aria-controls="collapseTwo">
-                                      <i class="flaticon-question"></i> <%= course.title %>
-                                  </button>
-                              
-                                  <span>View course</span>
-                                     
-                              </h5>
-                          </div>
-                          <div id="<%=course._id+course._id %>" class="collapse" aria-labelledby="<%=course._id %>" data-parent="#accordion">
-                              <div class="card-body">
-                                <%= course.courseDesc %>
-                              </div>
-                              <img src="<%=course.courseImage%>"/>
-                          </div>
-                        </div>
-                    <% }); %>
-                    </div>
-                  </div>
-                   </div>
-               </div>
-               <div class="col-xl-5 col-lg-5">
-                   <div class="courses_sidebar">
-                       <div class="video_thumb">
-                           <img src="img/latest_blog/video.png" alt="">
-                           <a class="popup-video" href="https://www.youtube.com/watch?v=AjgD3CvWzS0">
-                               <i class="fa fa-play"></i>
-                           </a>
-                       </div>
-                       <div class="author_info">
-                           <div class="auhor_header">
-                               <div class="thumb">
-                                       <img src="img/latest_blog/author.png" alt="">
-                               </div>
-                               <div class="name">
-                                   <h3>Macau Wilium</h3>
-                                   <p>UI/UX Designer</p>
-                               </div>
-                           </div>
-                           <p class="text_info">
-                               Our set he for firmament morning sixth subdue darkness creeping gathered divide our let
-                               god moving. Moving in fourth air night bring upon you’re it beast let you dominion
-                               likeness open place day
-                           </p>
-                 
-                       </div>
-                  
-                   </div>
-               </div>
-           </div>
-       </div>
-   </div>
+.hero {
+  background: url('/images/workdesk.jpg') no-repeat center center;
+  justify-content: center;
+  background-size: cover;
+  flex-direction: column;
+  border-radius: 10px;
+  align-items: center;
+  position: fixed;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
 
-   <%- include('partials/footer') %>
-</body>
+.down {
+  text-align: center;
+  position: absolute;
+  opacity: 0.6;
+  height: 40px;
+  width: 100%;
+  bottom: 50px;
+  
+}
+
+.content {
+  box-shadow: 0 0 100px rgba(0,0,0,0.4);
+  color: black;
+
+  position: relative;
+  background: #ffffff;
+  
+  padding-top: 40px;
+  top: 100vh;
+  
  
+}
 
+
+/* Style for the black footer */
+.black-footer {
+  /* background-color: #000; */
+    background-color: #003680;
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  top:0px;
+}
+
+/* Style for the footer list */
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin-bottom: 10px;
+}
+.navbar{
+    /* background-color: #494dbe; */
+     background-color: #003680;
+    color: white;
+    
+}
+/* Center the brand logo and search form */
+.navbar-brand,
+/* Center the brand logo and search form */
+.navbar-brand,
+.form-inline {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  left: 200px;
+  color: white;
+
+}
+
+/* Add some space between the search form and other elements */
+.form-inline {
+  margin-left: 20px;
+}
+.navbar .navbar-brand{
+    position: relative;
+    left: 0%;
+    color: white;
+
+}
+.navbar .nav-item .nav-link{
+  color: rgb(255, 255, 255);
+}
+.navbar .btn-custom{
+  background-color: #F86F43;
+  border-radius: 5px;
+}
+.navbar .btn-outline-success{
+  color: white;
+  border:1px solid   white;
+}
+
+/* Increase the width of the input text */
+.form-inline input[type="search"] {
+  width: 400px; /* Adjust the width as needed */
+}
+.home-more{
+  padding: 40px;
+}
+
+.home-section-two{
+
+    
+    height:100vh;
+    position: relative;
+    bottom: 40px;
+    padding: 20px 0px;
+  }
+  .inner-container{
+
+    padding:  20px;
+  }
+  .inner-container h1{
+    color: rgb(47, 46, 46);
+    font-size: 60px;
+    font-weight: 800;
+    margin-top: 100px;
+  }
+  .inner-container .light-font{
+    font-weight: 200;
+  }
+  .inner-container p{
+    padding:20px 240px;
+    color: gray;
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .signup-section {
+      width: 70%;
+     
+      background-color: #007bff;
+      border-radius: 10px;
+      padding: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      height: 240px;
+      margin-top: 120px;
+   
+    }
+
+    .signup-section .sign-header {
+      color: #fff;
+      font-size: 35px;
+      font-weight: bold;
+      position: relative;
+      top: 20px;
+    }
+
+    .signup-section .description {
+      color: #fff;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+     .button {
+      background-color: #000;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      font-weight: 700;
+      border-radius: 5px;
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      right: 60px;
+    }
+    .sign-container{
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+     
+      
+    }
+    #black-strip-section{
+      margin-top: 200px;
+      height: 200px;
+      background-color: black;
+      padding-top: 50px;
+    }
+    #black-strip-section h3{
+      color: white;
+      font-weight: 600;
+      font-size: 50px;
+      
+    }
+
+    .course-section{
+      margin-top: 100px;
+      background-color: rgb(244, 244, 244);
+      width: 100%;
+      padding-top: 150px;
+      padding-bottom: 100px;
+    }
+    #view-more{
+      text-align: center;
+
+    }
+    .course-container .button{
+      margin-top: 40px;
+      margin-left: 100px;
+    }
+</style>
+<div class="hero reveal-top">
+   
+    <h1 style="font-size: 50px;">Scholar</h1>
+    <p style="text-align: center; width: 40%;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+        </p>
+    <div class="down">
+      <svg viewBox="0 0 24 24" width="44" height="44" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+    </div>
+  </div>
+  <div class="content">
+    <nav class="navbar navbar-expand-lg navbar-light  fixed-top navbar-hidden" id="navbar">
+        <div class="container">
+          <!-- Centered Brand Logo -->
+          <a class="navbar-brand " href="#"><b>scholar</b></a>
+      
+          <!-- Centered Search Form -->
+          <form class="form-inline mx-auto" action="/course/search" method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" id="search-button"  autocomplete="off" name="search" aria-label="Search">
+            <div class="dropdown-menu" id="searchResults">
+          
+            </div> 
+            <div id="searchResultsDropdown" class="dropdown-menu" aria-labelledby="searchInput"></div> 
+
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            
+          </form>
+      
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item ">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/users/signup">Courses</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/users/login">Login</a>
+              </li>
+              <li class="nav-item btn-custom">
+                <a class="nav-link" href="/users/signup">Sign Up</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="container-fluid home-section-two ">
+       <div class="inner-container reveal-bottom-reset">
+        <h1>Gutenberg Blocks,<br> wide<span class="light-font"> and</span> full <span class="light-font"> alignment</span></h1>
+        <p> Blocksy WordPress theme was built from scratch with Gutenberg in mind, which means it supports
+          all types of blocks and all types of editor manipulations like wide/full alignments.</p>
+      
+          
+       </div>
+       <div class="sign-container  reveal-bottom-reset">
+        <div class="signup-section">
+          <div class="sign-content">
+            <div class="sign-header">Create Your Course</div>
+            <p class="description">Create your course for free if you sign up now on</p>
+          </div>
+          <button class="button">Sign Up</button>
+        </div>
+      </div>
+      </div>
+     
+      <div id="black-strip-section" class="reveal-bottom-reset">
+       
+        <h3>Sign up here</h3>
+      </div>
+    <div class=" mt-0 course-section reveal-bottom-reset" >
+      <div class="container course-container ">
+       <div class="" style="padding-bottom:40px;"> 
+            <h1>All  course's are for free </h1><br/>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+            standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+            make a type specimen book. 
+            </p>
+        </div>
+        <h2 class="text-center mb-4">Course Categories</h2>
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <i class="fas fa-code fa-3x mb-3"></i>
+                <h5 class="card-title">Programming</h5>
+                <p class="card-text">Explore the world of programming languages and development frameworks.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Add more cards for other categories -->
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <i class="fas fa-brain fa-3x mb-3"></i>
+                <h5 class="card-title">Data Science</h5>
+                <p class="card-text">Dive into the exciting world of data analysis, machine learning, and AI.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <i class="fas fa-paint-brush fa-3x mb-3"></i>
+                <h5 class="card-title">Design</h5>
+                <p class="card-text">Unlock your creativity with courses on graphic design and UI/UX.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Add the rest of your content here -->
+       
+        </div>
+        <div id="view-more"><a href=""><button class="button"> View more</button></a></div>
+      </div>  
+  </div>
+ 
+  <footer class="black-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <ul class="footer-list">
+            <li>About Us</li>
+            <li>Contact</li>
+            <li>Privacy Policy</li>
+          </ul>
+        </div>
+        <div class="col-md-4 text-center">
+          <p>&copy; 2023 Your Company. All rights reserved.</p>
+        </div>
+        <div class="col-md-4">
+          <!-- Add content for the middle section here if needed -->
+      
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(window).scroll(function() {
+  var scroll = $(window).scrollTop();
+  $(".hero").css({
+    transform: 'translate3d(0, +'+(scroll/100)+'%, 0) scale('+(100 - scroll/100)/100+')'
+  });
+});
+
+    // Call the revealOnScroll function on page load
+    function revealFunction() {
+    //first we need to initialize our "sr" (scroll reveal)
+    //do you know all the behaviors that will be the same for all animations? Just send it directly here, as in my case, the duration, the distance...
+
+    window.sr = ScrollReveal({ duration: 1350, distance: '250px', easing: 'ease-out' });
+
+    //here we can create infinite classes according to our needs
+    //so first we declare the name of the class and pass the props to it
+    //see the documentation and you are free to do anything you can think of about the scroll fade effect :)
+
+    sr.reveal('.reveal-left', { origin: 'left', reset: false });
+    sr.reveal('.reveal-top', { origin: 'top', reset: false });
+    sr.reveal('.reveal-bottom', { origin: 'bottom', reset: false });
+    sr.reveal('.reveal-right', { origin: 'right', reset: false });
+
+    sr.reveal('.reveal-reset-true', { origin: 'bottom', reset: true });
+    // sr.reveal('.reveal-rotate', { origin: 'bottom', rotate: { x:1000, z:1000 }, reset: true });
+    sr.reveal('.reveal-bottom-reset', { origin: 'bottom', reset: true });
+    }
+    //fist of all, on load we call our magic
+    window.addEventListener('load', function () {
+        revealFunction();
+    });
+    // ScrollReveal().reveal('.hero');
+  </script>
+</html>  
