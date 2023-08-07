@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <title>Courses</title>
+    <%- include('./header') %>
+<style>
+
+
+</style>
+<body>
+    <%- include('./navbar') %>
+    <div class="hero-section">
+        <div class="hero-image"></div>
+        <div class="hero-content">
+          <h1>Welcome to Our Website</h1>
+          <p>Discover amazing courses and improve your skills</p>
+          <button class="btn btn-primary">Get Started</button>
+        </div>
+        <div class="white-container"></div>
+      </div>
+      <div class="container categories-section">
+        <div class="row">
+          <div class="col-md-12 "> <!-- Add center-content class here -->
+            
+            <div class="d-flex flex-wrap mb-4 center-content">
+              <ul class="list-group list-group-horizontal category-list">
+                <li class="list-group-item active" data-category="all">All Categories</li>
+                <li class="list-group-item" data-category="programming">Programming</li>
+                <li class="list-group-item" data-category="design">Design</li>
+                <li class="list-group-item" data-category="business">Business</li>
+              </ul>
+            </div>
+            <div class="course-list">
+              <!-- Courses will be dynamically added here -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <%- include('../partials/footer') %>
+    
+  <!-- Link Bootstrap JS and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <!-- Link your custom JS -->
+  <script>
+    $(document).ready(function () {
+
+        $('.category-list li').on('click', function() {
+        const selectedCategory = $(this).data('category');
+        console.log(selectedCategory);
+        fetchCourses(selectedCategory);
+      });
+      
+      function fetchCourses(category) {
+        $.ajax({
+          type: 'POST',
+          url: '/course/category',
+          data: { course: category },
+          dataType: 'json',
+          success: function(data) {
+            console.log(data);
+            displayCourses(data);
+          },
+          error: function(xhr, status, error) {
+            console.error(error);
+          }
+        });
+      }
+      
+      function displayCourses(courses) {
+        $('.course-list').empty();
+        courses.forEach(function(course) {
+          
+
+        //   const courseItem = `
+        //   <div class="course-details">
+        //     <h3>${course.title}</h3>
+            
+           
+        //       <img width="100px" src="${course.courseImage}" />
+        //       <p>${course.usersCount} <i class="fa fa-user"></i></p>
+        //       <div>
+        //         <a href="/course/course-topics/${course._id}""><button class="view-course-btn">View</button></a>
+        //       </div>    
+        //   </div>
+         
+        //   <p>${course.courseDesc}</p>
+        // </div>
+        //   `;  
+
+          const courseItem = `
+      
+         <div class="course-card  p-3">
+           <div class="row align-items-start">
+             <div class="">
+               <img  src="${course.courseImage}" alt="Course 1"  class="img-fluid card-image">
+             </div>
+             <div class="col-12"> 
+               <h2 >${course.title}</h2>      
+             
+               <p class="course-description">${course.courseDesc}</p>
+               
+               <div>
+
+               
+                
+                <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> ${course.hours}</span>
+              </div>
+             </div>
+             <div class="col-12 card-bottom"> 
+              <a href="/topics/${course._id}"><button class="btn btn-outline-primary my-2 my-sm-0" style="color: black;">Continue</button></a>
+             
+              </div>
+                
+           </div>
+          
+          
+          
+       </div>
+          `;
+
+          $('.course-list').append(courseItem);
+        });
+      }
+          
+  // Sample data for courses
+  const coursesData = [
+    { name: 'Course 1', category: 'programming' },
+    { name: 'Course 2', category: 'design' },
+    { name: 'Course 3', category: 'programming' },
+    { name: 'Course 4', category: 'business' },
+    // Add more courses as needed
+  ];
+
+  // Function to display courses based on category
+  function showCourses(category) {
+    $('.course-list').empty();
+    if (category === 'all') {
+      coursesData.forEach(course => addCourse(course));
+    } else {
+      coursesData.forEach(course => {
+        if (course.category === category) {
+          addCourse(course);
+        }
+      });
+    }
+  }
+
+  // Function to add course item to the course list
+  function addCourse(course) {
+    const courseItem = `
+      <div class="course-item">${course.name}</div>
+    `;
+    $('.course-list').append(courseItem);
+  }
+
+  // Initial display of all courses
+  showCourses('all');
+
+  // Click event for category selection
+  $('.category-list li').on('click', function () {
+    $('.category-list li').removeClass('active');
+    $(this).addClass('active');
+    const selectedCategory = $(this).data('category');
+    showCourses(selectedCategory);
+  });
+});
+
+  </script>
+</body>
+</html>

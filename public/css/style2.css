@@ -5,12 +5,13 @@
   /* Additional font formats can be added here for cross-browser compatibility */
 }
 :root {
-  --primary-color: #fcfcfc;
+  
+  --primary-color: #003680;
   --base-color:#003680;
   /*--primary-color: #003680;*/
   --secondary-color: #ffffff;
   --background-color: #f0f0f0;
-  --text-color: #000000;
+  --text-color: #ffffff;
   /* --text-color: #ffffff; */
   --text-inverse-color: #000000;
   --accent-color: #FF6347;
@@ -45,7 +46,7 @@ body {
     justify-content: space-between;
     border-bottom: 1px solid lightgray;
     margin-bottom:100px;
-  
+    color: white;
   }
 
   .nav-bar-space{
@@ -81,11 +82,11 @@ body {
     border-radius: 10px;
   }
   .navbar  ul li .sign{
-    color: #000;
+    color: white;
   }
   
   .navbar ul li .nav-link{
-    color: var(--text-color);;
+    color: var(--text-color);
     font-size:14px;
   }
   
@@ -128,7 +129,8 @@ body {
   /*-------------------------Home page ---------------------------------------------*/
 
   .home-section-two{
-    background-image: ;
+    background: url("./");
+    background-repeat: no-repeat;
     background-color: #cccccc;
   }
 

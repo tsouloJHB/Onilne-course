@@ -25,6 +25,23 @@ const { validationResult } = require("express-validator");
 //     }
 //   });
 
+router.get('/courses', async (req, res) => {
+  try {
+   
+  
+    // Retrieve all courses from the database
+    const courses = await CourseModel.find({active:true});
+    const coursesCount = await CourseModel.countDocuments() + 1;
+   
+    // Get the user's progress  
+   
+    res.render('frontend/course', { courses,coursesCount}); // Pass the courses and progress data to the courses view for rendering
+  } catch (error) {
+    console.error('Error retrieving courses:', error);
+    return res.render('404',{message:"An error occurred while retrieving"});
+  }
+});
+
 router.get('/user',verifyToken.verifyToken, async(req, res) => {
     try {
     
@@ -425,5 +442,6 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
   });
 
 router.post('/ratings', verifyToken.verifyToken,CoursesController.saveRating);
+router.post('/category',CoursesController.getCourseByCategory);
 
 module.exports = router;  

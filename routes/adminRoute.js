@@ -99,7 +99,7 @@ router.post('/category',verifyToken,isAdmin, async (req,res)=>{
         message: 'Empty field'
       };
     }else{
-       createCategory = await CoursesController.createCategory(req.body.name);
+       createCategory = await CoursesController.createCategory(req.body.name.toLowerCase());
     }
    
    

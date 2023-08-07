@@ -841,3 +841,35 @@ exports.getAverageRating = async (ratings) => {
 
   }
 };
+
+exports.getCourseByCategory = async (req, res) => {
+  try {
+    const course = req.body.course.toLowerCase();
+    
+    if(!course){
+      res.status(400);
+    }
+    console.log(course);
+    const coursesByCategory = await CourseModel.find({ title:course,  active:  true}).limit(10);
+
+    const categories = await CategoryModel.find({name:course});
+    console.log(categories);
+    if (categories.length > 0) {
+      // If there are matching categories by name, retrieve the courses for each category
+      const categoryIds = categories.map(category => category._id);
+      const coursesByCategory = await CourseModel.find({ category: { $in: categoryIds } ,  active:  true}).limit(10);
+      const courses = [];
+      for (const course of coursesByCategory) {
+        courses.push(course);
+      }
+     
+      res.status(200).json(courses);
+    }
+    res.status(400);
+  } catch (error) {
+   
+    res.status(400);
+    console.log(error);
+
+  }
+};
