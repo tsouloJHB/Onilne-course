@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const utils = require('../utils/tokenUtil');
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel,UserModel, CourseModel, CategoryModel } = require('../models');
-const { CoursesController, UserProgressController, UsersController } = require('../controllers');
+const { TopicModel,UserModel, CourseModel, CategoryModel, ActionsModel } = require('../models');
+const { CoursesController, UserProgressController, UsersController, ActionsController } = require('../controllers');
 const { redirect } = require('react-router-dom');
 const { loginDataValidate, userDataValidateSchemaBased } = require("../validation/user.validation");
 const { validationResult } = require("express-validator");
@@ -12,13 +12,15 @@ const {sendEmail} = require('../utils/emailer');
 const crypto = require('crypto');
 const {  signUpSchemaValidator } = require('../validation/user.validation');
 const handleErrors = require('../utils/errors');
+const { type } = require('os');
 
 
 // Login route
 router.post('/login', loginDataValidate,async (req, res) => {
 
-  const { email, password } = req.body;
-
+  const { email, password ,course} = req.body;
+  console.log(course);
+  console.log("query");
   try {
   
     const errors = validationResult(req);
@@ -43,7 +45,7 @@ router.post('/login', loginDataValidate,async (req, res) => {
       httpOnly: true,
       maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days in milliseconds
     });
-    console.log(req.session);
+   
     //await UsersController.sendEmail("thabangsoulo@gmail.com","Node mailer boi");
     if (user.isAdmin) {
       // Redirect the admin user to the admin page
@@ -53,9 +55,24 @@ router.post('/login', loginDataValidate,async (req, res) => {
     } else {
       const courses = await CoursesController.getUserCourses(user._id);
       // Redirect the non-admin user to the topics page
-      console.log(courses);
+
       //res.render('courses/userCourses', { courses });
-      res.redirect('/users');
+      //check for user actions in the database
+      console.log(user._id);
+      const userActions = await ActionsController.onLoginCheckActions(user._id);
+      if(course !== "" && course !== null){
+        res.redirect(`/course/view/${course}`);
+      }else{
+        console.log(userActions);  
+        if(userActions.status){
+          if(userActions.type === "redirect"){
+            
+           return res.redirect(userActions.data);
+          } 
+        }
+        res.redirect('/users');
+      }
+     
     }
   } catch (err) {
     // Return the error messages to the login page
@@ -71,8 +88,8 @@ router.get('/login', (req, res) => {
 
 // Signup route
 router.post('/signup',loginDataValidate ,async (req, res) => {
-  const { email, password, name, surname,confirmpassword } = req.body;
-  console.log(req.body);
+  const { email, password, name, surname,confirmpassword,course } = req.body;
+ 
   try {
     // Check if the email already exists
     if (password == null || password == "" || name == "" || name == null || surname == "" || surname == null
@@ -95,12 +112,20 @@ router.post('/signup',loginDataValidate ,async (req, res) => {
     const verificationToken = crypto.randomBytes(32).toString('hex');
     newUser.verificationToken = crypto.createHash('sha256').update(verificationToken).digest('hex');
 
-    await newUser.save();
+    const userResponse = await newUser.save();
+     console.log(userResponse);
+    //check and setup user actions
+    if(course !== undefined && course != null){
+      
+      await ActionsController.setLoginActions("redirect",`/course/view-course/${course}`,userResponse._id);
+    }
+    
     // Generate the verification URL
     const restUrl = `${req.protocol}://${req.get('host')}/users/verify/${verificationToken}`;
       // Send verification email
     const message = `Thank you for signing up! Please click the following link to verify your account:\n\n ${restUrl}`;
-    const sendmail = await sendEmail(email, message, 'Account Verification');
+    //const sendmail = await sendEmail(email, message, 'Account Verification');
+    const sendmail = true;
 
     if (!sendmail) {
       // Handle email sending error
@@ -243,3 +268,6 @@ router.post('/resetpassword/:token',UsersController.changeForgotPassword);
 
 
 module.exports = router;
+
+
+

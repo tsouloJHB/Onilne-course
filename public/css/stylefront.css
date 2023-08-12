@@ -377,3 +377,153 @@ footer {
     text-transform: uppercase; 
     font-weight: 600;
   }
+
+  
+/* ======================== Course view---------------------------*/
+.course-details-container {
+  display: flex;
+  padding: 0 70px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.course-details-container .course-details-view {
+  flex: 2;
+  padding:0 80px;
+
+}
+
+.course-details-container .course-details-breakdown{
+  padding: 0 110px;
+}
+
+.course-details-container .course-image {
+  text-align: center;
+  margin-bottom: 20px;
+  
+}
+.course-details h3{
+  font-size: 20px;
+  width: 50%;
+  font-weight: 550;
+}  
+
+.course-details-container .course-image img {
+  width: 80%;
+  border-radius: 30px;
+}
+
+.course-details-container .rating {
+  text-align: right;
+  margin-top: -70px;
+  color: gold;
+  margin-right: 100px;
+}
+
+.course-details-container .reviews {
+  text-align: right;
+  color: #777;
+  margin-right: 90px;
+  position: relative;
+  bottom: 30px;
+  color: white;
+}
+
+.course-details-container .instructor {
+  margin-top: 10px;
+
+  color: #777;
+}
+
+.desc {
+  margin-top: 10px;
+  width: 80%;
+  color: #777;
+
+}
+ .path{
+  margin-left: 150px;
+
+}
+
+.course-details-container .course-title {
+ font-weight: 700px;
+  margin-top: 20px;
+  font-size: 45px;
+}
+
+.course-details-container .course-description {
+  color: #777;
+  margin-top: 10px;
+}
+
+.course-details-container .course-breakdown {
+  flex: 1;
+  padding: 40px;
+}
+
+.course-details-container .path {
+  margin-left: 90px;
+}
+.course-details-container .small-heading{
+  color: #777;
+  text-transform: uppercase;
+}
+
+.course-details-container .course-section2 {
+  font-size: 12px;
+}
+
+.course-details-container .course-icon {
+  width: 30px;
+  text-align: center;
+}
+
+.course-details-container .course-detail {
+  margin-left: 10px;
+}
+
+.course-details-container .course-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+
+
+.course-details-container .enroll-btn,
+.course-details-container .gift-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+
+.trans-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: black;
+  cursor: pointer;
+  background-color:transparent;
+}
+.trans-btn-sm{
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: black;
+  cursor: pointer;
+  background-color:transparent;
+}
+
+.course-details-container .enroll-btn {
+  background-color: black;
+}
+
+.course-details-container .gift-btn {
+  background-color: transparent;
+  border: 1px solid black;
+}
+
+.course-details-container .course-section h3 {
+  margin-bottom: 10px;
+}

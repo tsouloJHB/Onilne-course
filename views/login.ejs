@@ -28,6 +28,7 @@
               <h2>Sign In</h2>
               <input type="text" id="email" name="email" placeholder="email" />
               <input type="password" id="password" name="password" placeholder="Password" />
+              <input type="hidden" name="course" id="course-input" value="">
               <input type="submit" name="" value="Login" />
               <p class="signup">
                 Don't have an account ?<a href="#" onclick="toggleForm();">
@@ -57,6 +58,7 @@
               <input type="email" id="signup-email" name="email" placeholder="Email" />
               <input type="password"  id="signup-password" name="password" placeholder="Create Password" />
               <input type="password" id="signup-confirm-password" name="confirmpassword" placeholder="Confirm Password" />
+              <input type="hidden" name="course" id="course-input" value="">
               <input type="submit" name="" value="Sign Up" />
               <p class="signup">
                 Already have an account ?
@@ -172,7 +174,17 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-          function toggleForm() {
+      // Check if the current page URL has a query parameter
+   // Check if the current page URL has a query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseParam = urlParams.get('course');
+
+        // Set the value of the hidden input field
+        const courseInput = document.getElementById('course-input');
+        if (courseParam) {
+          courseInput.value = courseParam;
+        }
+        function toggleForm() {
           
         var container = document.querySelector(".container");
         container.classList.toggle("active");

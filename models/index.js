@@ -6,6 +6,7 @@ const UserModel = require('./usersModel');
 const UserProgressModel = require('./userProgressModel');
 const CategoryModel = require('./courseCategories');
 const SettingsModel = require('./settingsModel');
+const ActionsModel = require('./actionsModel');
 
 module.exports = {
     CourseModel,
@@ -15,5 +16,6 @@ module.exports = {
     UserModel,
     UserProgressModel,
     CategoryModel,
-    SettingsModel
+    SettingsModel,
+    ActionsModel,
 };

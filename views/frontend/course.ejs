@@ -66,62 +66,90 @@
           }
         });
       }
-      
-      function displayCourses(courses) {
-        $('.course-list').empty();
-        courses.forEach(function(course) {
-          
 
-        //   const courseItem = `
-        //   <div class="course-details">
-        //     <h3>${course.title}</h3>
-            
-           
-        //       <img width="100px" src="${course.courseImage}" />
-        //       <p>${course.usersCount} <i class="fa fa-user"></i></p>
-        //       <div>
-        //         <a href="/course/course-topics/${course._id}""><button class="view-course-btn">View</button></a>
-        //       </div>    
-        //   </div>
-         
-        //   <p>${course.courseDesc}</p>
-        // </div>
-        //   `;  
-
-          const courseItem = `
-      
-         <div class="course-card  p-3">
-           <div class="row align-items-start">
-             <div class="">
-               <img  src="${course.courseImage}" alt="Course 1"  class="img-fluid card-image">
-             </div>
-             <div class="col-12"> 
-               <h2 >${course.title}</h2>      
-             
-               <p class="course-description">${course.courseDesc}</p>
-               
-               <div>
-
-               
-                
-                <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> ${course.hours}</span>
+    function displayCourses(courses) {
+      $('.course-list').empty();
+      courses.forEach(function(course) {
+        const courseItem = `
+          <div class="course-card p-3">
+            <div class="row align-items-start">
+              <div class="">
+                <img src="${course.courseImage}" alt="Course 1" class="img-fluid card-image">
               </div>
-             </div>
-             <div class="col-12 card-bottom"> 
-              <a href="/topics/${course._id}"><button class="btn btn-outline-primary my-2 my-sm-0" style="color: black;">Continue</button></a>
+              <div class="col-12">
+                <h2>${course.title}</h2>
+                <p class="small text-secondary">${course.category.name}</p>
+                <p class="course-description">${course.courseDesc}</p>
+                <div class="stars-container"></div>
+                <div>
+                  <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> ${course.hours}</span>
+                </div>
+              </div>
+              <div class="col-12 card-bottom">
+                <a href="/course/view-course/${course._id}">
+                  <button class="btn btn-outline-primary my-2 my-sm-0" style="color: black;">View</button>
+                </a>
              
               </div>
-                
-           </div>
-          
-          
-          
-       </div>
-          `;
+            </div>
+          </div>
+        `;
 
-          $('.course-list').append(courseItem);
-        });
-      }
+        $('.course-list').append(courseItem);
+
+        // Stars Rating Integration
+        const rating = course.ratings.length;
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 !== 0;
+
+        for (let i = 0; i < fullStars; i++) {
+          $('<i>').addClass('fa fa-star text-warning').appendTo('.stars-container:last');
+        }
+
+        if (halfStar) {
+          $('<i>').addClass('fa fa-star-half-o text-warning').appendTo('.stars-container:last');
+        }
+
+        const reminder = (5 - fullStars) - (halfStar ? 1 : 0);
+
+        for (let i = 0; i < reminder; i++) {
+          $('<i>').addClass('fa fa-star-o').appendTo('.stars-container:last');
+        }
+      });
+    }
+
+      
+      // function displayCourses(courses) {
+      //   $('.course-list').empty();
+      //   courses.forEach(function(course) {
+
+      //     const courseItem = `
+      
+      //    <div class="course-card  p-3">
+      //      <div class="row align-items-start">
+      //        <div class="">
+      //          <img  src="${course.courseImage}" alt="Course 1"  class="img-fluid card-image">
+      //        </div>
+      //        <div class="col-12"> 
+      //          <h2 >${course.title}</h2>      
+             
+      //          <p class="course-description">${course.courseDesc}</p>
+      //          <div>
+      //           <span class="time"><i class="fa fa-clock-o clock" aria-hidden="true"></i> ${course.hours}</span>
+      //         </div>
+      //        </div>
+      //        <div class="col-12 card-bottom"> 
+      //         <a href="/topics/${course._id}"><button class="btn btn-outline-primary my-2 my-sm-0" style="color: black;">Continue</button></a>
+             
+      //         </div>
+                
+      //      </div>
+      //  </div>
+      //     `;
+
+      //     $('.course-list').append(courseItem);
+      //   });
+      // }
           
   // Sample data for courses
   const coursesData = [

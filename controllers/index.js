@@ -5,6 +5,7 @@ const UserProgressController = require('./userProgressController');
 const QuizController = require('./quizController');
 const SettingsController = require('./settingsController');
 const TopicMaterialController = require('./topicMaterialController');
+const ActionsController = require('./actionsController');
 module.exports =  {
     UsersController,
     CoursesController,
@@ -12,5 +13,6 @@ module.exports =  {
     UserProgressController,
     QuizController,
     SettingsController,
-    TopicMaterialController
+    TopicMaterialController,
+    ActionsController
 };

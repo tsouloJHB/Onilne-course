@@ -860,7 +860,13 @@ exports.getCourseByCategory = async (req, res) => {
       const coursesByCategory = await CourseModel.find({ category: { $in: categoryIds } ,  active:  true}).limit(10);
       const courses = [];
       for (const course of coursesByCategory) {
-        courses.push(course);
+
+        const rating = await this.getAverageRating(course.ratings);
+        modifiedCourse = {
+         ...course.toObject(), // Spread the properties of the course object// Add the progress field
+         rating:rating
+       };
+        courses.push(modifiedCourse);
       }
      
       res.status(200).json(courses);
@@ -873,3 +879,36 @@ exports.getCourseByCategory = async (req, res) => {
 
   }
 };
+
+exports.viewCourseUnAuthenticated = async(req,res) =>{
+  try { 
+
+    const course = await CourseModel.findById(req.params.id);
+    let countTopics = await TopicModel.countDocuments({courseId:course._id});
+    if(!course){
+      return res.render('404'); 
+    }
+    courseCreator = await this.getCourseCreator(course._id);
+    userCount = await this.countCourseRegisteredUser(course._id);
+    const rating = await this.getAverageRating(course.ratings);
+
+
+    let owner = false;
+
+    const updatedCourse = {
+      ...course.toObject(), // Spread the properties of the course object
+      owner:owner,
+      topics:countTopics,
+      creator:courseCreator.user,
+      userCount:userCount,
+      ratingsAverage:rating
+       // Add the progress field
+    };
+
+    
+    res.render('courses/viewCourse',{course:updatedCourse,unAuthenticated:true});
+  } catch (error) {
+    res.render('404');
+    console.log(error);
+  }  
+}

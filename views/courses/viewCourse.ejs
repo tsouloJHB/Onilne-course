@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
 
-  <title>Courses</title>
+<title>Courses</title>
+<!-- Navigation -->
+<% if (typeof unAuthenticated !== 'undefined') { %>
+  <% if (unAuthenticated) { %>
+    <%- include('../frontend/header') %>
+    <body>
+    <%- include('../frontend/navbar') %>
+  <% } else { %>
+    <%- include('../partials/header') %>
+    <body>
+    <%- include('../partials/clientNav') %>
+  <% } %>
+<% }else{%>
   <%- include('../partials/header') %>
-
-<body>
-  <!-- Navigation -->
+  <body>
   <%- include('../partials/clientNav') %>
+<%}%>  
+  
   <br><br>
 
   <div class="course-details-container">
@@ -72,11 +84,21 @@
           <a href="/topics/<%=course._id %>"><button class="enroll-btn">Open</button></a>
       <%}else{%>
           <% if(!course.owner){ %>
-            <form action="/course/register" method="POST">
-              <input type="hidden" value="<%=course._id %>" name="courseId" />
-              <button class="enroll-btn">Enroll Course</button>
+
+            <%if(typeof unAuthenticated !== 'undefined' && unAuthenticated){%>
              
-            </form>
+            <a href="#" data-toggle="modal" data-target="#loginRegisterModal">
+              <button class="enroll-btn">View course</button>
+            </a>
+            <%}else{%>
+              <form action="/course/register" method="POST">
+                <input type="hidden" value="<%=course._id %>" name="courseId" />
+                <button class="enroll-btn">Enroll Course</button>
+               
+              </form>
+     
+            <%}%>
+            
          <% }else{%>
           
           <a href="/course/course-topics/<%=course._id %>"><button class="enroll-btn">View course</button></a>
@@ -140,6 +162,31 @@
         <img src="<%=course.courseImage%>"/>
     </div>
   </div> -->
+  <!-- Add this modal at the end of your HTML, just before the closing </body> tag -->
+  <div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="loginRegisterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginRegisterModalLabel">Login or Register</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Don't have an account? Register now:</p>
+          <a href="/users/signup?course=<%=course._id %>" ><button type="button" class="btn btn-primary btn-block" >Register</button></a>
+          <hr>
+          <p>Already have an account? Log in:</p>
+          
+          <a href="/users/login?course=<%=course._id %>" ><button type="submit" class="btn btn-success btn-block">Log In</button></a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
 </body>
 <%- include('../partials/footer') %>
 </html>  

@@ -278,6 +278,8 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
 });
 
 
+
+
   
 // Create a course
 router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async (req, res) => {
@@ -441,6 +443,7 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
     }
   });
 
+router.get('/view-course/:id',CoursesController.viewCourseUnAuthenticated);
 router.post('/ratings', verifyToken.verifyToken,CoursesController.saveRating);
 router.post('/category',CoursesController.getCourseByCategory);
 
