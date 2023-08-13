@@ -8,41 +8,56 @@
 </style>
 <body>
     <%- include('./navbar') %>
-    <div class="hero-section">
-        <div class="hero-image"></div>
-        <div class="hero-content">
-          <h1>Welcome to Our Website</h1>
-          <p>Discover amazing courses and improve your skills</p>
-          <button class="btn btn-primary">Get Started</button>
-        </div>
-        <div class="white-container"></div>
-      </div>
-      <div class="container categories-section">
-        <div class="row">
-          <div class="col-md-12 "> <!-- Add center-content class here -->
+      <div data-scroll-container>
+        <div class="hero-section " data-scroll-section>
+            <div class="hero-image" data-scroll data-scroll-speed="2"></div>
+            <div class="hero-content" data-scroll  >
             
-            <div class="d-flex flex-wrap mb-4 center-content">
-              <ul class="list-group list-group-horizontal category-list">
-                <li class="list-group-item active" data-category="all">All Categories</li>
-                <li class="list-group-item" data-category="programming">Programming</li>
-                <li class="list-group-item" data-category="design">Design</li>
-                <li class="list-group-item" data-category="business">Business</li>
-              </ul>
+              <p>Discover amazing courses and improve your skills</p>
+              <button class="btn btn-primary">Get Started</button>
             </div>
-            <div class="course-list">
-              <!-- Courses will be dynamically added here -->
+            <div class="white-container"></div>
+          </div>
+          <div class="container categories-section " data-scroll-section>
+            <div class="row">
+              <div class="col-md-12 " > <!-- Add center-content class here -->
+                
+                <div class="d-flex flex-wrap mb-4 center-content "   data-scroll data-scroll-speed="0">
+                  <ul class="list-group list-group-horizontal category-list">
+                    <li class="list-group-item active" data-category="all">All Categories</li>
+                    <li class="list-group-item" data-category="programming">Programming</li>
+                    <li class="list-group-item" data-category="math">Math</li>
+                    <li class="list-group-item" data-category="business">Business</li>
+                  </ul>
+                </div>
+                <div class="course-list course-container"  data-scroll data-scroll-speed="3">
+                  <!-- Courses will be dynamically added here -->
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+       
       <%- include('../partials/footer') %>
-    
+    </div> 
   <!-- Link Bootstrap JS and jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
   <!-- Link your custom JS -->
   <script>
+    //    (function () {
+    //     var scroll = new LocomotiveScroll();
+    // })();
+       // Wait for the DOM to be fully loaded
+       document.addEventListener("DOMContentLoaded", function () {
+      // Initialize Locomotive Scroll
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true, // Enable smooth scrolling
+      });
+    });
     $(document).ready(function () {
 
         $('.category-list li').on('click', function() {
@@ -89,7 +104,7 @@
                 <a href="/course/view-course/${course._id}">
                   <button class="btn btn-outline-primary my-2 my-sm-0" style="color: black;">View</button>
                 </a>
-             
+              
               </div>
             </div>
           </div>

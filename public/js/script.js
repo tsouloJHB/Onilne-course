@@ -1,6 +1,5 @@
 
 
-
 function renderSearchSuggestion(suggestions){
     $('#suggestions-list').empty();
     $('.dropdown-menu').empty();    
