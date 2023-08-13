@@ -82,6 +82,21 @@
         });
       }
 
+      function fetchBestCourses() {
+        $.ajax({
+          type: 'GET',
+          url: '/course/best-courses',
+          dataType: 'json',
+          success: function(data) {
+            console.log(data);
+            displayCourses(data);
+          },
+          error: function(xhr, status, error) {
+            console.error(error);
+          }
+        });
+      }  
+
     function displayCourses(courses) {
       $('.course-list').empty();
       courses.forEach(function(course) {
@@ -113,7 +128,7 @@
         $('.course-list').append(courseItem);
 
         // Stars Rating Integration
-        const rating = course.ratings.length;
+        const rating = course.averageRating;
         const fullStars = Math.floor(rating);
         const halfStar = rating % 1 !== 0;
 
@@ -165,6 +180,9 @@
       //     $('.course-list').append(courseItem);
       //   });
       // }
+
+  //fetch top 5 courses 
+   
           
   // Sample data for courses
   const coursesData = [
@@ -179,7 +197,9 @@
   function showCourses(category) {
     $('.course-list').empty();
     if (category === 'all') {
-      coursesData.forEach(course => addCourse(course));
+      //get the top 5 courses 
+      fetchBestCourses();
+      //coursesData.forEach(course => addCourse(course));
     } else {
       coursesData.forEach(course => {
         if (course.category === category) {

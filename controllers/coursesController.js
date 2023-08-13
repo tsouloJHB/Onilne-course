@@ -51,7 +51,7 @@ module.exports.getUserCourses = async (userId,completed=false) => {
         const courses = await Promise.all(userProgresses.map(async (progress) => {
            
           //const course = await CourseModel.findById(progress.course);
-          const course = await CourseModel.findOne({_id:progress.course,active:true}).populate('user');;
+          const course = await CourseModel.findOne({_id:progress.course,active:true}).populate('user');
           let modifiedCourse = {};
           if(course){
             let countTopics = await TopicModel.countDocuments({courseId:course._id});
@@ -912,3 +912,51 @@ exports.viewCourseUnAuthenticated = async(req,res) =>{
     console.log(error);
   }  
 }
+
+
+exports.bestCourses = async(req,res) =>{
+  try { 
+ 
+    // const Courses = await CoursesModel.find({ active: true });
+    //  await this.getAverageRating(course.ratings);
+    const courses = await CoursesModel.aggregate([
+      { $match: { active: true } }, // Match active courses
+      {
+        $addFields: {
+          averageRating: {
+            $avg: { $ifNull: ['$ratings.rating', 0] } // Calculate average rating with default value 0
+          },
+          numberOfRatings: { $cond: { if: '$ratings', then: { $size: '$ratings' }, else: 0 } } // Count number of ratings or set to 0 if missing
+        }
+      },
+  
+      {
+        $lookup: {
+          from: 'courseCategory', // Correct collection name for course categories
+          localField: 'category',
+          foreignField: '_id', // Match against the _id field in courseCategory collection
+          as: 'categoryInfo'
+        }
+      },
+      {
+        $addFields: {
+          categoryName: { $arrayElemAt: ['$categoryInfo.name', 0] } // Get the name of the course category
+        }
+      }
+      ,
+      { $sort: { averageRating: -1 } }, // Sort by highest average rating
+      { $limit: 6 } // Limit to six courses
+    ]);
+    console.log(courses);
+
+    res.status(200).json(courses);;
+  } catch (error) {
+    res.status(400).json("error");
+    console.log(error);
+  }  
+}
+
+
+
+
+
