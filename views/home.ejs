@@ -10,6 +10,7 @@
 html,
 body {
   background: #ffffff;
+  
 }
 
 body {
@@ -53,7 +54,7 @@ body {
   background: #ffffff;
   
   padding-top: 40px;
-  top: 100vh;
+  top: 70vh;
   
  
 }
@@ -151,19 +152,19 @@ footer {
 
 .home-section-two{
 
-    
+  background-color: #0a051a;
     height:100vh;
     position: relative;
     bottom: 40px;
     padding: 20px 0px;
   }
   .inner-container{
-
+  
     padding:  20px;
   }
   .inner-container h1{
-    color: rgb(47, 46, 46);
-    font-size: 60px;
+    color: rgb(255, 255, 255);
+    font-size: 70px;
     font-weight: 800;
     margin-top: 100px;
   }
@@ -172,16 +173,17 @@ footer {
   }
   .inner-container p{
     padding:20px 240px;
-    color: gray;
+    color: rgb(173, 173, 173);
     font-size: 20px;
     width: 100%;
     text-align: center;
+    
   }
 
   .signup-section {
       width: 70%;
      
-      background-color: #007bff;
+      background-color: #f0991e;
       border-radius: 10px;
       padding: 30px;
       display: flex;
@@ -256,120 +258,143 @@ footer {
       margin-top: 40px;
       margin-left: 100px;
     }
-</style>
-<div class="hero reveal-top">
-   
-    <h1 style="font-size: 50px;">Scholar</h1>
-    <p style="text-align: center; width: 40%;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        </p>
-    <div class="down">
-      <svg viewBox="0 0 24 24" width="44" height="44" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
-    </div>
-  </div>
-  <div class="content">
-    <%- include('./frontend/navbar') %>
-      <div class="container-fluid home-section-two ">
-       <div class="inner-container reveal-bottom-reset">
-        <h1>Gutenberg Blocks,<br> wide<span class="light-font"> and</span> full <span class="light-font"> alignment</span></h1>
-        <p> Blocksy WordPress theme was built from scratch with Gutenberg in mind, which means it supports
-          all types of blocks and all types of editor manipulations like wide/full alignments.</p>
-      
-          
-       </div>
-       <div class="sign-container  reveal-bottom-reset">
-        <div class="signup-section">
-          <div class="sign-content">
-            <div class="sign-header">Create Your Course</div>
-            <p class="description">Create your course for free if you sign up now on</p>
-          </div>
-          <button class="button">Sign Up</button>
-        </div>
-      </div>
-      </div>
-     
-      <div id="black-strip-section" class="reveal-bottom-reset">
-       
-        <h3>Sign up here</h3>
-      </div>
-    <div class=" mt-0 course-section reveal-bottom-reset" >
-      <div class="container course-container ">
-       <div class="" style="padding-bottom:40px;"> 
-            <h1>All  course's are for free </h1><br/>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-            standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-            make a type specimen book. 
-            </p>
-        </div>
-        <h2 class="text-center mb-4">Course Categories</h2>
-        <div class="row">
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <i class="fas fa-code fa-3x mb-3"></i>
-                <h5 class="card-title">Programming</h5>
-                <p class="card-text">Explore the world of programming languages and development frameworks.</p>
+</style>  
+    <div data-scroll-container>
+        <div  data-scroll-section>
+          <div class="hero "  data-scroll data-scroll-speed="7">
+            
+              <h1 style="font-size: 50px;">Scholar</h1>
+              <p style="text-align: center; width: 40%;">Lorem Ipsum is simply dummy text of the printing 
+                  </p>
+              <div class="down">
+                <svg viewBox="0 0 24 24" width="44" height="44" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
               </div>
             </div>
-          </div>
-          <!-- Add more cards for other categories -->
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <i class="fas fa-brain fa-3x mb-3"></i>
-                <h5 class="card-title">Data Science</h5>
-                <p class="card-text">Dive into the exciting world of data analysis, machine learning, and AI.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <i class="fas fa-paint-brush fa-3x mb-3"></i>
-                <h5 class="card-title">Design</h5>
-                <p class="card-text">Unlock your creativity with courses on graphic design and UI/UX.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Add the rest of your content here -->
-       
-        </div>
-        <div id="view-more"><a href=""><button class="button"> View more</button></a></div>
-      </div>  
-  </div>
- 
-  <!-- <footer class="black-footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <ul class="footer-list">
-            <li>About Us</li>
-            <li>Contact</li>
-            <li>Privacy Policy</li>
-          </ul>
-        </div>
-        <div class="col-md-4 text-center">
-          <p>&copy; 2023 Your Company. All rights reserved.</p>
-        </div>
-        <div class="col-md-4">
+          </div>  
+          <%- include('./frontend/navbar') %>
+        <div class="content"  >
          
-      
+            <div class="container-fluid home-section-two "data-scroll-section  >
+            <div class="inner-container reveal-bottom-reset"  data-scroll data-scroll-speed="2" >
+            
+              <h1 > Expand your career,<br> opportunities <span class="light-font">with</span> full <span class="light-font"> alignment</span></h1>
+              <p  > Blocksy WordPress theme was built from scratch with Gutenberg in mind, which means it supports
+                all types of blocks and all types of editor manipulations like wide/full alignments.</p>
+            
+                
+            </div>
+            <div class="sign-container  reveal-bottom-reset">
+              <div class="signup-section">
+                <div class="sign-content">
+                  <div class="sign-header">Create Your Course</div>
+                  <p class="description">Create your course for free if you sign up now on</p>
+                </div>
+                <button class="button">Sign Up</button>
+              </div>
+            </div>
+            </div>
+            <div id="black-strip-section" class="reveal-bottom-reset"data-scroll-section>
+            
+              <h3>Sign up here</h3>
+            </div>
+          
+          <div class=" mt-0 course-section reveal-bottom-reset" data-scroll-section>
+            <div class="container course-container ">
+            <div class="" style="padding-bottom:40px;"> 
+                  <h1>All  course's are for free </h1><br/>
+                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+                  make a type specimen book. 
+                  </p>
+              </div>
+              <h2 class="text-center mb-4">Course Categories</h2>
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <i class="fas fa-code fa-3x mb-3"></i>
+                      <h5 class="card-title">Programming</h5>
+                      <p class="card-text">Explore the world of programming languages and development frameworks.</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add more cards for other categories -->
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <i class="fas fa-brain fa-3x mb-3"></i>
+                      <h5 class="card-title">Data Science</h5>
+                      <p class="card-text">Dive into the exciting world of data analysis, machine learning, and AI.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <i class="fas fa-paint-brush fa-3x mb-3"></i>
+                      <h5 class="card-title">Design</h5>
+                      <p class="card-text">Unlock your creativity with courses on graphic design and UI/UX.</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add the rest of your content here -->
+            
+              </div>
+              <div id="view-more"><a href=""><button class="button"> View more</button></a></div>
+            </div>  
         </div>
+      
+        <!-- <footer class="black-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-4">
+                <ul class="footer-list">
+                  <li>About Us</li>
+                  <li>Contact</li>
+                  <li>Privacy Policy</li>
+                </ul>
+              </div>
+              <div class="col-md-4 text-center">
+                <p>&copy; 2023 Your Company. All rights reserved.</p>
+              </div>
+              <div class="col-md-4">
+              
+            
+              </div>
+            </div>
+          </div>
+        </footer> -->
+        <%- include('partials/footer') %>
       </div>
-    </div>
-  </footer> -->
-  <%- include('partials/footer') %>
-</div>
+    </div>  
   <script src="https://unpkg.com/scrollreveal"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script> 
+  
+  
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script> 
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script>
-    $(window).scroll(function() {
-  var scroll = $(window).scrollTop();
-  $(".hero").css({
-    transform: 'translate3d(0, +'+(scroll/100)+'%, 0) scale('+(100 - scroll/100)/100+')'
-  });
-});
+//     $(window).scroll(function() {
+//   var scroll = $(window).scrollTop();
+//   $(".hero").css({
+//     transform: 'translate3d(0, +'+(scroll/100)+'%, 0) scale('+(100 - scroll/100)/100+')'
+//   });
+// });
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+      // Initialize Locomotive Scroll
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true, // Enable smooth scrolling
+      });
+    });
 
     // Call the revealOnScroll function on page load
     function revealFunction() {

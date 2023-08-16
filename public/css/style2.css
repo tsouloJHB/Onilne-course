@@ -81,6 +81,9 @@ body {
     color: black;
     border-radius: 10px;
   }
+  .navbar .signout .nav-link{
+    color: #000;
+  }
   .navbar  ul li .sign{
     color: white;
   }
@@ -171,6 +174,7 @@ body {
     background-color: lightgray;
     border-radius: 5px;
     border: none;
+
   }
   
   .dropdown-menu.signout-dropdown a {
@@ -469,7 +473,7 @@ body {
 .user-courses-container {
   display: flex;
   padding: 50px 100px;
- 
+ height: 70vh;
 }
 
 .user-column {

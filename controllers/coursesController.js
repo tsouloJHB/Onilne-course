@@ -926,16 +926,17 @@ exports.bestCourses = async(req,res) =>{
           averageRating: {
             $avg: { $ifNull: ['$ratings.rating', 0] } // Calculate average rating with default value 0
           },
-          numberOfRatings: { $cond: { if: '$ratings', then: { $size: '$ratings' }, else: 0 } } // Count number of ratings or set to 0 if missing
+          numberOfRatings: { $cond: { if: '$ratings', then: { $size: '$ratings' }, else: 0 } },
+          // Count number of ratings or set to 0 if missing
         }
       },
   
       {
         $lookup: {
-          from: 'courseCategory', // Correct collection name for course categories
-          localField: 'category',
-          foreignField: '_id', // Match against the _id field in courseCategory collection
-          as: 'categoryInfo'
+          from: "coursecategories", // Correct collection name for course categories
+          localField: "category",
+          foreignField: "_id", // Match against the _id field in courseCategory collection
+          as: "categoryInfo"
         }
       },
       {
@@ -947,6 +948,10 @@ exports.bestCourses = async(req,res) =>{
       { $sort: { averageRating: -1 } }, // Sort by highest average rating
       { $limit: 6 } // Limit to six courses
     ]);
+    // Log the _id values used in the $lookup stage
+    const categories =  await CategoryModel.find();
+    console.log(categories);
+console.log('Course IDs for Lookup:', courses.map(course => course.category));
     console.log(courses);
 
     res.status(200).json(courses);;

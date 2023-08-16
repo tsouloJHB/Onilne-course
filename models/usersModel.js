@@ -54,6 +54,11 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'UserProgress'
     },
+    courseCreatePermission:{
+      type:Boolean,
+      required:true,
+      default:false,
+    },
     isAdmin: {
         type: Boolean,
         required: true,
