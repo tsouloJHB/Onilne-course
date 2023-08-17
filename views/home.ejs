@@ -30,9 +30,9 @@ body {
   flex-direction: column;
   border-radius: 10px;
   align-items: center;
-  position: fixed;
+
   display: flex;
-  height: 100vh;
+  height: 768px;
   width: 100%;
 }
 
@@ -51,11 +51,11 @@ body {
   color: black;
 
   position: relative;
-  background: #ffffff;
+ 
   
-  padding-top: 40px;
-  top: 70vh;
   
+  top: 100vh;
+  max-height: 800px;
  
 }
 
@@ -155,8 +155,9 @@ footer {
   background-color: #0a051a;
     height:100vh;
     position: relative;
-    bottom: 40px;
+    bottom: 0px;
     padding: 20px 0px;
+    transition: background-color 1.3s ease-in; 
   }
   .inner-container{
   
@@ -166,7 +167,7 @@ footer {
     color: rgb(255, 255, 255);
     font-size: 70px;
     font-weight: 800;
-    margin-top: 100px;
+    margin-top: 70px;
   }
   .inner-container .light-font{
     font-weight: 200;
@@ -221,6 +222,18 @@ footer {
       position: relative;
       right: 60px;
     }
+    .black-reverse {
+      background-color: #ffffff;
+      color: #000000;
+      padding: 9px 20px;
+      border: none;
+      font-weight: 700;
+      border-radius: 5px;
+      font-size: 13px;
+      cursor: pointer;
+      position: relative;
+   
+    }
     .sign-container{
       margin: 0;
       padding: 0;
@@ -231,15 +244,20 @@ footer {
       
     }
     #black-strip-section{
-      margin-top: 200px;
+    
       height: 200px;
       background-color: black;
-      padding-top: 50px;
+      padding-top: 30px;
     }
     #black-strip-section h3{
       color: white;
       font-weight: 600;
       font-size: 50px;
+      
+    }
+    #black-strip-section p{
+      color: white;
+   
       
     }
 
@@ -260,8 +278,8 @@ footer {
     }
 </style>  
     <div data-scroll-container>
-        <div  data-scroll-section>
-          <div class="hero "  data-scroll data-scroll-speed="7">
+        <div style="height: 0px" data-scroll-section>
+          <div class="hero "  data-scroll data-scroll-speed="10">
             
               <h1 style="font-size: 50px;">Scholar</h1>
               <p style="text-align: center; width: 40%;">Lorem Ipsum is simply dummy text of the printing 
@@ -275,31 +293,36 @@ footer {
         <div class="content"  >
          
             <div class="container-fluid home-section-two "data-scroll-section  >
-            <div class="inner-container reveal-bottom-reset"  data-scroll data-scroll-speed="2" >
+            <div class="inner-container reveal-bottom-reset" >
             
-              <h1 > Expand your career,<br> opportunities <span class="light-font">with</span> full <span class="light-font"> alignment</span></h1>
-              <p  > Blocksy WordPress theme was built from scratch with Gutenberg in mind, which means it supports
+              <h1 data-scroll data-scroll-speed="1" > Expand your career,<br> opportunities <span class="light-font">with</span> full <span class="light-font"> alignment</span></h1>
+              <p   data-scroll data-scroll-speed="1" > Blocksy WordPress theme was built from scratch with Gutenberg in mind, which means it supports
                 all types of blocks and all types of editor manipulations like wide/full alignments.</p>
             
                 
             </div>
-            <div class="sign-container  reveal-bottom-reset">
+            <div class="sign-container "  >
               <div class="signup-section">
                 <div class="sign-content">
                   <div class="sign-header">Create Your Course</div>
                   <p class="description">Create your course for free if you sign up now on</p>
                 </div>
-                <button class="button">Sign Up</button>
+                <a href="/users/signup">  <button class="button">Sign Up</button></a>
               </div>
             </div>
             </div>
-            <div id="black-strip-section" class="reveal-bottom-reset"data-scroll-section>
+            <div style="height: 100px; background-color: white;">
+
+            </div>
+            <div id="black-strip-section" class="reveal-bottom-reset"  data-scroll-section>
             
-              <h3>Sign up here</h3>
+              <h3 >Sign up here</h3>
+              <p style="column-rule: #ffffff;"> For a new course here</p>
+              <a href="/users/signup">  <button class="black-reverse">Sign Up</button></a>
             </div>
           
-          <div class=" mt-0 course-section reveal-bottom-reset" data-scroll-section>
-            <div class="container course-container ">
+          <div class=" mt-0 course-section "  >
+            <div class="container course-container reveal-bottom-reset" >
             <div class="" style="padding-bottom:40px;"> 
                   <h1>All  course's are for free </h1><br/>
                   <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
@@ -307,9 +330,9 @@ footer {
                   make a type specimen book. 
                   </p>
               </div>
-              <h2 class="text-center mb-4">Course Categories</h2>
-              <div class="row">
-                <div class="col-md-4 mb-4">
+              <h2 class="text-center mb-4" >Course Categories</h2>
+              <div class="row" data-scroll-section >
+                <div class="col-md-4 mb-4" >
                   <div class="card">
                     <div class="card-body">
                       <i class="fas fa-code fa-3x mb-3"></i>
@@ -340,7 +363,7 @@ footer {
                 <!-- Add the rest of your content here -->
             
               </div>
-              <div id="view-more"><a href=""><button class="button"> View more</button></a></div>
+              <div id="view-more"><a href="/course/courses"><button class="button"> View more</button></a></div>
             </div>  
         </div>
       
@@ -386,13 +409,28 @@ footer {
 //   });
 // });
 
+  // Function to handle background color change on scroll
+  function changeBackgroundColorOnScroll() {
+      const homeSectionTwo = document.querySelector('.home-section-two');
+      const scrollPosition = window.scrollY;
+      const threshold = 150;
 
+      if (scrollPosition > threshold && scrollPosition < 800) {
+        homeSectionTwo.style.backgroundColor = 'blue'; // Change this to your desired color
+      } else {
+        homeSectionTwo.style.backgroundColor = '#0a051a';
+      }
+    }
+
+    // Add a scroll event listener to call the function
+    window.addEventListener('scroll', changeBackgroundColorOnScroll);
 
 document.addEventListener("DOMContentLoaded", function () {
       // Initialize Locomotive Scroll
       const scroll = new LocomotiveScroll({
         el: document.querySelector('[data-scroll-container]'),
         smooth: true, // Enable smooth scrolling
+        getDirection: true,
       });
     });
 
