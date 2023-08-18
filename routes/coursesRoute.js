@@ -6,6 +6,7 @@ const { CoursesController, TopicsController } = require('../controllers');
 const { upload } = require('../middleware/upload');
 const { courseDataValidate, courseEditDataValidate } = require('../validation/courseValidation');
 const { validationResult } = require("express-validator");
+const { default: mongoose } = require('mongoose');
 
 
 // router.get('/', verifyToken.verifyToken, async (req, res) => {
@@ -210,7 +211,55 @@ router.get('/search', verifyToken.verifyToken, async (req, res) => {
   }  
 });
 
-router.get('/search-suggest', verifyToken.verifyToken, async (req, res) => {
+router.get('/search-h', async (req, res) => {
+  try {
+      if(req.query.search == null || req.query.search == ""){
+        res.redirect(req.headers.referer);
+      }
+ 
+      req.user = {
+        _id : new mongoose.mongo.ObjectId(),
+      }
+     
+  
+      const courses = await CoursesController.courseSearch(req,res);
+      const categories =  await CategoryModel.find();
+      //filter by rating
+      
+      if (req.query.rating && !isNaN(req.query.rating)) {
+        const ratingFilter = parseInt(req.query.rating);
+                                     
+        const filteredCourses = await CourseModel.aggregate([
+          {
+            $match: {
+              _id: { $in: courses.map((course) => course._id) }, // Filter only the received courses
+              ratings: { $elemMatch: { rating: ratingFilter } }, // Filter courses with matching ratings
+            },
+          },
+          {
+            $addFields: {
+              // Calculate average rating for each course
+              averageRating: { $avg: '$ratings.rating' },
+            },
+          },
+          {
+            $sort: { averageRating: -1 }, // Sort by average rating in descending order
+          },
+        ]);
+       
+   
+        return res.render('search', { courses: filteredCourses,categories,unAuthenticated:true});
+      }
+
+      
+      res.render('search',{courses,categories,unAuthenticated:true});
+  } catch (error) {
+    console.log(error);
+  }  
+});
+
+
+router.get('/search-suggest', async (req, res) => {
   try {
       if(req.query.search == null || req.query.search == ""){
        // res.redirect(req.headers.referer);

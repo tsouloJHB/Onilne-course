@@ -1,3 +1,23 @@
+
+@font-face {
+  font-family: 'Elmond';
+  src: url('/fonts/Elmond.ttf') format('truetype');
+  /* Additional font formats can be added here for cross-browser compatibility */
+}
+
+:root {
+  
+  --primary-color: #003680;
+  --base-color:#003680;
+  /*--primary-color: #003680;*/
+  --secondary-color: #ffffff;
+  --background-color: #f0f0f0;
+  --text-color: #ffffff;
+  /* --text-color: #ffffff; */
+  --text-inverse-color: #000000;
+  --accent-color: #FF6347;
+}
+
 *{
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
@@ -62,7 +82,7 @@ body {
 .black-footer {
   /* background-color: #000; */
     background-color: #003680;
-  color: #fff;
+    color: rgb(199, 214, 66);
   padding: 20px 0;
   position: relative;
   top:0px;
@@ -80,7 +100,7 @@ footer {
 
     /* Footer links styles */
     footer a {
-      color:var(--text-color);;
+      color:var(--text-color);
       text-decoration: none;
       margin: 5px;
     }
@@ -103,6 +123,7 @@ footer {
     /* background-color: #494dbe; */
      background-color: #003680;
     color: white;
+  
     
 }
 /* Center the brand logo and search form */
@@ -140,6 +161,30 @@ footer {
   border:1px solid   white;
 }
 
+
+.navbar  .dropdown-menu.search-dropdown {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: white;
+}
+
+.dropdown-menu.signout-dropdown {
+  background-color: lightgray;
+  border-radius: 5px;
+  border: none;
+
+}
+
+.dropdown-menu.signout-dropdown a {
+  color: black;
+}
+
+.dropdown-menu.signout-dropdown a:hover {
+  color: black;
+}
+
 /* Increase the width of the input text */
 .form-inline input[type="search"] {
   width: 400px; /* Adjust the width as needed */
@@ -161,6 +206,7 @@ footer {
     padding:  20px;
   }
   .inner-container h1{
+    font-family: Elmond;
     color: rgb(47, 46, 46);
     font-size: 60px;
     font-weight: 800;
@@ -285,7 +331,7 @@ footer {
         left: 0;
         width: 100%;
         height: 120%;
-        background-image: url('/images/rock.png'); /* Replace with the actual image path */
+        background-image: url('/images/darkman.jpg'); /* Replace with the actual image path */
         background-size: cover;
         background-position: center;
         z-index: 2; /* Send the image to the back */
@@ -561,4 +607,235 @@ text-overflow: ellipsis;
   margin-top: 100px;
   margin-bottom: 100px;
   height: 70vh;
+}
+
+
+.dash-container {
+  display: flex;
+  
+  padding: 50px 60px 100px  80px;
+ 
+}
+.dash-column {
+  flex: 7;
+ 
+  padding: 0px 30px;
+}
+.filter-column {
+  flex: 2;
+  padding: 0px 0px 0px;
+
+}
+
+.space-above{
+  margin-top: 100px;
+}
+
+
+
+@media (max-width: 821px) {
+  .test-text-container .trans-btn-sm {
+    left: 65%; /* Set the initial position to the center of the parent */
+    transform: translateX(90%); /* Move the button 90% to the right */
+  } 
+}
+
+
+/* Media Query for Smaller Screens */
+@media (max-width: 767px) {
+  .dash-container {
+    flex-direction: column; /* Set the flex-direction to column for smaller screens */
+    padding: 30px; /* Reduce padding on smaller screens */
+    
+  }
+
+  .dash-column {
+    flex: 1; /* Take full width on smaller screens */
+    padding: 0; /* Remove padding on smaller screens */
+
+  }
+
+  .filter-column {
+    display: none;
+    flex: 1; /* Take full width on smaller screens */
+    padding: 0; /* Remove padding on smaller screens */
+  }
+
+  .course-card {
+    
+    padding: 10px;
+    
+  }
+
+  .user-courses-container{
+    flex-direction: column;
+    padding: 0px 50px;
+  }
+
+
+  .user-column {
+    flex: 1;
+ 
+    padding: 0px 10px;
+  }
+  .user-column .view-course-btn {
+    font-size: 12px;
+    padding: 10px;
+
+    border-radius: 10px;
+  }
+  .course-details h3{
+
+    font-size: 12px;
+  }
+  .course-progress span{
+    font-size: 12px;
+  }
+  .course-progress .fa-check-circle {
+    font-size: 12px; /* You can adjust this value as needed */
+  }
+  
+
+  .course-rating .fa-star , .fa-star-half , span{
+    font-size: 12px;
+  }
+  .course .instructor{
+    font-size: 12px;
+    
+  }
+  .stats-column {
+    flex: 1;
+    padding: 0px 50px;
+  }
+
+  .login-card-footer-text {
+    margin-bottom: 24px; } 
+
+  .course-details .trans-btn{
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 13px;
+  } 
+  .container-out{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .courseOutline-column {
+    /* Flex properties to fill the entire row on smaller screens */
+    flex: 1 1 100%;
+  }
+  .smaller-screens-outline{
+    display: block;
+    
+  }
+  .outline-progress{
+    display: none;
+  }
+
+  /*-----------------------view course -----------------------*/
+  .course-details-container {
+    flex-direction: column;
+    padding: 0 0px;
+  }
+
+  .course-details-container .course-breakdown {
+   text-align: center;
+  }
+  .course-section {
+    display: flex;
+    align-items: center; /* Center the items vertically */
+    justify-content: flex-start; /* Align items to the start (left) of the container */
+    margin-bottom: 10px; /* Optional: Add margin to separate each course-section */
+  }
+  
+  .course-breakdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .course-details-breakdown .course-title{
+    font-size: 40px;
+  }
+
+}
+
+
+
+
+@media (max-width: 576px) {
+
+  /*-----course views --------*/
+  .course-container {
+    grid-template-columns: 1fr;
+  }
+  .course-progress .fa-check-circle{
+    display: none;
+  }
+  .course-progress #completed{
+    display: none ;
+  }
+  .user-courses-container{
+    position: relative;
+    bottom: 50px;
+    padding: 0px 20px;
+  }
+  .path{
+    font-size: 12px;
+    position: relative;
+    bottom: 50px;
+    right: 70px;
+    margin-top: 40px;
+
+  }
+
+  .course-card .card-image{
+    min-height: 100px;
+    width: 460px;
+  }
+  .course-card {
+  
+    padding: 10px;
+  
+  }
+  .user-column .course-list .course .course-details {
+    flex-direction: column;
+  
+  
+  }
+  .user-column .course-list .course .course-details img{
+    width: 70%;
+  }
+
+  .user-column .course-list .course .course-detail{
+   
+  }
+  /*------------Courses / created -------------*/
+
+  
+  .course-details .trans-btn-sm{
+    font-size: 12px;
+  }
+  .course-details img{
+    width: 50px;
+  }
+
+  .desc{
+    text-align: center;
+    font-size: 13px;
+    margin-left: 10px;
+  }
+  .smaller-screen-space{
+    position: relative;
+    top: 10px;
+  }
+
+  .custom-jumbotron .custom-jumbotron-image{
+    max-width: 190%;
+
+
+
+    border-radius: 10px;
+  }
 }

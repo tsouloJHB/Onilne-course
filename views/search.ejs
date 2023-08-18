@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html>
 
-  <title>Topics </title>
-  <%- include('partials/header') %>
+  <title>Courses</title>
+  <% if (typeof unAuthenticated !== 'undefined') { %>
+    <%- include('frontend/header') %>
+    <body>
+    <%- include('frontend/navbar') %>
+  <% }else{%>
+    <%- include('partials/header') %>
+    <body>
+    <%- include('partials/clientNav') %>
+  <%}%>  
 
-<body>
-  <!-- Navigation -->
-  <%- include('partials/clientNav') %>
   <% if(courses.length == 0){%>
     <p style="text-align: center;margin-right:220px;"><b>No courses found</b></p>
   <%}%>  
-  <div class="dash-container">
+  <div class="dash-container space-above" >
   <div class="dash-column">
   <div class="course-container">
     <% courses.forEach(function(course) { %>
@@ -44,14 +49,10 @@
               <a href="/course/view/<%=course._id %>"><button class="btn btn-outline-primary my-2 my-sm-0">View</button></a>
              <%}%> 
           <%}%>    
-         
-     
-          </div>
-            
+
+          </div>       
        </div>
-      
-      
-      
+
    </div>
       <% }); %>  
   </div>
@@ -80,8 +81,7 @@
       </select>
      
       <button type="submit" class=" trans-btn-sm">Search</button>
-    </form>
-    
+    </form> 
     </div>
     </div>
 <%- include('partials/footer') %>

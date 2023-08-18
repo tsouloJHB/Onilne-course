@@ -7,11 +7,13 @@ function renderSearchSuggestion(suggestions){
     var searchResultsDropdown = $('#searchResultsDropdown');
 
     suggestions.search.categories.forEach(function(item) {
+      //  var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/search-h?search="+item.name+"").text(item.name);
         var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/search?search="+item.name+"").text(item.name);
         searchResultsDropdown.prepend(listItem);
        
       });
       suggestions.search.courses.forEach(function(item) {
+        //var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/view-course/"+item._id+"").text(item.title);
         var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/view/"+item._id+"").text(item.title);
         searchResultsDropdown.prepend(listItem);
       });
