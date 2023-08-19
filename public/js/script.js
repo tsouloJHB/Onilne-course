@@ -5,35 +5,58 @@ function renderSearchSuggestion(suggestions){
     $('.dropdown-menu').empty();    
     $('.dropdown-menu').css('display', 'block');
     var searchResultsDropdown = $('#searchResultsDropdown');
+    var path = window.location.pathname;
 
     suggestions.search.categories.forEach(function(item) {
       //  var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/search-h?search="+item.name+"").text(item.name);
-        var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/search?search="+item.name+"").text(item.name);
+        if (path === '/' || path === '/course/courses') {
+          var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/search-h?search="+item.name+"").text(item.name);
+        }else{
+          var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/search?search="+item.name+"").text(item.name);
+        }  
+        
         searchResultsDropdown.prepend(listItem);
        
       });
       suggestions.search.courses.forEach(function(item) {
+        if (path === '/' || path === '/course/courses') {
+          var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/view-course/"+item._id+"").text(item.title);
+        }else{
+          var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/view/"+item._id+"").text(item.title);
+        }
         //var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/view-course/"+item._id+"").text(item.title);
-        var listItem = $('<a>').addClass('dropdown-item').attr('href', "/course/view/"+item._id+"").text(item.title);
+        
         searchResultsDropdown.prepend(listItem);
       });
 
 
     console.log(suggestions.search);
     suggestions.search.categories.forEach(suggestion => {
+      if (path === '/' || path === '/course/courses') {
+        $('#suggestions-list').append('<li><a href="/course/search-h?search='+suggestion.name+'"> '+ suggestion.name + '</a></li>');
+      }else{
         $('#suggestions-list').append('<li><a href="/course/search?search='+suggestion.name+'"> '+ suggestion.name + '</a></li>');
+      }
+       
+       // $('#suggestions-list').append('<li><a href="/course/search-h?search='+suggestion.name+'"> '+ suggestion.name + '</a></li>');
     });
     suggestions.search.courses.forEach(suggestion => {
+      if (path === '/' || path === '/course/courses') {
+        $('#suggestions-list').append('<li><a href="/course/view-view/'+suggestion._id+'"> '+ suggestion.title + 'Course <img width="10%" src="'+suggestion.image +'"/> </a> </li>');
+      }else{
         $('#suggestions-list').append('<li><a href="/course/view/'+suggestion._id+'"> '+ suggestion.title + 'Course <img width="10%" src="'+suggestion.image +'"/> </a> </li>');
+      }
+
+      //$('#suggestions-list').append('<li><a href="/course/view-view/'+suggestion._id+'"> '+ suggestion.title + 'Course <img width="10%" src="'+suggestion.image +'"/> </a> </li>');
     });
  
 }
 
-let searchResult;
+
 var activeRequest = null;
 function fetchSearchSuggestions(query){
     //cancel previous search
-    
+    let searchResult;
     if(searchResult){
         //abort any ajax calls
          console.log(searchResult);

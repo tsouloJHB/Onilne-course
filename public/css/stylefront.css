@@ -67,13 +67,9 @@ body {
 .content {
   box-shadow: 0 0 100px rgba(0,0,0,0.4);
   color: black;
-
   position: relative;
-  background: #ffffff;
-  
-  padding-top: 40px;
   top: 100vh;
-  
+  max-height: 800px;
  
 }
 
@@ -90,75 +86,74 @@ body {
 
 /* Style for the footer list */
 footer {
-      background-color: #003680;
-      color: white;
-      text-align: center;
-      padding: 20px 0;
-      border-top: 1px solid lightgray;
-      height: 30vh;
-    }
+  background-color: #003680;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid lightgray;
+}
 
-    /* Footer links styles */
-    footer a {
-      color:var(--text-color);
-      text-decoration: none;
-      margin: 5px;
-    }
+/* Footer links styles */
+footer a {
+  color: rgb(199, 214, 66);
+  text-decoration: none;
+  margin: 5px;
+}
 
-    /* Copyright text styles */
-    .copyright {
-      margin-top: 20px;
-    }
+/* Copyright text styles */
+.copyright {
+  margin-top: 20px;
+}
 
 .footer-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+list-style: none;
+padding: 0;
+margin: 0;
 }
 
 .footer-list li {
-  margin-bottom: 10px;
+margin-bottom: 10px;
 }
 .navbar{
-    /* background-color: #494dbe; */
-     background-color: #003680;
-    color: white;
-  
-    
+/* background-color: #494dbe; */
+ background-color: #003680;
+color: white;
+
 }
 /* Center the brand logo and search form */
 .navbar-brand,
 /* Center the brand logo and search form */
 .navbar-brand,
 .form-inline {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  left: 200px;
-  color: white;
+display: flex;
+justify-content: center;
+position: relative;
+left: 200px;
+color: white;
 
 }
 
 /* Add some space between the search form and other elements */
 .form-inline {
-  margin-left: 20px;
+margin-left: 20px;
 }
 .navbar .navbar-brand{
-    position: relative;
-    left: 0%;
-    color: white;
+position: relative;
+left: 0%;
+color: white;
 
 }
 .navbar .nav-item .nav-link{
-  color: rgb(255, 255, 255);
+color: rgb(199, 214, 66);
 }
 .navbar .btn-custom{
-  background-color: #F86F43;
-  border-radius: 5px;
+border: 1px solid rgb(255, 255, 255);
+border-radius: 5px;
+
 }
 .navbar .btn-outline-success{
-  color: white;
-  border:1px solid   white;
+color: white;
+border:1px solid   white;
 }
 
 

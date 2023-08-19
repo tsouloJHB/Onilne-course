@@ -44,7 +44,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid rgb(99, 206, 23);
     margin-bottom:100px;
     color: white;
   }
@@ -76,10 +76,10 @@ body {
   }
 
   .navbar .signout{
-    background-color: white;
+    background-color: transparent;
     border: 1px solid lightgray;
     color: black;
-    border-radius: 10px;
+    border-radius:4px;
   }
   .navbar .signout .nav-link{
     color: #000;
@@ -111,7 +111,7 @@ body {
   
   .navbar  .form-control {
     border: none;
-    border-radius: 10px;
+    border-radius: 4px;
     box-shadow: none;
     background-color: rgb(248, 247, 247);
     width:160px;
@@ -126,7 +126,7 @@ body {
     background-color: white;
     border: 1px solid lightgray;
     color: black;
-    border-radius: 10px;
+    border-radius: 4px;
   }
 
   /*-------------------------Home page ---------------------------------------------*/
@@ -201,17 +201,16 @@ body {
   /* ------------------ footer ------------------------------*/
     /* Footer styles */
     footer {
-      background-color: var(--primary-color);
-      color: var(--text-color);
+      background-color: #003680;
+      color: white;
       text-align: center;
       padding: 20px 0;
       border-top: 1px solid lightgray;
-      margin-top: 40px;
-    }
+}
 
     /* Footer links styles */
     footer a {
-      color:var(--text-color);;
+      color: rgb(199, 214, 66);
       text-decoration: none;
       margin: 5px;
     }
@@ -220,6 +219,38 @@ body {
     .copyright {
       margin-top: 20px;
     }
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin-bottom: 10px;
+}
+
+/* Center the brand logo and search form */
+
+
+/* Add some space between the search form and other elements */
+.form-inline {
+  margin-left: 20px;
+}
+
+.navbar .nav-item .nav-link{
+  color: rgb(199, 214, 66);
+}
+.navbar .btn-custom{
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 5px;
+
+}
+.navbar .btn-outline-success{
+  color: white;
+  background-color: transparent;
+  border:1px solid   white;
+}
 
 /* -------------------Course cards---------------------------*/
 .filter-column .form-rounded {

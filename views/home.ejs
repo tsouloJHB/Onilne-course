@@ -9,7 +9,7 @@
 
 html,
 body {
-  background: #ffffff;
+  background: #000000;
   
 }
 @font-face {
@@ -81,8 +81,7 @@ footer {
       text-align: center;
       padding: 20px 0;
       border-top: 1px solid lightgray;
-      
-    }
+}
 
     /* Footer links styles */
     footer a {
@@ -326,7 +325,7 @@ footer {
             </div>
           </div>  
           <%- include('./frontend/navbar') %>
-        <div class="content"  >
+        <div id="content" class="content"  >
          
             <div class="container-fluid home-section-two "data-scroll-section  >
             <div class="inner-container reveal-bottom-reset" >
@@ -427,6 +426,7 @@ footer {
       </div>
     </div>  
   <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -467,6 +467,21 @@ document.addEventListener("DOMContentLoaded", function () {
         el: document.querySelector('[data-scroll-container]'),
         smooth: true, // Enable smooth scrolling
         getDirection: true,
+      });
+         // When the button is clicked
+      var scrolled = false;
+
+      $('#svg-down').on('click', function () {
+        // Calculate the target position (adjust the value as needed)
+        var targetPosition = $('#content').offset().top;
+
+        // Animate the scroll using Locomotive Scroll
+        scroll.scrollTo(targetPosition);
+
+        // After scrolling, hide the button and above content
+        if (!scrolled) {
+          scrolled = true;
+        }
       });
     });
 
