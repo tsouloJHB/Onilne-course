@@ -201,6 +201,7 @@ body {
   /* ------------------ footer ------------------------------*/
     /* Footer styles */
     footer {
+      margin-top: 20px;
       background-color: #003680;
       color: white;
       text-align: center;
