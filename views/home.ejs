@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 
 <head>
+    <link rel="stylesheet" href="/css/stylefront.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <style>
-    @import url('https://rsms.me/inter/inter.css');
+     @import url('https://rsms.me/inter/inter.css');
 
 html,
 body {
@@ -15,18 +16,16 @@ body {
 @font-face {
   font-family: 'Elmond';
   src: url('/fonts/AlexBrush-Regular.ttf') format('truetype');
-  /* Additional font formats can be added here for cross-browser compatibility */
+ 
 }
 body {
   font-family: 'Inter', sans-serif;
   letter-spacing: -1px;
   text-align: center;
-
-
   color: #fff;
   margin: 0;
 }
-
+/*
 .hero {
   background: url('/images/darkman.jpg') no-repeat center center;
   justify-content: center;
@@ -64,9 +63,9 @@ body {
 }
 
 
-/* Style for the black footer */
+
 .black-footer {
-  /* background-color: #000; */
+
     background-color: #003680;
   color: #fff;
   padding: 20px 0;
@@ -74,7 +73,6 @@ body {
   top:0px;
 }
 
-/* Style for the footer list */
 footer {
       background-color: #003680;
       color: white;
@@ -83,14 +81,14 @@ footer {
       border-top: 1px solid lightgray;
 }
 
-    /* Footer links styles */
+    
     footer a {
       color: rgb(199, 214, 66);
       text-decoration: none;
       margin: 5px;
     }
 
-    /* Copyright text styles */
+    
     .copyright {
       margin-top: 20px;
     }
@@ -105,14 +103,14 @@ footer {
   margin-bottom: 10px;
 }
 .navbar{
-    /* background-color: #494dbe; */
+    
      background-color: #003680;
     color: white;
     
 }
-/* Center the brand logo and search form */
+
 .navbar-brand,
-/* Center the brand logo and search form */
+
 .navbar-brand,
 .form-inline {
   display: flex;
@@ -123,7 +121,7 @@ footer {
 
 }
 
-/* Add some space between the search form and other elements */
+
 .form-inline {
   margin-left: 20px;
 }
@@ -146,9 +144,9 @@ footer {
   border:1px solid   white;
 }
 
-/* Increase the width of the input text */
+
 .form-inline input[type="search"] {
-  width: 400px; /* Adjust the width as needed */
+  width: 400px; 
 }
 .home-more{
   padding: 40px;
@@ -295,7 +293,7 @@ footer {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(10px); /* Adjust the bounce height as needed */
+    transform: translateY(10px); 
   }
 }
 .middle{
@@ -309,6 +307,26 @@ footer {
   position: relative;
   bottom: 150px;
 }
+
+
+@media (max-width: 802px) {
+  .hero{
+  height: 500px;
+  background-color: #f0991e;
+  }
+
+  .content {
+
+  position: relative;
+ 
+  
+  
+  top: 80vh;
+  max-height: 200px;
+ 
+}
+} */
+
 </style>  
     <div data-scroll-container>
         <div style="height: 0px" data-scroll-section>
@@ -336,7 +354,7 @@ footer {
             
                 
             </div>
-            <div class="sign-container "  >
+            <div class="sign-container " data-scroll data-scroll-speed="0" >
               <div class="signup-section">
                 <div class="sign-content">
                   <div class="sign-header">Create Your Course</div>
@@ -451,7 +469,7 @@ footer {
       const scrollPosition = window.scrollY;
       const threshold = 350;
 
-      if (scrollPosition > threshold && scrollPosition < 800) {
+      if (scrollPosition > threshold && scrollPosition < 1161) {
         homeSectionTwo.style.backgroundColor = '#38261A'; // Change this to your desired color
       } else {
         homeSectionTwo.style.backgroundColor = '#0a051a';
@@ -461,30 +479,33 @@ footer {
     // Add a scroll event listener to call the function
     window.addEventListener('scroll', changeBackgroundColorOnScroll);
 
-document.addEventListener("DOMContentLoaded", function () {
-      // Initialize Locomotive Scroll
-      const scroll = new LocomotiveScroll({
-        el: document.querySelector('[data-scroll-container]'),
-        smooth: true, // Enable smooth scrolling
-        getDirection: true,
-      });
-         // When the button is clicked
-      var scrolled = false;
+    document.addEventListener("DOMContentLoaded", function () {
+  var scroll = null; // Declare scroll variable
 
-      $('#svg-down').on('click', function () {
-        // Calculate the target position (adjust the value as needed)
-        var targetPosition = $('#content').offset().top;
-
-        // Animate the scroll using Locomotive Scroll
-        scroll.scrollTo(targetPosition);
-
-        // After scrolling, hide the button and above content
-        if (!scrolled) {
-          scrolled = true;
-        }
-      });
+  // Check screen width and conditionally initialize Locomotive Scroll
+  if (window.innerWidth >= 768) { // Adjust the width threshold as needed
+    scroll = new LocomotiveScroll({
+      el: document.querySelector('[data-scroll-container]'),
+      smooth: true,
+      getDirection: true,
     });
+  }
 
+  // When the down arrow button is clicked
+  $('#svg-down').on('click', function () {
+    var targetPosition = $('#content').offset().top;
+
+    if (scroll) { // Check if Locomotive Scroll is initialized
+      // Animate the scroll using Locomotive Scroll
+      scroll.scrollTo(targetPosition);
+    } else {
+      // Perform a regular scroll for smaller screens
+      $('html, body').animate({
+        scrollTop: targetPosition
+      }, 1000);
+    }
+  });
+});
     // Call the revealOnScroll function on page load
     function revealFunction() {
     //first we need to initialize our "sr" (scroll reveal)

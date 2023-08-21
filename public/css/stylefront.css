@@ -1,7 +1,7 @@
 
 @font-face {
   font-family: 'Elmond';
-  src: url('/fonts/Elmond.ttf') format('truetype');
+  src: url('/fonts/AlexBrush-Regular.ttf') format('truetype');
   /* Additional font formats can be added here for cross-browser compatibility */
 }
 
@@ -40,17 +40,16 @@ body {
   color: #fff;
   margin: 0;
 }
-
 .hero {
-  background: url('/images/rock.png') no-repeat center center;
+  background: url('/images/darkman.jpg') no-repeat center center;
   justify-content: center;
   background-size: cover;
   flex-direction: column;
   border-radius: 10px;
   align-items: center;
-  position: fixed;
+
   display: flex;
-  height: 100vh;
+  height: 785px;
   width: 100%;
 }
 
@@ -60,14 +59,18 @@ body {
   opacity: 0.6;
   height: 40px;
   width: 100%;
-  bottom: 50px;
+  bottom: 190px;
   
 }
 
 .content {
   box-shadow: 0 0 100px rgba(0,0,0,0.4);
   color: black;
+
   position: relative;
+ 
+  
+  
   top: 100vh;
   max-height: 800px;
  
@@ -78,13 +81,23 @@ body {
 .black-footer {
   /* background-color: #000; */
     background-color: #003680;
-    color: rgb(199, 214, 66);
+  color: #fff;
   padding: 20px 0;
   position: relative;
   top:0px;
 }
 
+
 /* Style for the footer list */
+footer {
+  background-color: #003680;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid lightgray;
+}
+
+/* Footer links styles */
 footer {
   background-color: #003680;
   color: white;
@@ -156,152 +169,180 @@ color: white;
 border:1px solid   white;
 }
 
-
-.navbar  .dropdown-menu.search-dropdown {
-  position: absolute;
-  right: 0;
-  left: 0;
-  z-index: 1000;
-  background-color: white;
-}
-
-.dropdown-menu.signout-dropdown {
-  background-color: lightgray;
-  border-radius: 5px;
-  border: none;
-
-}
-
-.dropdown-menu.signout-dropdown a {
-  color: black;
-}
-
-.dropdown-menu.signout-dropdown a:hover {
-  color: black;
-}
-
 /* Increase the width of the input text */
 .form-inline input[type="search"] {
-  width: 400px; /* Adjust the width as needed */
+width: 400px; /* Adjust the width as needed */
 }
 .home-more{
-  padding: 40px;
+padding: 40px;
 }
 
 .home-section-two{
 
-    
-    height:100vh;
-    position: relative;
-    bottom: 40px;
-    padding: 20px 0px;
+background-color: #0a051a;
+height:100vh;
+position: relative;
+bottom: 0px;
+padding: 20px 0px;
+transition: background-color 1.3s ease-in; 
+}
+.inner-container{
+
+padding:  20px;
+}
+.inner-container h1{
+
+color: rgb(255, 255, 255);
+font-size: 70px;
+font-weight: 800;
+margin-top: 70px;
+}
+.inner-container .light-font{
+font-weight: 200;
+}
+.inner-container p{
+padding:20px 240px;
+color: rgb(173, 173, 173);
+font-size: 20px;
+width: 100%;
+text-align: center;
+
+}
+
+.signup-section {
+  width: 70%;
+  z-index: 10;
+  background-color: #f0991e;
+  border-radius: 10px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  height: 240px;
+  margin-top: 120px;
+ 
+
+}
+
+.signup-section .sign-header {
+  color: #fff;
+  font-size: 35px;
+  font-weight: bold;
+  position: relative;
+  top: 20px;
+}
+
+.signup-section .description {
+  color: #fff;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+ .button {
+  background-color: transparent;
+
+  color: #0a0a0a;
+  border: 1px solid #000000;
+  padding: 12px 20px;
+
+  font-weight: 700;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  right: 60px;
+}
+.black-reverse {
+ background-color: transparent;
+  color: #f9f9f9;
+  padding: 9px 20px;
+  border: none;
+  font-weight: 700;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  position: relative;
+
+}
+.sign-container{
+  margin: 0;
+  margin-top: 0px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  
+}
+#black-strip-section{
+
+  height: 200px;
+  background-color: black;
+  padding-top: 30px;
+}
+#black-strip-section h3{
+  color: white;
+  font-weight: 600;
+  font-size: 50px;
+  
+}
+#black-strip-section p{
+  color: white;
+
+  
+}
+
+.course-section{
+  margin-top: 100px;
+  background-color: rgb(244, 244, 244);
+  width: 100%;
+  padding-top: 150px;
+  padding-bottom: 100px;
+}
+#view-more{ 
+  text-align: center;
+
+}
+.courses-container .button{
+  margin-top: 40px;
+  margin-left: 100px;
+ 
+}
+.course-container .button{
+  margin-top: 40px;
+  margin-left: 100px;
+ 
+}
+
+.bounce {
+animation: bounce 1.5s infinite;
+}
+
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
   }
-  .inner-container{
-
-    padding:  20px;
+  50% {
+    transform: translateY(10px); /* Adjust the bounce height as needed */
   }
-  .inner-container h1{
-    font-family: Elmond;
-    color: rgb(47, 46, 46);
-    font-size: 60px;
-    font-weight: 800;
-    margin-top: 100px;
-  }
-  .inner-container .light-font{
-    font-weight: 200;
-  }
-  .inner-container p{
-    padding:20px 240px;
-    color: gray;
-    font-size: 20px;
-    width: 100%;
-    text-align: center;
-  }
+}
+.middle{
+  background-color: rgb(0, 0, 0);
+  height: 300px;
+ 
+   overflow: hidden;
+   z-index: 2;
+}
+.middle img{
+  width: 110%;
+  position: relative;
+  bottom: 150px;
+  z-index: 2;
+}
 
-  .signup-section {
-      width: 70%;
-     
-      background-color: #007bff;
-      border-radius: 10px;
-      padding: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      height: 240px;
-      margin-top: 120px;
-   
-    }
-
-    .signup-section .sign-header {
-      color: #fff;
-      font-size: 35px;
-      font-weight: bold;
-      position: relative;
-      top: 20px;
-    }
-
-    .signup-section .description {
-      color: #fff;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-
-     .button {
-      background-color: #000;
-      color: #fff;
-      padding: 12px 20px;
-      border: none;
-      font-weight: 700;
-      border-radius: 5px;
-      font-size: 20px;
-      cursor: pointer;
-      position: relative;
-      right: 60px;
-    }
-    .sign-container{
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-     
-      
-    }
-    #black-strip-section{
-      margin-top: 200px;
-      height: 200px;
-      background-color: black;
-      padding-top: 50px;
-    }
-    #black-strip-section h3{
-      color: white;
-      font-weight: 600;
-      font-size: 50px;
-      
-    }
-
-    /* .course-section{
-      margin-top: 100px;
-      background-color: rgb(244, 244, 244);
-      width: 100%;
-      padding-top: 150px;
-      padding-bottom: 100px;
-    } */
-    .course-section {
-      display: flex;
-      align-items: center; /* Center the items vertically */
-      justify-content: flex-start; /* Align items to the start (left) of the container */
-      margin-bottom: 10px; /* Optional: Add margin to separate each course-section */
-    }
-    #view-more{
-      text-align: center;
-
-    }
-    .course-container .button{
-      margin-top: 40px;
-      margin-left: 100px;
-    }
 
 
     .category-list li {
@@ -389,7 +430,7 @@ border:1px solid   white;
     width: 50%;
     font-weight: 550;
   }
-  .course-container {
+  .courses-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px; /* Adjust the gap value as needed */
@@ -589,6 +630,14 @@ border:1px solid   white;
   margin-bottom: 10px;
 }
 
+.courses-container .course-description{
+  padding-top: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+text-overflow: ellipsis;
+}
 .course-container .course-description{
   padding-top: 20px;
   display: -webkit-box;
@@ -629,6 +678,9 @@ text-overflow: ellipsis;
 
 
 @media (max-width: 821px) {
+  .hero {
+ display: none;
+  }
   .test-text-container .trans-btn-sm {
     left: 65%; /* Set the initial position to the center of the parent */
     transform: translateX(90%); /* Move the button 90% to the right */
@@ -663,6 +715,10 @@ text-overflow: ellipsis;
   }
 
   .user-courses-container{
+    flex-direction: column;
+    padding: 0px 50px;
+  }
+  .user-course-container{
     flex-direction: column;
     padding: 0px 50px;
   }
@@ -757,11 +813,17 @@ text-overflow: ellipsis;
 }
 
 
+@media (max-width: 900px) {
+ 
+}
 
 
 @media (max-width: 576px) {
 
   /*-----course views --------*/
+  .courses-container {
+    grid-template-columns: 1fr;
+  }
   .course-container {
     grid-template-columns: 1fr;
   }
@@ -772,6 +834,11 @@ text-overflow: ellipsis;
     display: none ;
   }
   .user-courses-container{
+    position: relative;
+    bottom: 50px;
+    padding: 0px 20px;
+  }
+  .user-course-container{
     position: relative;
     bottom: 50px;
     padding: 0px 20px;
