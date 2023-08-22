@@ -52,6 +52,13 @@ body {
   height: 785px;
   width: 100%;
 }
+.hero p {
+  text-align: center; width: 40%;
+}
+.hero-logo{
+  font-size: 50px;  
+  font-family: Elmond;
+}
 
 .down {
   text-align: center;
@@ -98,13 +105,7 @@ footer {
 }
 
 /* Footer links styles */
-footer {
-  background-color: #003680;
-  color: white;
-  text-align: center;
-  padding: 20px 0;
-  border-top: 1px solid lightgray;
-}
+
 
 /* Footer links styles */
 footer a {
@@ -159,6 +160,9 @@ color: white;
 .navbar .nav-item .nav-link{
 color: rgb(199, 214, 66);
 }
+.navbar .nav-item .nav-link-btn{
+  color: rgb(199, 214, 66);
+  }
 .navbar .btn-custom{
 border: 1px solid rgb(255, 255, 255);
 border-radius: 5px;
@@ -650,7 +654,7 @@ text-overflow: ellipsis;
 .course-list{
   margin-top: 100px;
   margin-bottom: 100px;
-  height: 70vh;
+  
 }
 
 
@@ -676,7 +680,46 @@ text-overflow: ellipsis;
 }
 
 
+@media (max-width: 1200px) {
+  .navbar .nav-item .link-text{
+      
+      position: relative;
+      left: 30px;
+    }
+    .navbar .btn-custom{
+      position: relative;
+      left: 30px;
+      
+      }
 
+      .navbar-brand,
+      .form-inline {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      left: 50px;
+      color: white;
+
+      }
+
+      /* Add some space between the search form and other elements */
+      .form-inline {
+      margin-left: 20px;
+      }
+
+      .navbar .navbar-brand{
+      position: relative;
+      left: 0%;
+      color: white;
+      }
+
+      .navbar .navbar-brand{
+        position: relative;
+        left: -5%;
+        right: 0%;
+        
+        }
+}
 @media (max-width: 821px) {
 
   .hero {
@@ -970,6 +1013,7 @@ text-overflow: ellipsis;
   /*-----course views --------*/
   .courses-container {
     grid-template-columns: 1fr;
+    background-color: ;
   }
   .course-container {
     grid-template-columns: 1fr;
@@ -1051,6 +1095,16 @@ text-overflow: ellipsis;
 
 
 @media (max-width: 415px) {
+  .hero p {
+    text-align: center; 
+    width: 80%;
+    font-size: 12px;
+    margin-bottom: 80px;
+  }
+  .hero-logo{
+    font-size: 40px;  
+    
+  }
   .inner-container p{
     padding:20px 5px;
     font-size: 15px;
@@ -1103,11 +1157,44 @@ text-overflow: ellipsis;
       max-height: 800px;
      
     }
+
+    footer {
+      background-color: #003680;
+      color: white;
+      position: relative;
+      bottom: 10px;
+      border-top: 1px solid lightgray;
+      width: 105%;
+      padding: 10px 0px;
+    }
+    footer a {
+      color: rgb(199, 214, 66);
+      font-size: 12px;
+    }
+    footer p {
+     font-size: 12px;
+    }
+
  
 }
 
 
+
+.category-list {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+}
+
+
+
 @media (max-width: 376px) {
+  .hero p {
+    text-align: center; 
+    width: 80%;
+    font-size: 12px;
+    margin-bottom: 180px;
+  }
   .inner-container h1{
 
   
@@ -1209,9 +1296,55 @@ text-overflow: ellipsis;
 
       .course-section{
         margin-top: 50px;
-     
+        
         padding-top: 70px;
         padding-bottom: 100px;
       }
+
+      footer {
+        background-color: #003680;
+        color: white;
+        position: relative;
+        bottom: 10px;
+        border-top: 1px solid lightgray;
+        width: 105%;
+        padding: 10px 0px;
+      }
+      footer a {
+        color: rgb(199, 214, 66);
+        font-size: 12px;
+      }
+      footer p {
+       font-size: 12px;
+      }
+
+      /*--------------------course page --------------------*/
+      .hero-section {
+        position: relative;
+        height: 400px;
+        width: 110%;
+    
+      }
+      
+      .hero-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 120%;
+        
+   
+        background-position: center;
+        z-index: 2; /* Send the image to the back */
+      }
+      .category-list {
+        flex-direction: column !important; /* Display items horizontally */
+        justify-content: space-between; /* Adjust spacing between items */
+      }
+      .categories-section{
+        margin-top: 50px;
+      }
+
+      
   
-}  
+}   
