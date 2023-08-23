@@ -146,6 +146,18 @@ left: 200px;
 color: white;
 
 }
+.navbar-dark .navbar-toggler {
+  color:rgb(199, 214, 66)!important;
+  border-color: rgb(199, 214, 66)!important;
+}
+.navbar-dark .navbar-toggler-icon {
+  background-image:  url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28199, 214, 66, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+ 
+}
+
+.navbar-dark .navbar-toggler{
+  border-color: rgb(199, 214, 66);
+}
 
 /* Add some space between the search form and other elements */
 .form-inline {
@@ -159,6 +171,9 @@ color: white;
 }
 .navbar .nav-item .nav-link{
 color: rgb(199, 214, 66);
+}
+.navbar-dark  .nav-item .nav-link {
+  color: rgb(199, 214, 66)!important;
 }
 .navbar .nav-item .nav-link-btn{
   color: rgb(199, 214, 66);
@@ -720,6 +735,24 @@ text-overflow: ellipsis;
         
         }
 }
+@media (max-width: 992px) {
+  .navbar .btn-custom{
+    border: none;
+
+    
+    }
+    
+      /* .navbar .btn-outline-success{
+      color: white;
+      border:1px solid   white;
+      }
+       */
+      /* Increase the width of the input text */
+      .form-inline input[type="search"] {
+      width: 200px; /* Adjust the width as needed */
+      }
+}
+
 @media (max-width: 821px) {
 
   .hero {
@@ -922,12 +955,29 @@ text-overflow: ellipsis;
     right: 60px;
   }
 
+  footer {
+    background-color: #003680;
+    color: white;
+    position: relative;
+    bottom: 10px;
+    border-top: 1px solid lightgray;
+
+   
+  }
+
 }
 
 
 @media (max-width: 625px) {
   
-
+  /* ----nav bar ---------*/
+  .navbar .navbar-brand{
+    left: 10%;
+    }
+    .navbar-dark .navbar-toggler {
+      position: relative;
+      right: 10%;
+    } 
   .signup-section {
     flex-direction: column;
     text-align: center;
@@ -955,11 +1005,32 @@ text-overflow: ellipsis;
     position: relative;
     left: 1%;
   }
+   footer {
+      background-color: #003680;
+      color: white;
+      position: relative;
+      bottom: 10px;
+      border-top: 1px solid lightgray;
+  
+     
+    }
 
 }
 
 
 @media (max-width: 576px) {
+
+  /* ----nav bar ---------*/
+  .form-inline input[type="search"] {
+    position: relative;
+    right: 10%;
+    }
+    .form-inline button{
+      width: 13%;
+      font-size: 12px;
+      position: relative;
+    right: 8%;
+    }
 
   .inner-container h1{
 
@@ -1095,6 +1166,20 @@ text-overflow: ellipsis;
 
 
 @media (max-width: 415px) {
+    /* ----nav bar ---------*/
+    .navbar-nav{
+      position: relative;
+      right: 10%;
+    }
+    .form-inline input[type="search"] {
+    
+      }
+      .form-inline button{
+        width: 16%;
+        height: 40px;
+        font-size: 12px;
+     
+      }
   .hero p {
     text-align: center; 
     width: 80%;
@@ -1189,6 +1274,23 @@ text-overflow: ellipsis;
 
 
 @media (max-width: 376px) {
+    /* ----nav bar ---------*/
+    .navbar .navbar-brand{
+      left: 0%;
+      }
+      .navbar-dark .navbar-toggler {
+        position: relative;
+        right: 5%;
+      } 
+    .form-inline input[type="search"] {
+    
+    }
+    .form-inline button{
+      width: 20%;
+      height: 40px;
+      font-size: 12px;
+   
+    }
   .hero p {
     text-align: center; 
     width: 80%;
@@ -1305,6 +1407,7 @@ text-overflow: ellipsis;
         background-color: #003680;
         color: white;
         position: relative;
+        right: 10px;
         bottom: 10px;
         border-top: 1px solid lightgray;
         width: 105%;
