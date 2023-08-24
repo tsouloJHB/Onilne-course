@@ -37,17 +37,13 @@ body {
     padding-right: 0px;
   }
 
-.navbar {
-    background-color: var(--primary-color);
-    width: 100%;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgb(99, 206, 23);
-    margin-bottom:100px;
-    color: white;
-  }
+.navbar{
+/* background-color: #494dbe; */
+ background-color: #003680;
+color: white;
+  min-height: 70px;
+
+}
 
   .nav-bar-space{
     padding-bottom: 100px;
@@ -57,9 +53,30 @@ body {
     padding: 0px;
     color:  var(--text-color);
     position: relative;
-    right:190px;
+    right:15%;
     font-weight: 700;
   }
+  .form-inline {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    left: 10px;
+    color: white;
+    
+    } 
+  .navbar-dark .navbar-toggler {
+    color:rgb(199, 214, 66)!important;
+    border-color: rgb(199, 214, 66)!important;
+  }
+  .navbar-dark .navbar-toggler-icon {
+    background-image:  url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28199, 214, 66, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+   
+  }
+  
+  .navbar-dark .navbar-toggler{
+    border-color: rgb(199, 214, 66);
+  }
+  
   .navbar .nav-left{
     position: relative;
     right:120px;
@@ -81,15 +98,23 @@ body {
     color: black;
     border-radius:4px;
   }
-  .navbar .signout .nav-link{
-    color: #000;
-  }
-  .navbar  ul li .sign{
-    color: white;
-  }
+
+  .navbar .nav-item .nav-link{
+    color: rgb(199, 214, 66);
+    }
+    .navbar-dark  .nav-item .nav-link {
+      color: rgb(199, 214, 66)!important;
+    }
+    .navbar .nav-item .nav-link-btn{
+      color: rgb(199, 214, 66);
+      }
+
+=
+
+ 
   
   .navbar ul li .nav-link{
-    color: var(--text-color);
+
     font-size:14px;
   }
   
@@ -155,7 +180,9 @@ body {
     width:100%;
   }
   .navbar  .dropdown-menu {
-    border: none;
+    width: 100%;
+    margin-right: 80px;
+    margin-left: 0px;
   }
   
   .navbar  .dropdown-item {
@@ -1066,6 +1093,60 @@ body {
   }
 }
 
+@media (max-width: 1200px) {
+  .navbar .nav-item .link-text{
+      
+      position: relative;
+      left: 30px;
+    }
+    .navbar .btn-custom{
+      position: relative;
+      left: 30px;
+      
+      }
+
+      .form-inline {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      left: -40px;
+      right: 10px;
+      color: white;
+        
+        width: 120%;
+      }
+
+      /* Add some space between the search form and other elements */
+   
+
+  
+
+    .navbar .navbar-brand{
+      position: relative;
+      left: -4%;
+     
+      
+    }
+    .navbar .signout{
+      
+      width: 78x;
+      color: black;
+      border-radius:4px;
+    }
+
+    .navbar .nav-left{
+      position: relative;
+      right:4%;
+      width: 100%;
+    }
+    .navbar .nav-right{
+      position: relative;
+      left: 10%;
+      width: 70%;
+    }
+} 
+
+
 @media (max-width: 1175px) {
   .course-details .trans-btn{
     font-size: 10px;
@@ -1148,6 +1229,32 @@ body {
     }
 }
 
+@media (max-width: 992px) {
+
+  .navbar .signout{
+    
+    border: none;
+  }
+  
+  .navbar #search-button{
+  
+    width:200px;
+  
+  }
+  .navbar .nav-right{
+    position: relative;
+    left: -18%;
+    width: 70%;
+  }
+
+  .navbar  .dropdown-menu {
+    width: 33%;
+    margin-right: 0px;
+    margin-left: 33.5%;
+    
+  }
+}
+
 @media (max-width: 821px) {
   .test-text-container .trans-btn-sm {
     left: 65%; /* Set the initial position to the center of the parent */
@@ -1158,6 +1265,13 @@ body {
 
 /* Media Query for Smaller Screens */
 @media (max-width: 767px) {
+  .navbar  .dropdown-menu {
+    width: 44%;
+    margin-right: 0px;
+    margin-left: 28%;
+    
+  }
+
   .dash-container {
     flex-direction: column; /* Set the flex-direction to column for smaller screens */
     padding: 30px; /* Reduce padding on smaller screens */
@@ -1276,7 +1390,54 @@ body {
 
 }
 
+@media (max-width: 625px) {
+  
+  /* ----nav bar ---------*/
+  .navbar .navbar-brand{
+    left: 10%;
+    }
+    .navbar-dark .navbar-toggler {
+      position: relative;
+      right: 10%;
+    } 
+  .signup-section {
+    flex-direction: column;
+    text-align: center;
+    height: 180px;
+    margin-top: 30px;
+  }
+  
+  .signup-section .sign-header {
 
+    font-size: 25px;
+ 
+    top: 20px;
+  }
+  
+  .signup-section .description {
+    color: #fff;
+    font-size: 12px;
+    margin-top: 20px;
+  }
+
+  
+  .signup-section .button {
+    /* Use margin to center the button horizontally */
+    margin: 0 0px;
+    position: relative;
+    left: 1%;
+  }
+   footer {
+      background-color: #003680;
+      color: white;
+      position: relative;
+      bottom: 10px;
+      border-top: 1px solid lightgray;
+  
+     
+    }
+
+}
 
 @media (max-width: 576px) {
 
@@ -1352,6 +1513,19 @@ body {
 
     border-radius: 10px;
   }
+
+  .navbar #search-button{
+    
+    width:130px;
+    position: relative;
+    right: 10px;
+   
+  }
+   .navbar .btn-outline-success{
+      width: 60px;
+      padding: 11px 13px;
+      font-size: 10px;
+      }
 }
 @media (max-width: 425px) {
   .course-card .card-image{
@@ -1429,7 +1603,33 @@ body {
   
 }
 
+@media (max-width: 415px) {
+  footer {
+    background-color: #003680;
+    color: white;
+    position: relative;
+    bottom: 10px;
+    border-top: 1px solid lightgray;
+    width: 105%;
+    padding: 10px 0px;
+  }
+  footer a {
+    color: rgb(199, 214, 66);
+    font-size: 12px;
+  }
+  footer p {
+   font-size: 12px;
+  }
+}
+
 @media (max-width:377px) {
+  .navbar  .dropdown-menu {
+    width: 48%;
+    margin-right: 0px;
+    margin-left: 25%;
+    
+  }
+
   .course-rating span {
     display: none;
   }
@@ -1446,6 +1646,24 @@ body {
     left: 55%; /* Set the initial position to the center of the parent */
     transform: translateX(90%); /* Move the button 90% to the right */
   } 
+
+  footer {
+    background-color: #003680;
+    color: white;
+    position: relative;
+    right: 10px;
+    bottom: 10px;
+    border-top: 1px solid lightgray;
+    width: 105%;
+    padding: 10px 0px;
+  }
+  footer a {
+    color: rgb(199, 214, 66);
+    font-size: 12px;
+  }
+  footer p {
+   font-size: 12px;
+  }
 }  
 
 
