@@ -31,6 +31,11 @@ body {
     background-color: black;
    
 }
+.info-text{
+  color: gray;
+  font-size: 12px;
+  text-transform: uppercase;
+}
 
 .container {
     margin: 0px;
@@ -109,9 +114,6 @@ color: white;
       color: rgb(199, 214, 66);
       }
 
-=
-
- 
   
   .navbar ul li .nav-link{
 
@@ -532,7 +534,7 @@ color: white;
 .user-courses-container {
   display: flex;
   padding: 50px 100px;
- height: 70vh;
+  min-height: 100vh;
 }
 
 .user-column {
@@ -647,6 +649,8 @@ color: white;
   margin-right: 10px;
   margin-bottom: 10px;
 }
+
+
 
 
 /*============================login==================================*/
@@ -1428,13 +1432,13 @@ color: white;
     left: 1%;
   }
    footer {
+      margin-top: 50px;
       background-color: #003680;
       color: white;
       position: relative;
-      bottom: 10px;
+      bottom: 0px;
       border-top: 1px solid lightgray;
-  
-     
+
     }
 
 }
@@ -1608,7 +1612,7 @@ color: white;
     background-color: #003680;
     color: white;
     position: relative;
-    bottom: 10px;
+   
     border-top: 1px solid lightgray;
     width: 105%;
     padding: 10px 0px;
@@ -1652,7 +1656,7 @@ color: white;
     color: white;
     position: relative;
     right: 10px;
-    bottom: 10px;
+   
     border-top: 1px solid lightgray;
     width: 105%;
     padding: 10px 0px;

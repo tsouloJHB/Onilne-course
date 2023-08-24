@@ -123,11 +123,13 @@ ul li a{
 <body>
   <!-- Navigation -->
   <%- include('partials/clientNav') %>
-  
+ 
+
   <div class="container-out">
     <div class="column courseOutline-column" >
       <div class="smaller-screens-outline">
         <p id="progress-text" >Progress</p>
+     
         <div class="progress">
           <% if(!downloadCertificate.completed){%>
             <div class="progress-bar" role="progressbar" style="width: <%=percentage%>%;background-color:black" aria-valuenow="<%=percentage%>" aria-valuemin="0" aria-valuemax="100">
@@ -141,7 +143,7 @@ ul li a{
         </div>
         
         <ul class="menu-list">
-     
+    
           <% topics.forEach(function(topic,index) { %>
             <li>
               <span class="circle"><%= index+1 %></span>
@@ -162,8 +164,7 @@ ul li a{
    
     
       </div>
- 
-  
+
       <!-- <% if(downloadCertificate.completed){%>
         <p>Course Completed</p>
         <a href="/<%= downloadCertificate.link%>" download><button>Download certificate</button></a>
@@ -199,6 +200,7 @@ ul li a{
       <%}%>
     </div>
     <div class="column outline-progress">
+      <p class="pat" style="position: relative;left: 0%;font-size: 14px;"> courses / </span><a href="/topics/<%=topics[0].courseId%>">lesson</a></p>
       <p id="progress-text" >Progress</p>
       <div class="progress">
         <% if(!downloadCertificate.completed){%>

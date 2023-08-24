@@ -12,7 +12,8 @@
   
   <!-- Create Course Form -->
 
-
+  <br>
+  <br>
   <p class="path"><a href="/users"> Home</a> /<span style="color: gray;"> your courses</span> </p>
 
   <div class="user-courses-container">
@@ -22,6 +23,9 @@
         
       </div>
       <div class="course-list">
+        <% if(courses.length == 0 ){%>
+          <p class="info-text">You have not created any course yet !</p>
+        <%}%>  
         <% courses.forEach(function(course) { %>
         <div class="course">
           <div class="course-details">
@@ -75,8 +79,9 @@
       
       </div>
     </div>
+    
   </div>
-
+  <%- include('partials/footer') %>
  
 
 
@@ -139,6 +144,6 @@
       });
     });
   </script>
-  <%- include('partials/footer') %>
+
 </body>
 </html>

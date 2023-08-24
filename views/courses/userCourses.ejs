@@ -9,96 +9,99 @@
   <%- include('../partials/clientNav') %>
   <br><br>
   <p class="path"><a href="../users" >Home</a> /<span style="color: gray;"> courses</span> </p>
-  <div class="user-courses-container">
-    <div class="user-column">
-      <div class="user-welcome">
-        <div class="custom-jumbotron">
-          <div class="container">
-            <h2 class="display-5"><i class="fa fa-user"></i><b> Hello <%=user.name %></b></h2>
-            <p class="lead">Good to see you</p>
+  <div class="content3">
+      <div class="user-courses-container">
+        <div class="user-column">
+          <div class="user-welcome">
+            <div class="custom-jumbotron">
+              <div class="container">
+                <h2 class="display-5"><i class="fa fa-user"></i><b> Hello <%=user.name %></b></h2>
+                <p class="lead">Good to see you</p>
+              </div>
+            </div>
+            
+          </div>
+          <div class="course-list">
+            <% if(courses.length == 0){%>
+              <p><b>You haven't registered for any course</b></p>
+            <% }%>  
+            <% courses.forEach(function(course) { %>
+            <div class="course">
+              <div class="course-details">
+                <h3><%= course.title %></h3>
+              
+                <% if(course.completed){ %>
+                  
+                  <div class="course-progress">
+                    <i class="fa fa-check-circle"></i>
+                    <span>Completed</span>
+                  </div>
+                  
+                <%}else{%>
+                  <div class="course-progress">
+                    <i class="fa fa-check-circle"></i>
+                    <span><%=course.percentage %>% <span id="completed"> completed</span></span>
+                  </div>
+                  
+              
+                <%}%>
+                <div class="course-rating">
+                  <% const rating = course.rating; %>
+                  <% const fullStars = Math.floor(rating); %>
+                  
+                  <% for (let i = 0; i < fullStars; i++) { %>
+                    <i class="fa fa-star"></i>
+                  <% } %>
+                  
+                  <% if (rating === 0) { %>
+                    <% for (let i = 0; i < 5; i++) { %>
+                      <i class="fa fa-star blank-star"></i>
+                    <% } %>
+                  <% } else { %>
+                    <% const emptyStars = 5 - fullStars; %>
+                    <% for (let i = 0; i < emptyStars; i++) { %>
+                      <i class="fa fa-star blank-star"></i>
+                    <% } %>
+                    
+                    <% if (rating % 1 !== 0) { %>
+                      <i class="fa fa-star-half"></i>
+                    <% } %>
+                  <% } %>
+                  
+                  <!-- <span><%= rating %></span> -->
+                </div>
+                <a href="/topics/<%=course._id %>"><button class="view-course-btn">View Course</button></a>
+              </div>
+              <p class="instructor"><%=course.user.name +" " +course.user.surname%></p>
+            </div>
+        
+            <% }); %>
+          </div>
+        </div>
+        <div class="stats-column">
+        
+          <h2 class="display-9"><b>Your Stats</b> </h2>
+          <br>
+          <div class="stats">
+            <div class="stats-item">
+              <i class="fa fa-laptop"></i>
+              <p>Courses:<%=userStats.registeredCourses%>%> </p>
+            </div>
+            <div class="stats-item">
+              <i class="fa fa-check-circle"></i>
+              <p>Completed Courses: <%=userStats.coursesCompleted%> </p>
+            </div>
+            <div class="stats-item">
+              <i class="fa fa-hourglass-half"></i>
+              <p>In Progress: <%=userStats.inprogress%></p>
+            </div>
+          
           </div>
         </div>
         
       </div>
-      <div class="course-list">
-        <% if(courses.length == 0){%>
-          <p><b>You haven't registered for any course</b></p>
-        <% }%>  
-        <% courses.forEach(function(course) { %>
-        <div class="course">
-          <div class="course-details">
-            <h3><%= course.title %></h3>
-           
-            <% if(course.completed){ %>
-              
-              <div class="course-progress">
-                <i class="fa fa-check-circle"></i>
-                <span>Completed</span>
-              </div>
-              
-            <%}else{%>
-              <div class="course-progress">
-                <i class="fa fa-check-circle"></i>
-                <span><%=course.percentage %>% <span id="completed"> completed</span></span>
-              </div>
-              
-           
-            <%}%>
-            <div class="course-rating">
-              <% const rating = course.rating; %>
-              <% const fullStars = Math.floor(rating); %>
-              
-              <% for (let i = 0; i < fullStars; i++) { %>
-                <i class="fa fa-star"></i>
-              <% } %>
-              
-              <% if (rating === 0) { %>
-                <% for (let i = 0; i < 5; i++) { %>
-                  <i class="fa fa-star blank-star"></i>
-                <% } %>
-              <% } else { %>
-                <% const emptyStars = 5 - fullStars; %>
-                <% for (let i = 0; i < emptyStars; i++) { %>
-                  <i class="fa fa-star blank-star"></i>
-                <% } %>
-                
-                <% if (rating % 1 !== 0) { %>
-                  <i class="fa fa-star-half"></i>
-                <% } %>
-              <% } %>
-              
-              <!-- <span><%= rating %></span> -->
-            </div>
-            <a href="/topics/<%=course._id %>"><button class="view-course-btn">View Course</button></a>
-          </div>
-          <p class="instructor"><%=course.user.name +" " +course.user.surname%></p>
-        </div>
-     
-        <% }); %>
-      </div>
-    </div>
-    <div class="stats-column">
-     
-      <h2 class="display-9"><b>Your Stats</b> </h2>
-      <br>
-      <div class="stats">
-        <div class="stats-item">
-          <i class="fa fa-laptop"></i>
-          <p>Courses:<%=userStats.registeredCourses%>%> </p>
-        </div>
-        <div class="stats-item">
-          <i class="fa fa-check-circle"></i>
-          <p>Completed Courses: <%=userStats.coursesCompleted%> </p>
-        </div>
-        <div class="stats-item">
-          <i class="fa fa-hourglass-half"></i>
-          <p>In Progress: <%=userStats.inprogress%></p>
-        </div>
-      
-      </div>
-    </div>
-  </div>
-  
+    </div>  
+  <%- include('../partials/footer') %>
 <!-- <div id="accordion">
   <% if(courses.length == 0){ %>
     <p>You have not registered for any course </p>
@@ -132,5 +135,5 @@
  </div>
 </div> -->
 
-<%- include('../partials/footer') %>
+
 </body>
