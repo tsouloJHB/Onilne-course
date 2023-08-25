@@ -22,6 +22,7 @@ connectDb();
 
 const bodyParser = require('body-parser');
 const { UserModel } = require('./models');
+const { verifyLogin } = require('./middleware/verifyToken');
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -154,7 +155,7 @@ app.use('/admin',AdminRoute);
 
 //get the courses and 
 
-app.get('/', async(req, res) => {
+app.get('/',verifyLogin, async(req, res) => {
   const courses  = await Courses.find();
   res.render('home', { courses});
 });

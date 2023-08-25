@@ -328,7 +328,7 @@ text-align: center;
   
 }
 
-.course-section{
+.content .course-section{
   margin-top: 100px;
   background-color: rgb(244, 244, 244);
   width: 100%;
@@ -771,7 +771,13 @@ text-overflow: ellipsis;
     margin-right: 0px;
     margin-left: 30.3%;
     
-  }    
+  }
+    /*--------------preview -------------------------*/
+    .course-details-container .course-details-view {
+      
+      padding:0 0px;
+ 
+    }    
 }
 
 @media (max-width: 821px) {
@@ -945,6 +951,7 @@ text-overflow: ellipsis;
   .course-details-container {
     flex-direction: column;
     padding: 0 0px;
+
   }
 
   .course-details-container .course-breakdown {

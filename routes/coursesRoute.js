@@ -7,6 +7,7 @@ const { upload } = require('../middleware/upload');
 const { courseDataValidate, courseEditDataValidate } = require('../validation/courseValidation');
 const { validationResult } = require("express-validator");
 const { default: mongoose } = require('mongoose');
+const {verifyLogin} = require('../middleware/verifyToken');
 
 
 // router.get('/', verifyToken.verifyToken, async (req, res) => {
@@ -26,7 +27,7 @@ const { default: mongoose } = require('mongoose');
 //     }
 //   });
 
-router.get('/courses', async (req, res) => {
+router.get('/courses',verifyLogin, async (req, res) => {
   try {
    
   

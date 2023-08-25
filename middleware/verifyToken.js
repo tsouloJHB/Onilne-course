@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/usersModel');
 const { render } = require('ejs');
+
 // Middleware to verify JWT token and check expiration
 async function verifyToken(req, res, next) {
   const token = req.cookies.token || '';
@@ -40,4 +41,28 @@ const isAdmin = (req,res,next) =>{
     //return res.status(403).json({error:'Forbidden'});
   }
 };
-module.exports = {verifyToken,isAdmin};
+
+async function verifyLogin(req, res, next) {
+  const token = req.cookies.token || '';
+  try {
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  
+      req.id = decoded;
+  
+      req.user = await User.findById(decoded.id).select('-password');
+      // Check if token has expired
+      const nowInSeconds = Math.floor(Date.now() / 1000);
+      if (decoded.exp < nowInSeconds) {
+        res.redirect('/login');
+        //throw new Error('Token has expired');
+      }
+      res.redirect('/users');
+    }
+    next();
+  } catch (err) {
+  
+    next();
+  }
+}  
+module.exports = {verifyToken,isAdmin,verifyLogin};

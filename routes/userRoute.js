@@ -82,7 +82,7 @@ router.post('/login', loginDataValidate,async (req, res) => {
 });
 
 
-router.get('/login', (req, res) => {
+router.get('/login', verifyToken.verifyLogin,(req, res) => {
   res.render('login');
 });
 
@@ -158,7 +158,7 @@ router.get('/signout',(req,res) =>{
 
   res.redirect('/users/login');
 });
-router.get('/signup', (req, res) => {
+router.get('/signup',verifyToken.verifyLogin,(req, res) => {
   res.render('signup', { error: null }); // Pass 'error' as null initially
 });
 
