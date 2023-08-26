@@ -324,7 +324,7 @@ const resizeImage = async (filename) => {
 
     // Resize the image and save the resized image in PNG format
     await sharp(`public/images/courseimages/${filename}`)
-      .resize(350, 250)
+      .resize(1280, 720)
       .toFile(`public/images/courseimages/${resizedFilename}`);
 
     console.log('Image resized and converted to PNG successfully!');

@@ -28,9 +28,17 @@ async function initDatabase() {
     console.log('Settings collection created');
 
     //create categories collection using the CourseCategories model
-    // const categories = new CourseCategoriesModel({
-    //   name:"mathematics"
-    // });
+       // Create categories using the Category model
+    const categories = ['Mathematics', 'AI', 'Design', 'Business'];
+    for (const categoryName of categories) {
+      const category = new CourseCategoriesModel({
+        name: categoryName,
+      });
+      await category.save();
+      console.log(`Category '${categoryName}' created.`);
+    }
+
+
     // Create an admin user using the User model
     const adminUser = new UserModel({
       email: 'admin@example.com',
