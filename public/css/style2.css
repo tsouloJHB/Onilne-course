@@ -550,9 +550,9 @@ color: white;
 
 .dash-container {
   display: flex;
-  
+
   padding: 50px 60px 100px  80px;
- 
+  min-height: 100vh;
 }
 .dash-column {
   flex: 7;

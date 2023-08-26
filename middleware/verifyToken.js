@@ -16,10 +16,17 @@ async function verifyToken(req, res, next) {
     req.id = decoded;
 
     req.user = await User.findById(decoded.id).select('-password');
+    //check if the user exits
+    if(req.user === null){
+      //destroy the cookie
+      res.clearCookie('connect.sid');
+      res.clearCookie('token');
+      return res.redirect('/users/login');
+    }
     // Check if token has expired
     const nowInSeconds = Math.floor(Date.now() / 1000);
     if (decoded.exp < nowInSeconds) {
-      res.redirect('/login');
+      res.redirect('/users/login');
       //throw new Error('Token has expired');
     }
 
