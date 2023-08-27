@@ -77,7 +77,12 @@
       <div class="stats">
         <div class="stats-item">
           <i class="fa fa-exclamation" aria-hidden="true"></i>
-          <p>You should get 80% to advance</p>
+          <% if (typeof passPercentage !== 'undefined' && passPercentage !== null) { %>
+            <p>You should get <%=passPercentage%>% to advance</p>
+          <%}else{%>
+            <p>You should get 70% to advance</p>
+          <%}%>    
+          
         </div>
       
       

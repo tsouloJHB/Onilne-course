@@ -1,10 +1,11 @@
 const nodemailer = require("nodemailer");
-
+require('dotenv').config(); 
 
 module.exports.sendEmail = async (to, message, subject) => {
+  const email = process.env.SERVER_MAIL;
+  const password = process.env.MAIL_PASSWORD;
     try {  
-      const password = "dnmwpflioeendxiz";
-      const email = "0784939@gmail.com";
+    
       let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com", // SMTP server address (usually mail.your-domain.com)
         port: 465, // Port for SMTP (usually 465)
@@ -12,7 +13,7 @@ module.exports.sendEmail = async (to, message, subject) => {
         auth: {
           user: email, // Your email address
           pass: password, // Password (for Gmail, your app password)
-          // ⚠️ For better security, use environment variables set on the server for these values when deploying
+          // For better security, use environment variables set on the server for these values when deploying
         },
         tls: {
           rejectUnauthorized: false,

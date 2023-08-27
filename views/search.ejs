@@ -2,22 +2,32 @@
 <html>
 
   <title>Courses</title>
-  <% if (typeof unAuthenticated !== 'undefined') { %>
+
+  <% if (typeof unAuthenticated !== 'undefined') { %> 
     <%- include('frontend/header') %>
     <body>
     <%- include('frontend/navbar') %>
   <% }else{%>
     <%- include('partials/header') %>
     <body>
-    <%- include('partials/clientNav') %>
+    <% if(admin) {%>
+      <%- include('partials/navBar') %>
+    
+      <%}else{%>
+        <%- include('partials/clientNav') %>
+      <%}%>   
+   
+   
   <%}%>  
 
   <% if(courses.length == 0){%>
     <p style="text-align: center;margin-right:220px;"><b>No courses found</b></p>
   <%}%>  
+
   <div class="dash-container space-above" >
   <div class="dash-column">
   <div class="course-container">
+    
     <% courses.forEach(function(course) { %>
      <div class="course-card  p-3 ">
        <div class="row align-items-start">

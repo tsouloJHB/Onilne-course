@@ -1,6 +1,4 @@
 
-
-<!-- <script src="/js/jquery-1.12.4.min.js"></script> -->
 <style>
   .course-details {
     display: none;
@@ -13,72 +11,75 @@
     margin-left:12px;
   }
 </style>
-  <!-- Navigation -->
-  <!-- <div class="navbar">
-    <div class="navbar-logo">Ai Tech</div>
-    <ul>
-      <li><a href="/admin/">Home</a></li>
-      <li><a href="/admin/courses">Courses</a></li>
-      <li><a href="/admin/settings">Settings</a></li>
-      <li><a href="/users/signout">Sign Out</a></li> 
-    </ul>
-  </div> -->
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark navbar-hidden" id="navbar">
+    <div class="container">
+      <a class="navbar-brand" href="#">Scholar.</a>
 
-  <body>
-    <nav class="navbar navbar-dark navbar-expand-lg fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">Scholar.</a>
-  
-        <!-- Navbar Toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-  
-        <!-- Navbar Items -->
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav nav-left">
-            <li class="nav-item active">
-              <a class="nav-link" href="/admin">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/courses">Courses</a>
-            </li>
-           
-            
-          </ul>
-  
-       <!-- ... -->
-  <!-- Search Form -->
-  <div class="dropdown">
-  
-    <form class="form-inline ml-3" action="/course/search" method="GET">
-   
-      <input class="form-control mr-sm-2" id="search-button"  autocomplete="off" name="search" type="search" placeholder="Course or Category" aria-label="Search">
+      <!-- Navbar Toggler -->
+      <button  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span  class="navbar-toggler-icon"></span>
+</button>
+
       
+    <!-- Navbar Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav nav-left">
+        <li class="nav-item active">
+          <a class="nav-link" href="/admin">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/courses">Courses</a>
+        </li>
+       
+        
+      </ul>
+
+   <!-- ... -->
+<!-- Search Form -->
+<div class="dropdown">
+
+<form class="form-inline ml-3" action="/course/search" method="GET">
+
+  <input class="form-control mr-sm-2" id="search-button"  autocomplete="off" name="search" type="search" placeholder="Course or Category" aria-label="Search">
+  
+  <div class="dropdown-menu" id="searchResults">
+
+  </div> 
+  <div id="searchResultsDropdown" class="dropdown-menu" aria-labelledby="searchInput"></div> 
+  <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+</form>
+</div>
+</ul>
+<ul class="navbar-nav ml-auto nav-right">
+<li class="nav-item">
+  <a class="nav-link" href="/admin/settings">Settings</a>
+</li>
+<li class="nav-item signout">
+  <a class="nav-link" href="/users/signout">Sign out</a>
+</li>
+</ul>
+
+
+        
+      </div>
+    </div>
+  </nav>
+  <!-- <div class="dropdown">
+    <form class="form-inline ml-3" action="/course/search" method="GET">
+      <input class="form-control mr-sm-2" id="search-button" name="search" type="search" placeholder="Course or Category" aria-label="Search">
       <div class="dropdown-menu" id="searchResults">
-    
+        <a class="dropdown-item" href="#"/>Move</a>
+        <ul style="color:black" id="suggestions-list"></ul>
       </div> 
       <div id="searchResultsDropdown" class="dropdown-menu" aria-labelledby="searchInput"></div> 
       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
     </form>
-  </div>
-  </ul>
-  <ul class="navbar-nav ml-auto nav-right">
-    <li class="nav-item">
-      <a class="nav-link" href="/admin/settings">Settings</a>
-    </li>
-    <li class="nav-item signout">
-      <a class="sign" href="/users/signout">Sign out</a>
-    </li>
-  </ul>
-  
-  
-          
-        </div>
-      </div>
-    </nav>
+  </div> -->
+  <!-- <ul style="color:black" id="suggestions-list"></ul> -->
+ 
+  <div class="nav-bar-space">
 
-    <br>
-    <br>
-    <br>
-    <br>  
+  </div>
+

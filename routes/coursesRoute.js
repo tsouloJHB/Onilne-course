@@ -8,7 +8,7 @@ const { courseDataValidate, courseEditDataValidate } = require('../validation/co
 const { validationResult } = require("express-validator");
 const { default: mongoose } = require('mongoose');
 const {verifyLogin} = require('../middleware/verifyToken');
-
+require('dotenv').config(); 
 
 // router.get('/', verifyToken.verifyToken, async (req, res) => {
 //     try {
@@ -95,7 +95,7 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
         
       }
       const errors =  req.session.errors ? req.session.errors.errors:[];
-      console.log(errors.msg);
+   
       const admin  = req.user.isAdmin;
       // Clear the session variable to avoid displaying it on subsequent requests
       req.session.successMessage = null;
@@ -172,6 +172,7 @@ router.get('/user',verifyToken.verifyToken, async(req, res) => {
   });
 
 router.get('/search', verifyToken.verifyToken, async (req, res) => {
+ ;
   try {
       if(req.query.search == null || req.query.search == ""){
         res.redirect(req.headers.referer);
@@ -202,11 +203,11 @@ router.get('/search', verifyToken.verifyToken, async (req, res) => {
         ]);
        
    
-        return res.render('search', { courses: filteredCourses,categories});
+        return res.render('search', { courses: filteredCourses,categories,admin:req.user.isAdmin});
       }
 
       
-      res.render('search',{courses,categories});
+      res.render('search',{courses,categories,admin:req.user.isAdmin});
   } catch (error) {
     console.log(error);
   }  
@@ -275,7 +276,7 @@ router.get('/search-suggest', async (req, res) => {
 
 router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
   try {
-    console.log("users here");
+
     const course = await CourseModel.findById(req.params.id);
     let countTopics = await TopicModel.countDocuments({courseId:course._id});
     if(!course){
@@ -317,7 +318,7 @@ router.get('/view/:id', verifyToken.verifyToken, async (req, res) => {
       ratingsAverage:rating
        // Add the progress field
     };
-    console.log(rating);
+
     //console.log(updatedCourse);
     
     res.render('courses/viewCourse',{course:updatedCourse});
@@ -357,11 +358,11 @@ router.post('/create',verifyToken.verifyToken,upload , courseDataValidate,async 
   router.put('/activate',verifyToken.verifyToken,async (req,res)=>{
     try {
       const courseId = req.body.courseId;
-      console.log(courseId);
+  
   
       await CoursesController.courseUserAuthorized(req.user._id,courseId,res,req);
       const activate = await CoursesController.activateCourse(courseId);
-      console.log(activate);
+  
       if(!activate){
         return res.status(401).json("Failed to activate course");
       }

@@ -98,10 +98,14 @@ color: white;
   }
 
   .navbar .signout{
-    background-color: transparent;
+    
     border: 1px solid lightgray;
-    color: black;
+    color: rgb(255, 255, 255);
     border-radius:4px;
+  
+  }
+  .navbar .signout a{
+    color: rgb(199, 214, 66)
   }
 
   .navbar .nav-item .nav-link{

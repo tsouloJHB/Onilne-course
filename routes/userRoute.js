@@ -13,7 +13,7 @@ const crypto = require('crypto');
 const {  signUpSchemaValidator } = require('../validation/user.validation');
 const handleErrors = require('../utils/errors');
 const { type } = require('os');
-
+require('dotenv').config(); 
 
 // Login route
 router.post('/login', loginDataValidate,async (req, res) => {
@@ -89,7 +89,8 @@ router.get('/login', verifyToken.verifyLogin,(req, res) => {
 // Signup route
 router.post('/signup',loginDataValidate ,async (req, res) => {
   const { email, password, name, surname,confirmpassword,course } = req.body;
- 
+
+
   try {
     // Check if the email already exists
     if (password == null || password == "" || name == "" || name == null || surname == "" || surname == null
@@ -115,16 +116,26 @@ router.post('/signup',loginDataValidate ,async (req, res) => {
     const userResponse = await newUser.save();
      console.log(userResponse);
     //check and setup user actions
-    if(course !== undefined && course != null){
-      
+    if(course !== undefined && course != null && course !== ""){
+      console.log(course);
+      console.log("course value top");
       await ActionsController.setLoginActions("redirect",`/course/view-course/${course}`,userResponse._id);
     }
     
     // Generate the verification URL
     const restUrl = `${req.protocol}://${req.get('host')}/users/verify/${verificationToken}`;
       // Send verification email
+    let responseMessage = 'Account created please check your email to verify your account';  
     const message = `Thank you for signing up! Please click the following link to verify your account:\n\n ${restUrl}`;
-    //const sendmail = await sendEmail(email, message, 'Account Verification');
+    const emailStatus = process.env.SERVER_MAILS === 'true';
+    if(emailStatus){  
+      console.log("email");
+      const sendmail = await sendEmail(email, message, 'Account Verification');
+    }else{
+      console.log("no email");
+      responseMessage = 'Account created , Server emails have been disabled proceed to sign in'
+    }
+    
     const sendmail = true;
 
     if (!sendmail) {
@@ -141,7 +152,8 @@ router.post('/signup',loginDataValidate ,async (req, res) => {
     // });
 
     // Redirect the user to the topics page
-    return res.status(201).json({ message: 'Account created please check your email to verify your account'});
+ 
+    return res.status(201).json({ message: responseMessage});
    // res.redirect('/users');
   } catch (err) {
     // Return the error messages to the signup page

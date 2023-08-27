@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
-const { TopicModel, TopicMaterialModel,TopicQuizModel, UserProgressModel } = require('../models');
+const { TopicModel, TopicMaterialModel,TopicQuizModel, UserProgressModel, SettingsModel } = require('../models');
 const { CoursesController, UsersController, TopicsController,TopicMaterialController } = require('../controllers');
 const { URL } = require('url');
 
@@ -96,10 +96,11 @@ router.get('/quiz/:id', verifyToken.verifyToken,async (req, res) => {
       question.incorrectAnswer2 = options[2];
     });
 
-    console.log(quiz);
+    //get pass percentage 
+    const settings = await SettingsModel.findOne({user:"admin"});
 
     // Return the quiz data
-    res.render('quizTest', { quiz, topicId });
+    res.render('quizTest', { quiz, topicId ,passPercentage:settings.passPercentage});
   } catch (error) {
     console.error('Error retrieving quiz data:', error);
     return res.render('404',{message:"An error occurred while retrieving"});

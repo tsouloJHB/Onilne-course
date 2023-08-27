@@ -235,30 +235,30 @@
       var isValid = true;
 
       if (email.trim() === '') {
-        $('#error-signup').append('<p>Please enter your email.</p>');
+        $('#error-signup').append('<p style="color:red">Please enter your email.</p>');
         isValid = false;
       }
 
       if (password.trim() === '') {
-        $('#error-signup').append('<p>Please enter your password.</p>');
+        $('#error-signup').append('<p style="color:red">Please enter your password.</p>');
         isValid = false;
       }
 
       if (name.trim() === '') {
-        $('#error-signup').append('<p>Please enter your name.</p>');
+        $('#error-signup').append('<p style="color:red">Please enter your name.</p>');
         isValid = false;
       }
 
       if (surname.trim() === '') {
-        $('#error-signup').append('<p>Please enter your surname.</p>');
+        $('#error-signup').append('<p style="color:red">Please enter your surname.</p>');
         isValid = false;
       }
 
       if (passwordConfirm.trim() !== password.trim()) {
-        $('#error-signup').append("<p>Passwords don't match.</p>");
+        $('#error-signup').append("<p style='color:red'>Passwords don't match.</p>");
         isValid = false;
       }
-      
+
       if (isValid) {
         // Send the form data using AJAX
         $.ajax({
@@ -270,14 +270,13 @@
             confirmpassword: passwordConfirm,
             name: name,
             surname: surname,
-            course:course,
           },
           success: function (data) {
             // Handle the successful response
             // For example, show a success message to the user
             console.log(data); // Log the response data
             
-            $('#error-signup').append(`<p>Success! ${data.responseJSON.message}.</p>`);
+            $('#error-signup').append(`<p style="color:green">Success! ${data.message}.</p>`);
           },
           error: function (error) {
             // Handle errors
