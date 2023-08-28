@@ -4,6 +4,8 @@
   "description": "",
   "main": "nodemon server.js",
   "scripts": {
+    "init-db": "node init-db.js",
+    "create-data": "node create-dummy-data.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
