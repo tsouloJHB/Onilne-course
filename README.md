@@ -15,12 +15,18 @@ The Online Learning Platform is a comprehensive web application that empowers us
    - `PORT`: Specify the port number for the server.
    - `JWT_SECRET`: Set a secret key for JWT token generation.
    - `REFRESH_TOKEN_SECRET`: Set a secret key for refresh token generation.
-   - `SESSION_KEY`: Set a session with a random string.
+   - `SESSION_KEY`: Set a session key with a random string.
    - `SERVER_MAIL`: Insert a gmail account that has app password enabled /[IF NOT] insert random string.
    - `MAIL_PASSWORD`: Insert password for the gmail account [IF NOT] insert random string.
    - `SERVER_MAILS`: Insert a true or false value to enable the application to send emails using SERVER_MAIL, [IF ] random strings were used set the value to false.
 3. Setup database : `node init-db`
-4. [OPTIONAL] Setup pre defined data : `node dummyData`    
+   - An admin user will be created with the following credentials
+      - email: `admin@example.com`
+      - password: `1234567`
+4. [OPTIONAL] Setup pre defined data : `node dummyData`
+    - A user will be created with the following credentials
+      - email: `johndoe@example.com`
+      - password: `1234567`
 3. Run the application: `npm start`
    - This command will start the server by executing the `server.js` file.
 4. Access the application in your browser at `http://localhost:<PORT>`
