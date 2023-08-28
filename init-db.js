@@ -4,6 +4,13 @@ const CourseCategoriesModel = require('./models/courseCategories');
 const mongoose = require('mongoose');
 require('dotenv').config(); // Load environment variables from .env file
 
+
+
+const email = "admin@example.com" //insert admin email address
+const password = "1234567" //insert admin application password
+const name = "John" // Replace with your name
+const surname = "Doe" //Replace with your surname
+
 async function initDatabase() {
   try {
     // Fetch MongoDB URI from environment variables
@@ -41,10 +48,10 @@ async function initDatabase() {
 
     // Create an admin user using the User model
     const adminUser = new UserModel({
-      email: 'admin@example.com',
-      password: '1234567', // Password will be hashed automatically due to pre-save hook
-      name: 'James',
-      surname: 'Joe',
+      email: email,
+      password: password, // Password will be hashed automatically due to pre-save hook
+      name: name,
+      surname: surname,
       isAdmin: true,
     });
 
